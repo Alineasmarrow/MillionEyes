@@ -77,6 +77,7 @@ python my_scenario.py
 - ⚠ Warning/Strained
 - 🔥 Critical/Danger
 - ✨ Transcendent/Sacred
+- ⚡ Sacred Dyad (Conservation Law active)
 - ↑/↓/→ Rising/Falling/Stable
 
 ## Tips for Good Scenarios
@@ -107,6 +108,25 @@ python my_scenario.py
 ### The Witch Trine
 
 If you use characters named **Maeve**, **Yuul**, and **Rielle**, the system will automatically track their collective bond strength (Witch Trine). Make sure to add all three dyadic relationships between them.
+
+### ⚡ Sacred Dyads (NEW!)
+
+When a relationship reaches C_dyad >= 9.0, it becomes **SACRED** and the Conservation Law activates:
+
+- **Coupling**: Changes to one character echo in their partner (30% default)
+- **Amplification**: Sacred bonds shake reality, adding chaos
+- **Catastrophic Break**: If one partner collapses, the other suffers grief rupture
+
+**Example:**
+```
+Kit-Yuul: 9.5 [SACRED] ⚡
+
+Kit drops -2.0 C_self
+  → Yuul echoes -0.6 C_self (30% coupling)
+  → Reality shakes: +1.0 chaos
+```
+
+Sacred bonds are **liabilities under pressure** - they magnify both rise and fall!
 
 ## Viewing Event Cards
 

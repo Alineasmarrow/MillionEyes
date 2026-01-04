@@ -83,6 +83,46 @@ sim.save_log("my_scenario.txt")
 - Events add or subtract chaos based on their effects
 - High chaos indicates narrative instability
 
+### ⚡ Sacred Dyad Conservation Law
+
+When a relationship reaches **SACRED status (C_dyad >= 9.0)**, the characters become metaphysically coupled:
+
+**The Law:**
+- Changes to one character **echo** in their sacred partner (default: 30% coupling strength)
+- If Character A loses 2.0 C_self, Character B loses 0.6 C_self (30% coupling)
+- This applies to both positive and negative changes
+
+**Chaos Amplification:**
+- Sacred bonds **shake reality** when they waver
+- Each sacred dyad change adds: `|delta| × 0.5` chaos
+- Multiple sacred bonds multiply the effect
+
+**Catastrophic Collapse:**
+- If a sacred partner falls to C_self ≤ 0, their partner suffers:
+  - **Grief Rupture**: -2.0 C_self (immediate)
+  - **Reality Buckles**: +4.0 chaos
+  - This can trigger cascading failures
+
+**Why This Matters:**
+- Sacred bonds are **liabilities under pressure**, not just strengths
+- They magnify transformations (both rise and fall)
+- High chaos makes sacred dyads **volatile**
+- Creates prophecy-like emergent narratives: lovers destroy each other, sisters break reality, promises become tragic
+
+**Visual Indicators:**
+- Sacred dyads marked with ⚡ symbol
+- Sacred echoes displayed in event logs
+- Dedicated section in final state output
+
+**Example:**
+```
+Kit-Yuul: 9.5 [SACRED] → ⚡ SACRED
+  ↓ Kit: C_self -2.0 → 6.0 [Functional]
+     → overextends
+     ⚡ Sacred echo: Yuul ↓ -0.6 → 5.4
+     ⚡ Sacred bond shakes reality: +1.0 chaos
+```
+
 ## Event Cards
 
 The engine includes 20 narrative event cards organized into categories:
@@ -174,6 +214,27 @@ print(f"Trine Health: {trine_health:.1f}")
 # >= 8.0 = Strong
 # >= 6.0 = Functional
 # < 6.0 = Failing
+```
+
+### Customizing Sacred Dyad Coupling
+
+```python
+# Create a relationship with custom coupling strength
+# Default: 0.3 (30%)
+# Higher values = more brutal fate coupling
+
+sim.add_relationship("Alice", "Bob", c_dyad=9.5)
+dyad = sim.get_dyad("Alice", "Bob")
+
+# Set custom coupling strength
+dyad.coupling_strength = 0.5  # 50% coupling (more intense)
+# or
+dyad.coupling_strength = 0.8  # 80% coupling (tragic)
+
+# Now when Alice changes by -2.0:
+# - With 30% coupling: Bob changes by -0.6
+# - With 50% coupling: Bob changes by -1.0
+# - With 80% coupling: Bob changes by -1.6
 ```
 
 ### Custom Events

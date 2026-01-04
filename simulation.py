@@ -55,20 +55,41 @@ class NarrativeSimulation:
         return [rel for rel in self.relationships
                 if rel.char_a == char_name or rel.char_b == char_name]
 
-    def modify_character_c_self(self, char_name: str, delta: float, reason: str = "") -> Dict:
-        """Modify a character's C_self value"""
+    def modify_character_c_self(self, char_name: str, delta: float, reason: str = "",
+                                apply_sacred_coupling: bool = True) -> Dict:
+        """Modify a character's C_self value and apply Sacred Dyad Conservation Law"""
         char = self.get_character(char_name)
         if not char:
             return {"error": f"Character {char_name} not found"}
 
+        old_c_self = char.c_self
         change = char.modify_c_self(delta, reason)
+
+        # Check for catastrophic collapse BEFORE applying coupling
+        if old_c_self > 0 and char.c_self <= 0 and apply_sacred_coupling:
+            self._handle_sacred_collapse(char_name)
+
+        # Apply Sacred Dyad Conservation Law
+        if apply_sacred_coupling:
+            sacred_echoes = self._apply_sacred_conservation(char_name, delta, reason)
+            if sacred_echoes:
+                change['sacred_echoes'] = sacred_echoes
+
+        # Chaos amplification for sacred dyad changes
+        if apply_sacred_coupling and delta != 0:
+            sacred_chaos = self._calculate_sacred_chaos_impact(char_name, delta)
+            if sacred_chaos > 0:
+                change['sacred_chaos'] = sacred_chaos
+
         return {
             "type": "character",
             "character": char_name,
             "delta": delta,
             "new_value": char.c_self,
             "new_state": char.get_state(),
-            "reason": reason
+            "reason": reason,
+            "sacred_echoes": change.get('sacred_echoes', []),
+            "sacred_chaos": change.get('sacred_chaos', 0)
         }
 
     def modify_dyad(self, char_a: str, char_b: str, delta: float, reason: str = "") -> Dict:
@@ -78,13 +99,18 @@ class NarrativeSimulation:
             return {"error": f"Relationship {char_a}-{char_b} not found"}
 
         change = dyad.modify_c_dyad(delta, reason)
+
+        # Check if the dyad just became sacred
+        became_sacred = change.get('became_sacred', False)
+
         return {
             "type": "dyad",
             "dyad": f"{dyad.char_a}-{dyad.char_b}",
             "delta": delta,
             "new_value": dyad.c_dyad,
             "new_state": dyad.get_state(),
-            "reason": reason
+            "reason": reason,
+            "became_sacred": became_sacred
         }
 
     def modify_chaos(self, delta: float, reason: str = ""):
@@ -99,6 +125,90 @@ class NarrativeSimulation:
             "new_value": self.chaos,
             "reason": reason
         }
+
+    def _apply_sacred_conservation(self, char_name: str, delta: float, reason: str) -> List[Dict]:
+        """
+        Apply Sacred Dyad Conservation Law: when a character changes,
+        their sacred partner(s) echo the change
+        """
+        echoes = []
+
+        # Find all sacred dyads involving this character
+        sacred_dyads = [rel for rel in self.relationships
+                       if rel.is_sacred and (rel.char_a == char_name or rel.char_b == char_name)]
+
+        for dyad in sacred_dyads:
+            # Get the partner
+            partner_name = dyad.get_sacred_partner(char_name)
+            if not partner_name:
+                continue
+
+            partner = self.get_character(partner_name)
+            if not partner:
+                continue
+
+            # Apply the coupling
+            echo_delta = delta * dyad.coupling_strength
+            echo_reason = f"sacred echo from {char_name}"
+
+            # Modify partner WITHOUT triggering another round of coupling (prevent infinite loop)
+            partner.modify_c_self(echo_delta, echo_reason)
+
+            echoes.append({
+                "partner": partner_name,
+                "delta": echo_delta,
+                "new_value": partner.c_self,
+                "dyad": f"{dyad.char_a}-{dyad.char_b}"
+            })
+
+        return echoes
+
+    def _calculate_sacred_chaos_impact(self, char_name: str, delta: float) -> float:
+        """
+        Sacred bonds shake reality when they waver.
+        Returns additional chaos from sacred dyad changes.
+        """
+        sacred_dyads = [rel for rel in self.relationships
+                       if rel.is_sacred and (rel.char_a == char_name or rel.char_b == char_name)]
+
+        if not sacred_dyads:
+            return 0.0
+
+        # Each sacred dyad amplifies chaos
+        chaos_impact = len(sacred_dyads) * abs(delta) * 0.5
+
+        # Add the chaos
+        if chaos_impact > 0:
+            self.chaos += chaos_impact
+
+        return chaos_impact
+
+    def _handle_sacred_collapse(self, collapsed_char: str):
+        """
+        Catastrophic case: when a sacred partner hits collapse (C_self <= 0),
+        their partner(s) suffer grief rupture
+        """
+        sacred_dyads = [rel for rel in self.relationships
+                       if rel.is_sacred and (rel.char_a == collapsed_char or rel.char_b == collapsed_char)]
+
+        for dyad in sacred_dyads:
+            partner_name = dyad.get_sacred_partner(collapsed_char)
+            if not partner_name:
+                continue
+
+            partner = self.get_character(partner_name)
+            if not partner:
+                continue
+
+            # Grief rupture
+            partner.modify_c_self(-2.0, f"💔 Sacred Break: {collapsed_char} falls")
+
+            # Reality buckles
+            self.chaos += 4.0
+
+            print(f"\n💔 SACRED BREAK: {collapsed_char} falls, {partner_name} destabilizes!")
+            print(f"   → {partner_name} suffers grief rupture (-2.0 C_self)")
+            print(f"   → Reality buckles (+4.0 chaos)")
 
     def calculate_witch_trine_health(self) -> float:
         """Calculate the health of the Witch Trine"""
@@ -152,22 +262,40 @@ class NarrativeSimulation:
                 new_val = entry["new_value"]
                 state = entry["new_state"]
                 reason = entry.get("reason", "")
+                sacred_echoes = entry.get("sacred_echoes", [])
+                sacred_chaos = entry.get("sacred_chaos", 0)
 
                 symbol = "↑" if delta > 0 else "↓"
                 print(f"  {symbol} {char}: C_self {delta:+.1f} → {new_val:.1f} [{state}]")
                 if reason:
                     print(f"     → {reason}")
+
+                # Display sacred echoes
+                if sacred_echoes:
+                    for echo in sacred_echoes:
+                        echo_symbol = "↑" if echo['delta'] > 0 else "↓"
+                        print(f"     ⚡ Sacred echo: {echo['partner']} {echo_symbol} {echo['delta']:+.1f} → {echo['new_value']:.1f}")
+
+                # Display sacred chaos impact
+                if sacred_chaos > 0:
+                    print(f"     ⚡ Sacred bond shakes reality: +{sacred_chaos:.1f} chaos")
+
             elif entry.get("type") == "dyad":
                 dyad = entry["dyad"]
                 delta = entry["delta"]
                 new_val = entry["new_value"]
                 state = entry["new_state"]
                 reason = entry.get("reason", "")
+                became_sacred = entry.get("became_sacred", False)
 
                 symbol = "↑" if delta > 0 else "↓"
                 print(f"  {symbol} {dyad}: C_dyad {delta:+.1f} → {new_val:.1f} [{state}]")
                 if reason:
                     print(f"     → {reason}")
+
+                # Display sacred formation
+                if became_sacred:
+                    print(f"     ✨ SACRED DYAD FORMED: {dyad} ⚡")
 
         # Check for warnings
         if self.chaos >= CHAOS_WARNING_THRESHOLD:
@@ -242,7 +370,17 @@ class NarrativeSimulation:
         for rel in sorted(self.relationships, key=lambda r: (r.char_a, r.char_b)):
             state_symbol = self._get_dyad_state_symbol(rel.get_state())
             trajectory = rel.get_trajectory()
-            print(f"  {state_symbol} {rel.char_a}-{rel.char_b}: {rel.c_dyad:.1f} [{rel.get_state()}] {trajectory}")
+            sacred_mark = " ⚡ SACRED" if rel.is_sacred else ""
+            print(f"  {state_symbol} {rel.char_a}-{rel.char_b}: {rel.c_dyad:.1f} [{rel.get_state()}] {trajectory}{sacred_mark}")
+
+        # Display Sacred Dyads prominently
+        sacred_dyads = [rel for rel in self.relationships if rel.is_sacred]
+        if sacred_dyads:
+            print("\n⚡ SACRED DYADS (Conservation Law Active):")
+            for dyad in sacred_dyads:
+                print(f"  ⚡ {dyad.char_a} ↔ {dyad.char_b}")
+                print(f"     Coupling Strength: {dyad.coupling_strength:.1%}")
+                print(f"     C_dyad: {dyad.c_dyad:.1f}")
 
         # Check Witch Trine if applicable
         if all(name in self.characters for name in WITCH_TRINE_MEMBERS):
