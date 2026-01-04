@@ -25,6 +25,11 @@ class NarrativeSimulation:
         self.event_history = []
         self.log_entries = []
 
+        # Event tracking for cooldowns, unique flags, and probability decay
+        self.event_last_played: Dict[int, int] = {}  # event_id -> round_number when last played
+        self.event_play_count: Dict[int, int] = {}   # event_id -> number of times played
+        self.event_played_unique: set = set()        # set of event_ids that are unique and have been played
+
     def add_character(self, name: str, c_self: float = 7.0, special_state: Optional[str] = None):
         """Add a character to the simulation"""
         self.characters[name] = Character(name, c_self, special_state)
@@ -239,13 +244,58 @@ class NarrativeSimulation:
 
         return sum(trine_dyads) / len(trine_dyads)
 
+    def select_event_with_probability(self) -> Optional[Event]:
+        """
+        Select an event using probability weights, respecting cooldowns and unique flags
+
+        Returns:
+            Selected Event, or None if no events are available
+        """
+        available_events = []
+        weights = []
+
+        for event in self.event_deck:
+            # Skip unique events that have already been played
+            if event.unique and event.id in self.event_played_unique:
+                continue
+
+            # Skip events on cooldown
+            if event.id in self.event_last_played:
+                rounds_since_played = self.round_number - self.event_last_played[event.id]
+                if rounds_since_played < event.cooldown:
+                    continue
+
+            # Calculate weight based on probability decay
+            play_count = self.event_play_count.get(event.id, 0)
+            weight = event.probability_decay ** play_count
+
+            available_events.append(event)
+            weights.append(weight)
+
+        # If no events available, return None
+        if not available_events:
+            return None
+
+        # Weighted random selection
+        return random.choices(available_events, weights=weights, k=1)[0]
+
     def run_round(self, event: Optional[Event] = None):
         """Run a single round with a random (or specified) event"""
         self.round_number += 1
 
         # Pick an event if not specified
         if event is None:
-            event = random.choice(self.event_deck)
+            event = self.select_event_with_probability()
+            if event is None:
+                print(f"\n⚠️ No events available to play (all on cooldown or unique events exhausted)")
+                return
+
+        # Track event play
+        self.event_last_played[event.id] = self.round_number
+        self.event_play_count[event.id] = self.event_play_count.get(event.id, 0) + 1
+        if event.unique:
+            self.event_played_unique.add(event.id)
+        self.event_history.append(event)
 
         print(f"\n{'='*80}")
         print(f"ROUND {self.round_number}: {event.name}")

@@ -16,7 +16,10 @@ class Event:
         category: str,
         description: str,
         chaos_base: float,
-        apply_func: Callable
+        apply_func: Callable,
+        unique: bool = False,
+        cooldown: int = 0,
+        probability_decay: float = 1.0
     ):
         self.id = id
         self.name = name
@@ -24,13 +27,25 @@ class Event:
         self.description = description
         self.chaos_base = chaos_base
         self.apply_func = apply_func
+        self.unique = unique  # Can only happen once per simulation
+        self.cooldown = cooldown  # Rounds that must pass before can happen again
+        self.probability_decay = probability_decay  # Multiplier applied after each occurrence
 
     def apply(self, simulation) -> Dict[str, Any]:
         """Apply this event to the simulation"""
         return self.apply_func(simulation)
 
     def __repr__(self):
-        return f"[{self.id}] {self.name} (Chaos: {self.chaos_base:+.0f})"
+        flags = []
+        if self.unique:
+            flags.append("UNIQUE")
+        if self.cooldown > 0:
+            flags.append(f"CD:{self.cooldown}")
+        if self.probability_decay < 1.0:
+            flags.append(f"DECAY:{self.probability_decay}")
+
+        flag_str = f" [{', '.join(flags)}]" if flags else ""
+        return f"[{self.id}] {self.name} (Chaos: {self.chaos_base:+.0f}){flag_str}"
 
 
 # Event card definitions
@@ -733,85 +748,125 @@ def event_20_grace_moment(sim):
 
 # Create the event deck
 def create_event_deck() -> List[Event]:
-    """Create all 20 event cards"""
+    """Create all 20 event cards with cooldowns, unique flags, and probability decay"""
     return [
+        # Card 1: Yuul Has a Vision - Horror
         Event(1, "Yuul Has a Vision - Horror", "yuul_vulnerability",
               "Yuul sees something terrible. Tries to tell Maeve. Maeve doesn't want to hear it.",
-              2, event_1_yuul_vision_horror),
+              2, event_1_yuul_vision_horror,
+              unique=False, cooldown=2, probability_decay=0.6),
 
+        # Card 2: Prophetic Isolation
         Event(2, "Prophetic Isolation", "yuul_vulnerability",
               "Someone suggests isolating Yuul for her own good. Kit objects but is powerless.",
-              0, event_2_prophetic_isolation),
+              0, event_2_prophetic_isolation,
+              unique=False, cooldown=3, probability_decay=0.5),
 
+        # Card 3: Yuul Speaks in Reversals
         Event(3, "Yuul Speaks in Reversals", "yuul_vulnerability",
               "Yuul's speech becomes fragmented. Some can still reach her, others pull away.",
-              2, event_3_yuul_speaks_reversals),
+              2, event_3_yuul_speaks_reversals,
+              unique=False, cooldown=2, probability_decay=0.7),
 
+        # Card 4: The Mirror Incident (UNIQUE - reality breach)
         Event(4, "The Mirror Incident", "yuul_vulnerability",
               "Someone finds Yuul having a reality-breaking experience. Reality breach.",
-              5, event_4_mirror_incident),
+              5, event_4_mirror_incident,
+              unique=True, cooldown=0, probability_decay=1.0),
 
+        # Card 5: Kit Tries to Ground Yuul
         Event(5, "Kit Tries to Ground Yuul", "kit_feelings",
               "Kit attempts to stabilize Yuul. Success depends on his own coherence.",
-              -1, event_5_kit_grounds_yuul),
+              -1, event_5_kit_grounds_yuul,
+              unique=False, cooldown=2, probability_decay=0.8),
 
+        # Card 6: Someone Notices (Kit's feelings)
         Event(6, "Someone Notices", "kit_feelings",
               "Someone realizes Kit has feelings for Yuul. Reactions vary.",
-              2, event_6_someone_notices),
+              2, event_6_someone_notices,
+              unique=False, cooldown=3, probability_decay=0.4),
 
+        # Card 7: Kit Overextends
         Event(7, "Kit Overextends", "kit_feelings",
               "Kit pushes himself too hard caring for others. May reach breaking point.",
-              1, event_7_kit_overextends),
+              1, event_7_kit_overextends,
+              unique=False, cooldown=2, probability_decay=0.7),
 
+        # Card 8: Trine Ritual Required
         Event(8, "Trine Ritual Required", "trine",
               "The Witch Trine must perform a ritual. Success depends on their collective bond strength.",
-              0, event_8_trine_ritual),
+              0, event_8_trine_ritual,
+              unique=False, cooldown=4, probability_decay=0.5),
 
+        # Card 9: Rielle Questions Maeve's Choice
         Event(9, "Rielle Questions Maeve's Choice", "trine",
               "Rielle confronts Maeve about her handling of Yuul. Will Maeve listen?",
-              0, event_9_rielle_questions_maeve),
+              0, event_9_rielle_questions_maeve,
+              unique=False, cooldown=3, probability_decay=0.6),
 
+        # Card 10: Yuul's Last Prophecy (UNIQUE - climactic moment)
         Event(10, "Yuul's Last Prophecy", "trine",
               "Yuul delivers a crucial prophecy. Will it be coherent enough to believe?",
-              0, event_10_yuuls_last_prophecy),
+              0, event_10_yuuls_last_prophecy,
+              unique=True, cooldown=0, probability_decay=1.0),
 
+        # Card 11: Mission Goes Wrong
         Event(11, "Mission Goes Wrong", "external_pressure",
               "A mission fails. Someone must make a hard choice about who to protect.",
-              2, event_11_mission_goes_wrong),
+              2, event_11_mission_goes_wrong,
+              unique=False, cooldown=3, probability_decay=0.6),
 
+        # Card 12: DCE Investigation
         Event(12, "DCE Investigation", "external_pressure",
               "External authorities investigate H11. Everyone suffers from the pressure.",
-              4, event_12_dce_investigation),
+              4, event_12_dce_investigation,
+              unique=False, cooldown=4, probability_decay=0.5),
 
+        # Card 13: The Thing They've Been Avoiding
         Event(13, "The Thing They've Been Avoiding", "external_pressure",
               "Two characters must finally have THE conversation. Make or break.",
-              0, event_13_thing_theyve_been_avoiding),
+              0, event_13_thing_theyve_been_avoiding,
+              unique=False, cooldown=3, probability_decay=0.6),
 
+        # Card 14: Bonfire Night (rare grace)
         Event(14, "Bonfire Night", "salvation",
               "A rare moment of peace and connection. Only possible if group is stable enough.",
-              -2, event_14_bonfire_night),
+              -2, event_14_bonfire_night,
+              unique=False, cooldown=5, probability_decay=0.4),
 
+        # Card 15: Kit Confesses (Not to Yuul)
         Event(15, "Kit Confesses (Not to Yuul)", "salvation",
               "Kit tells someone else about his feelings. They become his confidant.",
-              1, event_15_kit_confesses_not_to_yuul),
+              1, event_15_kit_confesses_not_to_yuul,
+              unique=False, cooldown=3, probability_decay=0.5),
 
+        # Card 16: Maeve Reaches Out to Yuul
         Event(16, "Maeve Reaches Out to Yuul", "salvation",
               "Maeve makes a genuine effort to connect with Yuul. More effective if Maeve is stable.",
-              0, event_16_maeve_reaches_out),
+              0, event_16_maeve_reaches_out,
+              unique=False, cooldown=2, probability_decay=0.7),
 
+        # Card 17: Yuul Warns About Redchurch (UNIQUE - prophetic setup)
         Event(17, "Yuul Warns About Redchurch", "wild_card",
               "Yuul prophecies about Redchurch. Will anyone believe her?",
-              4, event_17_yuul_warns_redchurch),
+              4, event_17_yuul_warns_redchurch,
+              unique=True, cooldown=0, probability_decay=1.0),
 
+        # Card 18: Kit Makes a Promise (UNIQUE - dramatic commitment)
         Event(18, "Kit Makes a Promise", "wild_card",
               "Kit makes a solemn promise about protecting Yuul. Dramatic setup.",
-              2, event_18_kit_makes_promise),
+              2, event_18_kit_makes_promise,
+              unique=True, cooldown=0, probability_decay=1.0),
 
+        # Card 19: Rielle's Impulse
         Event(19, "Rielle's Impulse", "wild_card",
               "Rielle acts on impulse. Could be brilliant or catastrophic.",
-              0, event_19_rielles_impulse),
+              0, event_19_rielles_impulse,
+              unique=False, cooldown=2, probability_decay=0.8),
 
+        # Card 20: Grace Moment
         Event(20, "Grace Moment", "wild_card",
               "Pure stabilization. Two characters share an unexpected moment of grace.",
-              -1, event_20_grace_moment),
+              -1, event_20_grace_moment,
+              unique=False, cooldown=3, probability_decay=0.7),
     ]
