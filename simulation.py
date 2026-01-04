@@ -85,32 +85,48 @@ class NarrativeSimulation:
             "type": "character",
             "character": char_name,
             "delta": delta,
+            "effective_delta": change.get('effective_delta', delta),
             "new_value": char.c_self,
             "new_state": char.get_state(),
             "reason": reason,
             "sacred_echoes": change.get('sacred_echoes', []),
-            "sacred_chaos": change.get('sacred_chaos', 0)
+            "sacred_chaos": change.get('sacred_chaos', 0),
+            "scar_penalty": change.get('scar_penalty', 0),
+            "gained_scar": change.get('gained_scar', False)
         }
 
-    def modify_dyad(self, char_a: str, char_b: str, delta: float, reason: str = "") -> Dict:
-        """Modify a dyad's C_dyad value"""
+    def modify_dyad(self, char_a: str, char_b: str, delta: float, reason: str = "",
+                    direction: Optional[str] = None) -> Dict:
+        """
+        Modify a dyad's C_dyad value
+
+        Parameters:
+            char_a, char_b: The characters in the relationship
+            delta: Amount to change
+            reason: Description
+            direction: "AtoB", "BtoA", or None for symmetric
+        """
         dyad = self.get_dyad(char_a, char_b)
         if not dyad:
             return {"error": f"Relationship {char_a}-{char_b} not found"}
 
-        change = dyad.modify_c_dyad(delta, reason)
-
-        # Check if the dyad just became sacred
-        became_sacred = change.get('became_sacred', False)
+        change = dyad.modify_c_dyad(delta, reason, direction)
 
         return {
             "type": "dyad",
             "dyad": f"{dyad.char_a}-{dyad.char_b}",
             "delta": delta,
+            "effective_delta": change.get('effective_delta', delta),
+            "direction": change.get('direction'),
             "new_value": dyad.c_dyad,
+            "new_AtoB": dyad.AtoB,
+            "new_BtoA": dyad.BtoA,
             "new_state": dyad.get_state(),
             "reason": reason,
-            "became_sacred": became_sacred
+            "became_sacred": change.get('became_sacred', False),
+            "scar_penalty": change.get('scar_penalty', 0),
+            "gained_scar": change.get('gained_scar', False),
+            "asymmetry": dyad.get_asymmetry()
         }
 
     def modify_chaos(self, delta: float, reason: str = ""):
@@ -259,16 +275,30 @@ class NarrativeSimulation:
             elif entry.get("type") == "character":
                 char = entry["character"]
                 delta = entry["delta"]
+                effective_delta = entry.get("effective_delta", delta)
                 new_val = entry["new_value"]
                 state = entry["new_state"]
                 reason = entry.get("reason", "")
                 sacred_echoes = entry.get("sacred_echoes", [])
                 sacred_chaos = entry.get("sacred_chaos", 0)
+                scar_penalty = entry.get("scar_penalty", 0)
+                gained_scar = entry.get("gained_scar", False)
 
                 symbol = "↑" if delta > 0 else "↓"
-                print(f"  {symbol} {char}: C_self {delta:+.1f} → {new_val:.1f} [{state}]")
+
+                # Show effective delta if different from original
+                if abs(effective_delta - delta) > 0.01:
+                    print(f"  {symbol} {char}: C_self {delta:+.1f} (effective: {effective_delta:+.1f}) → {new_val:.1f} [{state}]")
+                    print(f"     💔 Scar penalty: -{scar_penalty:.1f}")
+                else:
+                    print(f"  {symbol} {char}: C_self {delta:+.1f} → {new_val:.1f} [{state}]")
+
                 if reason:
                     print(f"     → {reason}")
+
+                # Display scar gain
+                if gained_scar:
+                    print(f"     💔 GAINED MEMORY SCAR - recovery now harder")
 
                 # Display sacred echoes
                 if sacred_echoes:
@@ -283,15 +313,29 @@ class NarrativeSimulation:
             elif entry.get("type") == "dyad":
                 dyad = entry["dyad"]
                 delta = entry["delta"]
+                effective_delta = entry.get("effective_delta", delta)
                 new_val = entry["new_value"]
                 state = entry["new_state"]
                 reason = entry.get("reason", "")
                 became_sacred = entry.get("became_sacred", False)
+                scar_penalty = entry.get("scar_penalty", 0)
+                gained_scar = entry.get("gained_scar", False)
 
                 symbol = "↑" if delta > 0 else "↓"
-                print(f"  {symbol} {dyad}: C_dyad {delta:+.1f} → {new_val:.1f} [{state}]")
+
+                # Show effective delta if different from original
+                if abs(effective_delta - delta) > 0.01:
+                    print(f"  {symbol} {dyad}: C_dyad {delta:+.1f} (effective: {effective_delta:+.1f}) → {new_val:.1f} [{state}]")
+                    print(f"     💔 Dyad scar penalty: -{scar_penalty:.1f}")
+                else:
+                    print(f"  {symbol} {dyad}: C_dyad {delta:+.1f} → {new_val:.1f} [{state}]")
+
                 if reason:
                     print(f"     → {reason}")
+
+                # Display scar gain
+                if gained_scar:
+                    print(f"     💔 GAINED DYAD SCAR - reconciliation now harder")
 
                 # Display sacred formation
                 if became_sacred:
@@ -310,6 +354,12 @@ class NarrativeSimulation:
             "event": event,
             "result": result
         })
+
+        # Apply passive chaos from Memory Scars
+        scar_chaos = sum(char.chaos_sensitivity for char in self.characters.values())
+        if scar_chaos > 0:
+            self.chaos += scar_chaos
+            print(f"\n💔 Memory Scars add {scar_chaos:.1f} passive chaos (Total: {self.chaos:.1f})")
 
     def run_scenario(self, num_rounds: int = 10, events: Optional[List[Event]] = None):
         """Run a complete scenario with multiple rounds"""
@@ -364,14 +414,16 @@ class NarrativeSimulation:
         print("\nFINAL CHARACTER STATES:")
         for char_name, char in sorted(self.characters.items()):
             state_symbol = self._get_state_symbol(char.get_state())
-            print(f"  {state_symbol} {char}")
+            scar_info = f" 💔 {char.scars} scars" if char.scars > 0 else ""
+            print(f"  {state_symbol} {char}{scar_info}")
 
         print("\nFINAL RELATIONSHIP STATES:")
         for rel in sorted(self.relationships, key=lambda r: (r.char_a, r.char_b)):
             state_symbol = self._get_dyad_state_symbol(rel.get_state())
             trajectory = rel.get_trajectory()
             sacred_mark = " ⚡ SACRED" if rel.is_sacred else ""
-            print(f"  {state_symbol} {rel.char_a}-{rel.char_b}: {rel.c_dyad:.1f} [{rel.get_state()}] {trajectory}{sacred_mark}")
+            scar_mark = f" 💔 {rel.dyad_scars} scars" if rel.dyad_scars > 0 else ""
+            print(f"  {state_symbol} {rel.char_a}-{rel.char_b}: {rel.c_dyad:.1f} [{rel.get_state()}] {trajectory}{sacred_mark}{scar_mark}")
 
         # Display Sacred Dyads prominently
         sacred_dyads = [rel for rel in self.relationships if rel.is_sacred]
