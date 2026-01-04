@@ -26,7 +26,7 @@ def list_all_events():
     # Category display names
     category_names = {
         "yuul_vulnerability": "YUUL VULNERABILITY",
-        "kit_feelings": "KIT'S HIDDEN FEELINGS",
+        "kit_hidden_feelings": "KIT'S HIDDEN FEELINGS",
         "trine": "TRINE FRACTURE",
         "external_pressure": "EXTERNAL PRESSURE",
         "salvation": "POTENTIAL SALVATION",
@@ -34,15 +34,37 @@ def list_all_events():
     }
 
     # Display by category
-    for category_key in ["yuul_vulnerability", "kit_feelings", "trine", "external_pressure", "salvation", "wild_card"]:
+    for category_key in [
+        "yuul_vulnerability",
+        "kit_hidden_feelings",
+        "trine",
+        "external_pressure",
+        "salvation",
+        "wild_card"
+    ]:
         if category_key in categories:
             print(f"\n{category_names[category_key]}")
             print("-" * 80)
 
             for event in categories[category_key]:
-                chaos_symbol = "+" if event.chaos_base >= 0 else ""
+                chaos_value = event.chaos
+                chaos_label = chaos_value if not isinstance(chaos_value, dict) else " / ".join(
+                    f"{key}:{value}" for key, value in chaos_value.items()
+                )
+                chaos_symbol = "+" if isinstance(event.chaos_base, (int, float)) and event.chaos_base >= 0 else ""
                 print(f"\n[{event.id:2d}] {event.name}")
-                print(f"     Chaos: {chaos_symbol}{event.chaos_base:.0f}")
+                if isinstance(chaos_value, (int, float)):
+                    print(f"     Chaos: {chaos_symbol}{event.chaos_base:.0f}")
+                else:
+                    print(f"     Chaos: {chaos_label}")
+                print(
+                    "     Unique: {unique} | Cooldown: {cooldown} | Decay: {decay} | Choice: {choice}".format(
+                        unique=event.unique,
+                        cooldown=event.cooldown,
+                        decay=event.probability_decay,
+                        choice=event.choice_hook
+                    )
+                )
                 print(f"     {event.description}")
 
 
