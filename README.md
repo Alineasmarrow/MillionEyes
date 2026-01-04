@@ -187,12 +187,29 @@ def my_custom_event(sim):
 
     # Apply effects
     change = sim.modify_character_c_self("Alice", -1, "my event effect")
-    log.append(change)
+    log.extend(change)
 
     return {"chaos": chaos_change, "log": log}
 
 from events import Event
-custom = Event(99, "My Event", "custom", "Description", 1, my_custom_event)
+custom = Event(
+    99,
+    "My Event",
+    "custom",
+    "Description",
+    1,
+    False,
+    0,
+    0.0,
+    1,
+    ["Alice"],
+    {"Alice": -1},
+    {},
+    {},
+    False,
+    {},
+    my_custom_event
+)
 
 # Run it
 sim.run_round(custom)
