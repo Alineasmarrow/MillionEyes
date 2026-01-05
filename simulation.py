@@ -55,6 +55,13 @@ class NarrativeSimulation:
         """Total chaos (backward compatibility property)"""
         return self.chaos_state.total
 
+    @chaos.setter
+    def chaos(self, value: float):
+        """Set chaos by splitting evenly between turbulence and pressure"""
+        half = value / 2.0
+        self.chaos_state.turbulence = half
+        self.chaos_state.pressure = half
+
     def add_character(self, name: str, c_self: float = 7.0, special_state: Optional[str] = None):
         """Add a character to the simulation"""
         self.characters[name] = Character(name, c_self, special_state)
