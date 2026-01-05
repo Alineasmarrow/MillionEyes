@@ -3,6 +3,8 @@ Main Simulation Engine for the Narrative Coherence System
 """
 
 import random
+import json
+import os
 from typing import Dict, List, Optional
 from models import Character, Relationship
 from events import Event, create_event_deck
@@ -15,7 +17,7 @@ from constants import (
 class NarrativeSimulation:
     """Main simulation engine for running narrative scenarios"""
 
-    def __init__(self, name: str = "Untitled Scenario"):
+    def __init__(self, name: str = "Untitled Scenario", interactive_mode: bool = False):
         self.name = name
         self.characters: Dict[str, Character] = {}
         self.relationships: List[Relationship] = []
@@ -29,6 +31,15 @@ class NarrativeSimulation:
         self.event_last_played: Dict[int, int] = {}  # event_id -> round_number when last played
         self.event_play_count: Dict[int, int] = {}   # event_id -> number of times played
         self.event_played_unique: set = set()        # set of event_ids that are unique and have been played
+
+        # Choice system for interactive mode
+        self.interactive_mode = interactive_mode
+        self.choices_data = None
+        self.archetype_counts = {"witness": 0, "trickster": 0, "devourer": 0}
+        self.choice_history = []  # Track which choices were made
+
+        if self.interactive_mode:
+            self._load_choices()
 
     def add_character(self, name: str, c_self: float = 7.0, special_state: Optional[str] = None):
         """Add a character to the simulation"""
@@ -59,6 +70,108 @@ class NarrativeSimulation:
         """Get all relationships involving a character"""
         return [rel for rel in self.relationships
                 if rel.char_a == char_name or rel.char_b == char_name]
+
+    def _load_choices(self):
+        """Load choices from choices.json"""
+        choices_path = os.path.join(os.path.dirname(__file__), 'choices.json')
+        try:
+            with open(choices_path, 'r') as f:
+                self.choices_data = json.load(f)
+            print(f"✓ Loaded {len(self.choices_data['choices'])} choice moments")
+        except FileNotFoundError:
+            print(f"⚠️  choices.json not found at {choices_path}")
+            self.interactive_mode = False
+        except json.JSONDecodeError as e:
+            print(f"⚠️  Error parsing choices.json: {e}")
+            self.interactive_mode = False
+
+    def display_choice(self, choice_id: int) -> Optional[str]:
+        """
+        Display a choice moment and get player input
+
+        Returns: "witness", "trickster", or "devourer"
+        """
+        if not self.choices_data:
+            return None
+
+        # Find the choice
+        choice = None
+        for c in self.choices_data['choices']:
+            if c['id'] == choice_id:
+                choice = c
+                break
+
+        if not choice:
+            print(f"⚠️  Choice {choice_id} not found")
+            return None
+
+        # Display choice
+        print("\n" + "=" * 80)
+        print(f"⚡ CHOICE MOMENT: {choice['description']}")
+        print("=" * 80)
+        print()
+        print("[1] WITNESS")
+        print(f'    "{choice["witness"]}"')
+        print()
+        print("[2] TRICKSTER")
+        print(f'    "{choice["trickster"]}"')
+        print()
+        print("[3] DEVOURER")
+        print(f'    "{choice["devourer"]}"')
+        print()
+
+        # Get input
+        while True:
+            try:
+                selection = input("Select (1/2/3): ").strip()
+                if selection in ["1", "2", "3"]:
+                    archetype_map = {"1": "witness", "2": "trickster", "3": "devourer"}
+                    return archetype_map[selection]
+                else:
+                    print("Please enter 1, 2, or 3")
+            except (KeyboardInterrupt, EOFError):
+                print("\nDefaulting to WITNESS")
+                return "witness"
+
+    def apply_archetype_effect(self, archetype: str, event_name: str):
+        """
+        Apply the mechanical effects of an archetype choice
+
+        Effects:
+        - Witness: target +0.5 C_self, chaos +0.1
+        - Trickster: target +0.3 C_self, chaos +1.0
+        - Devourer: target +1.0 C_self, Maeve -0.5 C_self, chaos -0.5
+        """
+        if not self.choices_data or archetype not in self.choices_data['archetype_effects']:
+            return
+
+        effects = self.choices_data['archetype_effects'][archetype]
+        print(f"\n⚡ {archetype.upper()} chosen: {effects['note']}")
+
+        # Apply chaos effect
+        chaos_delta = effects.get('chaos', 0)
+        if chaos_delta != 0:
+            self.chaos += chaos_delta
+            print(f"   Chaos {chaos_delta:+.1f} → {self.chaos:.1f}")
+
+        # Apply target C_self effect (apply to a random character as "target")
+        target_delta = effects.get('target_c_self', 0)
+        if target_delta != 0 and self.characters:
+            target_char = random.choice(list(self.characters.keys()))
+            result = self.modify_character_c_self(target_char, target_delta,
+                                                  f"{archetype} archetype effect",
+                                                  apply_sacred_coupling=False)
+            print(f"   {target_char} C_self {target_delta:+.1f} → {result['new_value']:.1f}")
+
+        # Apply bearer effect (Devourer sacrifices Maeve's coherence)
+        bearer_delta = effects.get('bearer_c_self', 0)
+        if bearer_delta != 0:
+            bearer = self.get_character("Maeve")
+            if bearer:
+                result = self.modify_character_c_self("Maeve", bearer_delta,
+                                                      f"{archetype} archetype sacrifice",
+                                                      apply_sacred_coupling=False)
+                print(f"   Maeve (bearer) C_self {bearer_delta:+.1f} → {result['new_value']:.1f}")
 
     def modify_character_c_self(self, char_name: str, delta: float, reason: str = "",
                                 apply_sacred_coupling: bool = True) -> Dict:
@@ -307,6 +420,28 @@ class NarrativeSimulation:
         # Apply the event
         result = event.apply(self)
 
+        # Check for choice moment (only on unique cards in interactive mode)
+        if self.interactive_mode and event.unique and self.choices_data:
+            # Check if this unique card has a choice mapped
+            unique_card_mapping = self.choices_data.get('unique_card_mapping', {})
+            choice_id = unique_card_mapping.get(str(event.id))
+
+            if choice_id:
+                # Display choice and get selection
+                archetype = self.display_choice(choice_id)
+                if archetype:
+                    # Track the choice
+                    self.archetype_counts[archetype] += 1
+                    self.choice_history.append({
+                        "round": self.round_number,
+                        "event": event.name,
+                        "choice_id": choice_id,
+                        "archetype": archetype
+                    })
+
+                    # Apply archetype effects
+                    self.apply_archetype_effect(archetype, event.name)
+
         # Update chaos
         chaos_delta = result.get("chaos", 0)
         if chaos_delta != 0:
@@ -495,6 +630,29 @@ class NarrativeSimulation:
                 print("  ~ Trine is FUNCTIONAL")
             else:
                 print("  ✗ Trine is FAILING")
+
+        # Display archetype summary if in interactive mode
+        if self.interactive_mode and self.choice_history:
+            print(f"\n{'='*80}")
+            print("ARCHETYPE SUMMARY")
+            print(f"{'='*80}")
+
+            total_choices = sum(self.archetype_counts.values())
+            if total_choices > 0:
+                for archetype, count in sorted(self.archetype_counts.items(), key=lambda x: x[1], reverse=True):
+                    percentage = (count / total_choices) * 100
+                    print(f"  {archetype.upper()}: {count} choices ({percentage:.1f}%)")
+
+                # Determine dominant archetype
+                dominant = max(self.archetype_counts.items(), key=lambda x: x[1])
+                print(f"\n  Dominant Archetype: {dominant[0].upper()}")
+
+                if dominant[0] == "witness":
+                    print("  Your story favored clarity and truth-telling.")
+                elif dominant[0] == "trickster":
+                    print("  Your story favored chaos and disruption as medicine.")
+                elif dominant[0] == "devourer":
+                    print("  Your story favored sacrifice and burden-bearing.")
 
         # Print critical warnings
         print("\nCRITICAL WARNINGS:")

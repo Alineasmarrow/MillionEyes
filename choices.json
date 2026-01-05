@@ -1,0 +1,308 @@
+{
+  "choices": [
+    {
+      "id": 1,
+      "description": "Yuul trembling after a vision",
+      "witness": "Stay with her. Don't blink.",
+      "trickster": "Turn her terror into a joke sharp enough to break the spell.",
+      "devourer": "Open your palms. Take her nightmare into them."
+    },
+    {
+      "id": 2,
+      "description": "Maeve lying to herself",
+      "witness": "Speak the truth she won't touch.",
+      "trickster": "Tease the mask until it slips.",
+      "devourer": "Carry the denial for her. Let her rest in the lie."
+    },
+    {
+      "id": 3,
+      "description": "Kit nearing a breaking point",
+      "witness": "Tell him he's shattering.",
+      "trickster": "Distract him with mischief, reroute the crack sideways.",
+      "devourer": "Take the burden off his shoulders and onto yours."
+    },
+    {
+      "id": 4,
+      "description": "Rielle's impulse rising like lightning",
+      "witness": "Name the storm before she throws it.",
+      "trickster": "Egg her on. Turn impulse into play.",
+      "devourer": "Absorb the fallout. Let her burn, not the others."
+    },
+    {
+      "id": 5,
+      "description": "Redchurch whispered for the first time",
+      "witness": "Listen. Don't interrupt.",
+      "trickster": "Twist the warning into optimism.",
+      "devourer": "Accept the weight. Take responsibility for preventing it."
+    },
+    {
+      "id": 6,
+      "description": "Maeve and Yuul's bond trembling",
+      "witness": "Show her you see the fracture.",
+      "trickster": "Turn tension into laughter.",
+      "devourer": "Take her fear as your own."
+    },
+    {
+      "id": 7,
+      "description": "Rielle calls Maeve out",
+      "witness": "Hear her. Even if it cuts.",
+      "trickster": "Redirect the argument into something absurd.",
+      "devourer": "Offer yourself up as the one at fault."
+    },
+    {
+      "id": 8,
+      "description": "Kit watches Yuul dissolve",
+      "witness": "Say the thing no one else dares.",
+      "trickster": "Joke with her like she's still whole.",
+      "devourer": "Hold her tether. Even if it drags you under."
+    },
+    {
+      "id": 9,
+      "description": "The Mirror Incident",
+      "witness": "Meet her eyes in both reflections.",
+      "trickster": "Interrupt the breach with chaos—noise, movement, anything.",
+      "devourer": "Step into the mirror-space with her."
+    },
+    {
+      "id": 10,
+      "description": "Dyads fracturing under pressure",
+      "witness": "Speak the pattern aloud.",
+      "trickster": "Scramble loyalties for a moment—throw the system into play.",
+      "devourer": "Offer your stability to the weakest link."
+    },
+    {
+      "id": 11,
+      "description": "Maeve avoiding vulnerability",
+      "witness": "Tell her she's hiding.",
+      "trickster": "Flirt with the wound until she flinches.",
+      "devourer": "Let her stay closed; you'll bear the openness."
+    },
+    {
+      "id": 12,
+      "description": "Rielle flirting with disaster",
+      "witness": "Call her intentions by name.",
+      "trickster": "Push her further—see what she becomes.",
+      "devourer": "Ground her with your own body, your own certainty."
+    },
+    {
+      "id": 13,
+      "description": "Kit's love becoming unbearable",
+      "witness": "Tell him the truth: it's killing him.",
+      "trickster": "Turn the pressure into momentum.",
+      "devourer": "Let his devotion feed on yours."
+    },
+    {
+      "id": 14,
+      "description": "A rare stillness descends (Bonfire Night)",
+      "witness": "Observe every detail. Memorize who they are.",
+      "trickster": "Turn the calm into shared giddiness.",
+      "devourer": "Give your peace to the person who needs it most."
+    },
+    {
+      "id": 15,
+      "description": "Daniel betrays them",
+      "witness": "See him clearly. Don't soften it.",
+      "trickster": "Mock the betrayal before it wounds.",
+      "devourer": "Take the blame for missing the signs."
+    },
+    {
+      "id": 16,
+      "description": "Yuul tries one last time to warn them",
+      "witness": "Believe her.",
+      "trickster": "Tune her prophecy into something survivable.",
+      "devourer": "Consume the warning. Carry its consequence alone."
+    },
+    {
+      "id": 17,
+      "description": "Maeve's faith cracks internally",
+      "witness": "Name her fear right to her face.",
+      "trickster": "Turn her doubt into a dare.",
+      "devourer": "Offer to carry her conviction for a while."
+    },
+    {
+      "id": 18,
+      "description": "Rielle and Maeve's sacred bond flickers",
+      "witness": "Acknowledge the imbalance.",
+      "trickster": "Provoke intimacy through chaos.",
+      "devourer": "Anchor her even if it burns you."
+    },
+    {
+      "id": 19,
+      "description": "Kit sees something he shouldn't",
+      "witness": "Ask him what he saw.",
+      "trickster": "Pretend you saw it too, spin a new story.",
+      "devourer": "Absorb his terror with a steady voice."
+    },
+    {
+      "id": 20,
+      "description": "The Trine stands on the edge of collapse",
+      "witness": "Describe the shape of the fall.",
+      "trickster": "Invert the fall into flight.",
+      "devourer": "Offer your resonance as the sacrifice needed to hold them together."
+    },
+    {
+      "id": 21,
+      "description": "Maeve senses the Seeress watching her",
+      "witness": "Don't run. Meet its gaze. Know what hunts you.",
+      "trickster": "Mock the omen. Steal its gravity.",
+      "devourer": "Invite it toward you instead of Yuul."
+    },
+    {
+      "id": 22,
+      "description": "Yuul forgets who she is for a moment",
+      "witness": "Say her name softly. Bring her back.",
+      "trickster": "Turn the confusion into a playful reset.",
+      "devourer": "Give her a memory of yours to stand in."
+    },
+    {
+      "id": 23,
+      "description": "Rielle overhears something she shouldn't",
+      "witness": "Confirm it. Don't sugarcoat.",
+      "trickster": "Twist the overheard truth into a provocation.",
+      "devourer": "Shift the blame onto yourself before she detonates."
+    },
+    {
+      "id": 24,
+      "description": "Kit watches Maeve unravel quietly",
+      "witness": "Tell him she's been breaking for a long time.",
+      "trickster": "Turn the unraveling into an adventure.",
+      "devourer": "Offer him a false certainty so he doesn't follow her into the dark."
+    },
+    {
+      "id": 25,
+      "description": "The cult's echo ripples through the room",
+      "witness": "Identify the source, the pattern, the motive.",
+      "trickster": "Cut the tension with irreverence.",
+      "devourer": "Absorb the echo. Let it strike you instead."
+    },
+    {
+      "id": 26,
+      "description": "Maeve misreads the resonance and blames herself",
+      "witness": "Tell her she's wrong—and why.",
+      "trickster": "Turn the misreading into a puzzle she can solve.",
+      "devourer": "Take the error onto your own conscience."
+    },
+    {
+      "id": 27,
+      "description": "Rielle tries to run from intimacy",
+      "witness": "Follow her. Quietly.",
+      "trickster": "Corner her with flirting until she cracks.",
+      "devourer": "Let her push you away—and hold the door open anyway."
+    },
+    {
+      "id": 28,
+      "description": "Yuul laughs like her old self for one fragile moment",
+      "witness": "Memorize the sound. Speak to that version of her.",
+      "trickster": "Turn her laugh into a shared mischief.",
+      "devourer": "Freeze the moment. Refuse to let it fade."
+    },
+    {
+      "id": 29,
+      "description": "Kit gets angry for the first time",
+      "witness": "Validate the anger. Don't flinch.",
+      "trickster": "Redirect it into humor or momentum.",
+      "devourer": "Take the strike so it doesn't hit someone else."
+    },
+    {
+      "id": 30,
+      "description": "Maeve notices your fear",
+      "witness": "Tell her the truth.",
+      "trickster": "Make your fear look like bravado.",
+      "devourer": "Hide the fear and hold her steady."
+    },
+    {
+      "id": 31,
+      "description": "Rielle decides she knows best",
+      "witness": "Ask her to explain the logic. Make her reflect.",
+      "trickster": "Challenge her with a grin.",
+      "devourer": "Yield to her judgment even if it breaks you."
+    },
+    {
+      "id": 32,
+      "description": "Yuul's prophecy contradicts Maeve's belief",
+      "witness": "Lay both truths on the table.",
+      "trickster": "Blur the boundary between them.",
+      "devourer": "Choose for them. Carry the consequence alone."
+    },
+    {
+      "id": 33,
+      "description": "The first time the List is mentioned",
+      "witness": "Stay calm. Ask for details.",
+      "trickster": "Pretend not to be intimidated.",
+      "devourer": "Take the fear into your own chest."
+    },
+    {
+      "id": 34,
+      "description": "Maeve almost confesses something important",
+      "witness": "Let the silence hold. Let her speak.",
+      "trickster": "Nudge her with a teasing prod.",
+      "devourer": "Spare her by changing the subject—protect her secret."
+    },
+    {
+      "id": 35,
+      "description": "Kit fails at something small but meaningful",
+      "witness": "Point out what he did right.",
+      "trickster": "Turn his failure into a playful ritual.",
+      "devourer": "Do it for him without making him feel lesser."
+    },
+    {
+      "id": 36,
+      "description": "Rielle spirals into certainty that she's unlovable",
+      "witness": "Show her the flaw in the conclusion.",
+      "trickster": "Overwhelm her with affection until she short-circuits.",
+      "devourer": "Offer yourself as proof, no matter what it costs."
+    },
+    {
+      "id": 37,
+      "description": "A moment of eerie synchronicity in the group",
+      "witness": "Name the pattern forming.",
+      "trickster": "Turn the synchronicity into a joke about fate.",
+      "devourer": "Bind them together with your own resonance."
+    },
+    {
+      "id": 38,
+      "description": "Maeve dissociates mid-conversation",
+      "witness": "Call her back gently. Use her name.",
+      "trickster": "Shock her out with absurdity.",
+      "devourer": "Slip into the gap and steady her reality for her."
+    },
+    {
+      "id": 39,
+      "description": "Yuul confesses a fear she's never spoken",
+      "witness": "Receive it fully. Don't soften.",
+      "trickster": "Twist the fear into an interesting possibility.",
+      "devourer": "Adopt the fear as your own so she can breathe."
+    },
+    {
+      "id": 40,
+      "description": "The Trine stands together in brief harmony",
+      "witness": "Acknowledge the rarity.",
+      "trickster": "Push the harmony into laughter and movement.",
+      "devourer": "Anchor the harmony with your presence so it lasts longer."
+    }
+  ],
+  "unique_card_mapping": {
+    "4": 9,
+    "10": 16,
+    "17": 5,
+    "18": 13
+  },
+  "archetype_effects": {
+    "witness": {
+      "chaos": 0.1,
+      "target_c_self": 0.5,
+      "note": "Clarity reveals, slight pressure"
+    },
+    "trickster": {
+      "chaos": 1.0,
+      "target_c_self": 0.3,
+      "note": "Disruption creates space"
+    },
+    "devourer": {
+      "chaos": -0.5,
+      "target_c_self": 1.0,
+      "bearer_c_self": -0.5,
+      "note": "Sacrifice stabilizes"
+    }
+  }
+}
