@@ -22,14 +22,33 @@ class Character:
         self.scars = 0  # Count of personal scars from trauma
         self.chaos_sensitivity = 0.0  # Passive chaos contribution per round
 
+        # Transcendence system
+        self.transcendence_unlocked = False  # Can reach C=10 only if True
+
     @property
     def c_self(self) -> float:
         return self._c_self
 
     @c_self.setter
     def c_self(self, value: float):
-        """Set C_self with bounds checking"""
-        self._c_self = max(C_SELF_MIN, min(C_SELF_MAX, value))
+        """
+        Set C_self with bounds checking
+
+        TRANSCENDENCE REQUIREMENTS (C=10):
+        - Cannot reach 10.0 through normal accumulation
+        - Caps at 9.0 unless transcendence_unlocked flag is set
+        - Requires: breakthrough event, <= 1 scar, mythic bond
+        """
+        # Cap at 9.0 (transcendence requires special conditions)
+        max_value = C_SELF_MAX if getattr(self, 'transcendence_unlocked', False) else 9.0
+
+        # Apply scar-based ceiling reduction (3+ scars lower max)
+        if self.scars >= 6:
+            max_value = min(max_value, 8.0)  # 6+ scars: max 8.0
+        elif self.scars >= 4:
+            max_value = min(max_value, 9.0)  # 4+ scars: max 9.0
+
+        self._c_self = max(C_SELF_MIN, min(max_value, value))
 
     def modify_c_self(self, delta: float, reason: str = "", apply_scar_penalty: bool = True):
         """Modify C_self value and track the change"""
@@ -37,12 +56,21 @@ class Character:
         old_state = self.get_state()
         old_scars = self.scars
 
-        # Apply Memory Scar penalty to recovery
+        # Apply Memory Scar penalty to recovery (EXPONENTIAL)
         effective_delta = delta
         if delta > 0 and apply_scar_penalty and self.scars > 0:
-            # Recovery weakens with each scar, but never below 20% effectiveness
-            scar_penalty = max(0.2, 1 - 0.1 * self.scars)
-            effective_delta = delta * scar_penalty
+            # Exponential scar penalties:
+            # 1 scar: -0.5, 2 scars: -1.0, 3 scars: -2.0, 4+ scars: -3.0
+            if self.scars == 1:
+                penalty = 0.5
+            elif self.scars == 2:
+                penalty = 1.0
+            elif self.scars == 3:
+                penalty = 2.0
+            else:  # 4+
+                penalty = 3.0
+
+            effective_delta = max(0, delta - penalty)
 
         self.c_self = self._c_self + effective_delta
 
@@ -156,12 +184,21 @@ class Relationship:
         old_state = self.get_state()
         was_sacred = self.is_sacred
 
-        # Apply Memory Scar penalty to reconciliation
+        # Apply Dyad Scar penalty to reconciliation (EXPONENTIAL)
         effective_delta = delta
         if delta > 0 and apply_scar_penalty and self.dyad_scars > 0:
-            # Reconciliation weakens with each scar, but never below 30% effectiveness
-            scar_penalty = max(0.3, 1 - 0.15 * self.dyad_scars)
-            effective_delta = delta * scar_penalty
+            # Exponential dyad scar penalties (slightly less harsh than character scars)
+            # 1 scar: -0.4, 2 scars: -0.8, 3 scars: -1.5, 4+ scars: -2.5
+            if self.dyad_scars == 1:
+                penalty = 0.4
+            elif self.dyad_scars == 2:
+                penalty = 0.8
+            elif self.dyad_scars == 3:
+                penalty = 1.5
+            else:  # 4+
+                penalty = 2.5
+
+            effective_delta = max(0, delta - penalty)
 
         # Apply directionally or symmetrically
         if direction == "AtoB":

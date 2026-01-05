@@ -5,9 +5,10 @@ Main Simulation Engine for the Narrative Coherence System
 import random
 import json
 import os
-from typing import Dict, List, Optional
+from typing import Dict, List, Optional, Any
 from models import Character, Relationship
 from events import Event, create_event_deck
+from chaos_state import ChaosState, get_chaos_components
 from constants import (
     CHAOS_THRESHOLD, CHAOS_WARNING_THRESHOLD,
     WITCH_TRINE_MEMBERS, WITCH_TRINE_DYADS
@@ -21,7 +22,7 @@ class NarrativeSimulation:
         self.name = name
         self.characters: Dict[str, Character] = {}
         self.relationships: List[Relationship] = []
-        self.chaos = 0.0
+        self.chaos_state = ChaosState()  # Two-dimensional chaos: turbulence + pressure
         self.event_deck = create_event_deck()
         self.round_number = 0
         self.event_history = []
@@ -38,8 +39,21 @@ class NarrativeSimulation:
         self.archetype_counts = {"witness": 0, "trickster": 0, "devourer": 0}
         self.choice_history = []  # Track which choices were made
 
+        # Burn card system
+        self.burned_cards: set = set()  # Set of card IDs that have been burned
+        self.world_effects: Dict[str, Any] = {}  # Active world effects from burned cards
+        self.chaos_baseline: float = 0.0  # Baseline chaos added each round
+        self.cor_threshold: float = CHAOS_THRESHOLD  # Custom CoR threshold (can be modified by burns)
+        self.recovery_modifier: float = 1.0  # Global recovery modifier (1.0 = normal, 0.7 = -30%)
+        self.dyad_healing_modifier: float = 1.0  # Dyad healing cost modifier
+
         if self.interactive_mode:
             self._load_choices()
+
+    @property
+    def chaos(self) -> float:
+        """Total chaos (backward compatibility property)"""
+        return self.chaos_state.total
 
     def add_character(self, name: str, c_self: float = 7.0, special_state: Optional[str] = None):
         """Add a character to the simulation"""
@@ -151,7 +165,9 @@ class NarrativeSimulation:
         # Apply chaos effect
         chaos_delta = effects.get('chaos', 0)
         if chaos_delta != 0:
-            self.chaos += chaos_delta
+            # Archetype chaos splits evenly
+            half = chaos_delta / 2.0
+            self.chaos_state.add_hybrid(half, half)
             print(f"   Chaos {chaos_delta:+.1f} → {self.chaos:.1f}")
 
         # Apply target C_self effect (apply to a random character as "target")
@@ -172,6 +188,67 @@ class NarrativeSimulation:
                                                       f"{archetype} archetype sacrifice",
                                                       apply_sacred_coupling=False)
                 print(f"   Maeve (bearer) C_self {bearer_delta:+.1f} → {result['new_value']:.1f}")
+
+    def apply_burn_effect(self, event: Event):
+        """
+        Apply permanent burn effects from a burn card
+
+        Burn cards permanently alter the game state after triggering
+        """
+        if not event.burns or event.id in self.burned_cards:
+            return
+
+        burn_effects = event.burn_effects
+        world_effect = burn_effects.get('world_effect', 'unknown')
+
+        print(f"\n🔥 BURN CARD TRIGGERED: {event.name}")
+        print(f"   💀 {world_effect.replace('_', ' ').title()}")
+
+        # Mark card as burned
+        self.burned_cards.add(event.id)
+        self.world_effects[world_effect] = burn_effects
+
+        # Apply chaos baseline increase
+        chaos_baseline_delta = burn_effects.get('chaos_baseline', 0)
+        if chaos_baseline_delta > 0:
+            self.chaos_baseline += chaos_baseline_delta
+            print(f"   → Baseline chaos increased: +{chaos_baseline_delta:.1f} per round")
+
+        # Remove cards from deck
+        remove_cards = burn_effects.get('remove_cards', [])
+        if remove_cards:
+            for card_id in remove_cards:
+                # Find and remove the card
+                self.event_deck = [e for e in self.event_deck if e.id != card_id]
+                removed_card = next((e for e in create_event_deck() if e.id == card_id), None)
+                if removed_card:
+                    print(f"   → Card removed from deck: {removed_card.name}")
+
+        # Modify CoR threshold
+        cor_threshold = burn_effects.get('cor_threshold')
+        if cor_threshold:
+            self.cor_threshold = cor_threshold
+            print(f"   → CoR threshold lowered: {cor_threshold:.1f}")
+
+        # Apply recovery penalty
+        recovery_penalty = burn_effects.get('recovery_penalty', 0)
+        if recovery_penalty > 0:
+            self.recovery_modifier *= (1.0 - recovery_penalty)
+            print(f"   → All recovery effects: {(1.0-recovery_penalty)*100:.0f}% effectiveness")
+
+        # Apply dyad healing cost multiplier
+        dyad_cost = burn_effects.get('dyad_healing_cost', 1.0)
+        if dyad_cost != 1.0:
+            self.dyad_healing_modifier *= dyad_cost
+            print(f"   → Dyad healing costs: {dyad_cost}x")
+
+        # Apply chaos multipliers (for specific categories)
+        chaos_multiplier = burn_effects.get('chaos_multiplier', {})
+        if chaos_multiplier:
+            for category, mult in chaos_multiplier.items():
+                print(f"   → {category} events: {(mult-1)*100:+.0f}% chaos")
+
+        print(f"   💀 The world remembers {event.name}")
 
     def modify_character_c_self(self, char_name: str, delta: float, reason: str = "",
                                 apply_sacred_coupling: bool = True) -> Dict:
@@ -247,16 +324,32 @@ class NarrativeSimulation:
             "asymmetry": dyad.get_asymmetry()
         }
 
-    def modify_chaos(self, delta: float, reason: str = ""):
-        """Modify the chaos counter"""
+    def modify_chaos(self, delta: float, reason: str = "", event_id: int = None):
+        """
+        Modify the chaos counter using textured chaos (turbulence + pressure)
+
+        If event_id is provided, uses the event's chaos typing to split into components
+        Otherwise, splits evenly between turbulence and pressure
+        """
         old_chaos = self.chaos
-        self.chaos = max(0, self.chaos + delta)
+
+        if event_id:
+            # Use event-specific chaos typing
+            turbulence, pressure = get_chaos_components(event_id, delta)
+            self.chaos_state.add_hybrid(turbulence, pressure)
+        else:
+            # Default: split evenly
+            half = delta / 2.0
+            self.chaos_state.add_hybrid(half, half)
 
         return {
             "type": "chaos",
             "delta": delta,
             "old_value": old_chaos,
             "new_value": self.chaos,
+            "turbulence": self.chaos_state.turbulence,
+            "pressure": self.chaos_state.pressure,
+            "field": self.chaos_state.dominant_field,
             "reason": reason
         }
 
@@ -311,9 +404,9 @@ class NarrativeSimulation:
         # Each sacred dyad amplifies chaos
         chaos_impact = len(sacred_dyads) * abs(delta) * 0.5
 
-        # Add the chaos
+        # Add the chaos (sacred chaos is mostly turbulence - unpredictable)
         if chaos_impact > 0:
-            self.chaos += chaos_impact
+            self.chaos_state.add_hybrid(chaos_impact * 0.7, chaos_impact * 0.3)
 
         return chaos_impact
 
@@ -337,12 +430,12 @@ class NarrativeSimulation:
             # Grief rupture
             partner.modify_c_self(-2.0, f"💔 Sacred Break: {collapsed_char} falls")
 
-            # Reality buckles
-            self.chaos += 4.0
+            # Reality buckles (sacred collapse is pure pressure - reality enforcing loss)
+            self.chaos_state.add_hybrid(0.0, 4.0)
 
             print(f"\n💔 SACRED BREAK: {collapsed_char} falls, {partner_name} destabilizes!")
             print(f"   → {partner_name} suffers grief rupture (-2.0 C_self)")
-            print(f"   → Reality buckles (+4.0 chaos)")
+            print(f"   → Reality buckles (+4.0 pressure chaos)")
 
     def calculate_witch_trine_health(self) -> float:
         """Calculate the health of the Witch Trine"""
@@ -368,6 +461,10 @@ class NarrativeSimulation:
         weights = []
 
         for event in self.event_deck:
+            # Skip burned cards
+            if event.id in self.burned_cards:
+                continue
+
             # Skip unique events that have already been played
             if event.unique and event.id in self.event_played_unique:
                 continue
@@ -420,6 +517,10 @@ class NarrativeSimulation:
         # Apply the event
         result = event.apply(self)
 
+        # Apply burn effects if this is a burn card
+        if event.burns:
+            self.apply_burn_effect(event)
+
         # Check for choice moment (only on unique cards in interactive mode)
         if self.interactive_mode and event.unique and self.choices_data:
             # Check if this unique card has a choice mapped
@@ -445,8 +546,15 @@ class NarrativeSimulation:
         # Update chaos
         chaos_delta = result.get("chaos", 0)
         if chaos_delta != 0:
-            chaos_change = self.modify_chaos(chaos_delta, event.name)
+            chaos_change = self.modify_chaos(chaos_delta, event.name, event_id=event.id)
             print(f"Chaos: {chaos_change['old_value']:.1f} → {chaos_change['new_value']:.1f} ({chaos_delta:+.1f})")
+            print(f"  Turbulence: {chaos_change['turbulence']:.1f} | Pressure: {chaos_change['pressure']:.1f}")
+
+            # Display field state if significant
+            field_type = chaos_change['field']
+            if field_type != "BALANCED":
+                effects = self.chaos_state.get_field_effects()
+                print(f"  {effects['type']} ACTIVE")
             print()
 
         # Print the log
@@ -540,11 +648,11 @@ class NarrativeSimulation:
             "result": result
         })
 
-        # Apply passive chaos from Memory Scars
+        # Apply passive chaos from Memory Scars (scars add pressure - weight of trauma)
         scar_chaos = sum(char.chaos_sensitivity for char in self.characters.values())
         if scar_chaos > 0:
-            self.chaos += scar_chaos
-            print(f"\n💔 Memory Scars add {scar_chaos:.1f} passive chaos (Total: {self.chaos:.1f})")
+            self.chaos_state.add_hybrid(0.0, scar_chaos)
+            print(f"\n💔 Memory Scars add {scar_chaos:.1f} passive pressure (Total: {self.chaos:.1f})")
 
     def run_scenario(self, num_rounds: int = 10, events: Optional[List[Event]] = None):
         """Run a complete scenario with multiple rounds"""

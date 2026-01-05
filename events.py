@@ -19,7 +19,9 @@ class Event:
         apply_func: Callable,
         unique: bool = False,
         cooldown: int = 0,
-        probability_decay: float = 1.0
+        probability_decay: float = 1.0,
+        burns: bool = False,
+        burn_effects: Dict[str, Any] = None
     ):
         self.id = id
         self.name = name
@@ -30,6 +32,8 @@ class Event:
         self.unique = unique  # Can only happen once per simulation
         self.cooldown = cooldown  # Rounds that must pass before can happen again
         self.probability_decay = probability_decay  # Multiplier applied after each occurrence
+        self.burns = burns  # Card permanently alters game state after triggering
+        self.burn_effects = burn_effects or {}  # Effects applied after card burns
 
     def apply(self, simulation) -> Dict[str, Any]:
         """Apply this event to the simulation"""
@@ -39,6 +43,8 @@ class Event:
         flags = []
         if self.unique:
             flags.append("UNIQUE")
+        if self.burns:
+            flags.append("🔥BURN")
         if self.cooldown > 0:
             flags.append(f"CD:{self.cooldown}")
         if self.probability_decay < 1.0:
@@ -756,11 +762,17 @@ def create_event_deck() -> List[Event]:
               2, event_1_yuul_vision_horror,
               unique=False, cooldown=2, probability_decay=0.6),
 
-        # Card 2: Prophetic Isolation
+        # Card 2: Prophetic Isolation (BURN - Isolation Trauma)
         Event(2, "Prophetic Isolation", "yuul_vulnerability",
               "Someone suggests isolating Yuul for her own good. Kit objects but is powerless.",
               0, event_2_prophetic_isolation,
-              unique=False, cooldown=3, probability_decay=0.5),
+              unique=False, cooldown=3, probability_decay=0.5,
+              burns=True, burn_effects={
+                  "world_effect": "isolation_trauma",
+                  "recovery_penalty": 0.3,  # All recovery effects -30%
+                  "dyad_healing_cost": 2.0,  # Dyad healing costs doubled
+                  "crisis_threshold": 5.0  # Crisis threshold moves to C=5
+              }),
 
         # Card 3: Yuul Speaks in Reversals
         Event(3, "Yuul Speaks in Reversals", "yuul_vulnerability",
@@ -768,11 +780,17 @@ def create_event_deck() -> List[Event]:
               2, event_3_yuul_speaks_reversals,
               unique=False, cooldown=2, probability_decay=0.7),
 
-        # Card 4: The Mirror Incident (UNIQUE - reality breach)
+        # Card 4: The Mirror Incident (UNIQUE, BURN - Reality Breach)
         Event(4, "The Mirror Incident", "yuul_vulnerability",
               "Someone finds Yuul having a reality-breaking experience. Reality breach.",
               5, event_4_mirror_incident,
-              unique=True, cooldown=0, probability_decay=1.0),
+              unique=True, cooldown=0, probability_decay=1.0,
+              burns=True, burn_effects={
+                  "world_effect": "reality_breach",
+                  "remove_cards": [20],  # Remove Grace Moment
+                  "cor_threshold": 18.0,  # CoR threshold lowered to 18
+                  "random_fluctuation": 1.0  # C_self can fluctuate ±1 randomly
+              }),
 
         # Card 5: Kit Tries to Ground Yuul
         Event(5, "Kit Tries to Ground Yuul", "kit_feelings",
@@ -816,11 +834,17 @@ def create_event_deck() -> List[Event]:
               2, event_11_mission_goes_wrong,
               unique=False, cooldown=3, probability_decay=0.6),
 
-        # Card 12: DCE Investigation
+        # Card 12: DCE Investigation (BURN - Betrayal Echo)
         Event(12, "DCE Investigation", "external_pressure",
               "External authorities investigate H11. Everyone suffers from the pressure.",
               4, event_12_dce_investigation,
-              unique=False, cooldown=4, probability_decay=0.5),
+              unique=False, cooldown=4, probability_decay=0.5,
+              burns=True, burn_effects={
+                  "world_effect": "betrayal_echo",
+                  "chaos_multiplier": {"external_pressure": 1.5},  # External pressure events +50% chaos
+                  "trust_penalty": 0.5,  # Trust mechanics harder
+                  "category_boost": "external_pressure"  # DCE events become MORE likely
+              }),
 
         # Card 13: The Thing They've Been Avoiding
         Event(13, "The Thing They've Been Avoiding", "external_pressure",
@@ -846,11 +870,17 @@ def create_event_deck() -> List[Event]:
               0, event_16_maeve_reaches_out,
               unique=False, cooldown=2, probability_decay=0.7),
 
-        # Card 17: Yuul Warns About Redchurch (UNIQUE - prophetic setup)
+        # Card 17: Yuul Warns About Redchurch (UNIQUE, BURN - Prophecy Exhaustion)
         Event(17, "Yuul Warns About Redchurch", "wild_card",
               "Yuul prophecies about Redchurch. Will anyone believe her?",
               4, event_17_yuul_warns_redchurch,
-              unique=True, cooldown=0, probability_decay=1.0),
+              unique=True, cooldown=0, probability_decay=1.0,
+              burns=True, burn_effects={
+                  "world_effect": "prophecy_exhaustion",
+                  "chaos_baseline": 2.0,  # Baseline chaos +2
+                  "remove_cards": [10],  # Remove Yuul's Last Prophecy
+                  "prophecy_belief": 0.5  # Future warnings 50% less likely believed
+              }),
 
         # Card 18: Kit Makes a Promise (UNIQUE - dramatic commitment)
         Event(18, "Kit Makes a Promise", "wild_card",
