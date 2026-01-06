@@ -3,8 +3,8 @@ Constants and thresholds for the Narrative Coherence Engine
 """
 
 # System constants
-CHAOS_THRESHOLD = 20.0  # CoR manifestation point
-CHAOS_WARNING_THRESHOLD = 16.0  # 80% of max, warnings trigger
+CHAOS_THRESHOLD = 40.0  # CoR manifestation point
+CHAOS_WARNING_THRESHOLD = 32.0  # 80% of max, warnings trigger
 
 C_SELF_MIN = 0.0  # Floor (dissolution/death)
 C_SELF_MAX = 10.0  # Ceiling (transcendence)

@@ -214,7 +214,7 @@ def event_soft_surveillance(sim):
     """Soft Surveillance"""
     log = []
 
-    # A car, a shadow—maybe following
+    # A car, a shadow-maybe following
     target = random.choice(["Kit", "Maeve"])
     target_change = sim.modify_character_c_self(target, -0.3, "senses being watched")
 
@@ -761,7 +761,7 @@ def event_dce_raid_safehouse(sim):
 
 
 def event_house_11_review(sim):
-    """House 11 Review (BURN, CHOICE)"""
+    """Horizon 11 Review (BURN, CHOICE)"""
     log = []
 
     # H11 leadership receives quiet inquiries

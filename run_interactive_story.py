@@ -20,7 +20,7 @@ def run_interactive_story():
     print("🎭 NARRATIVE COHERENCE ENGINE - INTERACTIVE MODE")
     print("=" * 80)
     print()
-    print("You are witnessing the story of House 11.")
+    print("You are witnessing the story of Horizon 11.")
     print("When unique moments arise, you will choose how to respond.")
     print()
     print("Your choices shape the narrative through three archetypes:")
@@ -56,7 +56,7 @@ def run_interactive_story():
 
     sim.chaos = 8.0
 
-    print(f"Starting Chaos: {sim.chaos:.1f}/20.0")
+    print(f"Starting Chaos: {sim.chaos:.1f}/40.0")
     print()
     input("Press ENTER to continue...")
 
@@ -70,7 +70,7 @@ def run_interactive_story():
         sim.run_round()
 
         # Check for end conditions
-        if sim.chaos >= 20:
+        if sim.chaos >= 40:
             print("\n🔥 CHAOS THRESHOLD REACHED - CoR manifests!")
             print("The story spirals beyond control...\n")
             break

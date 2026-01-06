@@ -2,7 +2,7 @@
   "acts": {
     "1": {
       "title": "Misleading Calm",
-      "banner": "🎭 ACT I: MISLEADING CALM",
+      "banner": "\ud83c\udfad ACT I: MISLEADING CALM",
       "tagline": "Eerie anticipation. Soft fractures.\nThe world feels wrong but safe.",
       "events": [
         {
@@ -60,7 +60,7 @@
           "chaos": -1.0,
           "turbulence": -0.5,
           "pressure": -0.5,
-          "description": "A beautiful moment—a laugh, shared silence, sunrise."
+          "description": "A beautiful moment-a laugh, shared silence, sunrise."
         },
         {
           "id": "bonfire_night",
@@ -149,7 +149,7 @@
         },
         {
           "id": "yuul_vision_soft",
-          "name": "Yuul Has a Vision — Horror (Tremor)",
+          "name": "Yuul Has a Vision - Horror (Tremor)",
           "category": "yuul_vulnerability",
           "act": 1,
           "unique": true,
@@ -188,7 +188,7 @@
           "chaos": 0.5,
           "turbulence": 0.0,
           "pressure": 0.5,
-          "description": "A car, a shadow—maybe following them."
+          "description": "A car, a shadow-maybe following them."
         },
         {
           "id": "misaligned_questions",
@@ -297,7 +297,7 @@
     },
     "2": {
       "title": "Escalation",
-      "banner": "⚡ ACT II BEGINS: ESCALATION",
+      "banner": "\u26a1 ACT II BEGINS: ESCALATION",
       "tagline": "Pressure tightens. Prophecy sharpens.\nInstitutions falter.",
       "events": [
         {
@@ -321,7 +321,7 @@
           "category": "maeve_resonance",
           "unique": false,
           "burns": false,
-          "cooldown": 3,
+          "cooldown": 2,
           "probability_decay": 0.6,
           "chaos": 1.5,
           "turbulence": 1.0,
@@ -349,7 +349,7 @@
           "category": "trine",
           "unique": false,
           "burns": false,
-          "cooldown": 4,
+          "cooldown": 3,
           "probability_decay": 0.5,
           "chaos": 0.5,
           "turbulence": 1.0,
@@ -363,7 +363,7 @@
           "category": "external_pressure",
           "unique": false,
           "burns": false,
-          "cooldown": 3,
+          "cooldown": 2,
           "probability_decay": 0.6,
           "chaos": 1.5,
           "turbulence": 1.0,
@@ -377,7 +377,7 @@
           "category": "external_pressure",
           "unique": false,
           "burns": false,
-          "cooldown": 3,
+          "cooldown": 2,
           "probability_decay": 0.6,
           "chaos": 1.0,
           "turbulence": 1.0,
@@ -391,7 +391,7 @@
           "category": "maeve_state",
           "unique": false,
           "burns": false,
-          "cooldown": 3,
+          "cooldown": 2,
           "probability_decay": 0.6,
           "chaos": 1.5,
           "turbulence": 1.0,
@@ -405,7 +405,7 @@
           "category": "yuul_vulnerability",
           "unique": false,
           "burns": false,
-          "cooldown": 3,
+          "cooldown": 2,
           "probability_decay": 0.6,
           "chaos": 2.0,
           "turbulence": 1.0,
@@ -419,7 +419,7 @@
           "category": "external_pressure",
           "unique": false,
           "burns": false,
-          "cooldown": 3,
+          "cooldown": 2,
           "probability_decay": 0.6,
           "chaos": 2.0,
           "turbulence": 2.0,
@@ -433,7 +433,7 @@
           "category": "trine",
           "unique": false,
           "burns": false,
-          "cooldown": 3,
+          "cooldown": 2,
           "probability_decay": 0.6,
           "chaos": 2.0,
           "turbulence": 1.5,
@@ -447,7 +447,7 @@
           "category": "trine",
           "unique": false,
           "burns": false,
-          "cooldown": 3,
+          "cooldown": 2,
           "probability_decay": 0.6,
           "chaos": 2.0,
           "turbulence": 2.0,
@@ -461,7 +461,7 @@
           "category": "external_pressure",
           "unique": false,
           "burns": false,
-          "cooldown": 3,
+          "cooldown": 2,
           "probability_decay": 0.6,
           "chaos": 1.5,
           "turbulence": 0.5,
@@ -475,7 +475,7 @@
           "category": "external_pressure",
           "unique": false,
           "burns": false,
-          "cooldown": 3,
+          "cooldown": 2,
           "probability_decay": 0.6,
           "chaos": 1.0,
           "turbulence": 1.0,
@@ -489,7 +489,7 @@
           "category": "wild_card",
           "unique": false,
           "burns": false,
-          "cooldown": 3,
+          "cooldown": 2,
           "probability_decay": 0.6,
           "chaos": 1.5,
           "turbulence": 1.5,
@@ -503,7 +503,7 @@
           "category": "maeve_resonance",
           "unique": false,
           "burns": false,
-          "cooldown": 3,
+          "cooldown": 2,
           "probability_decay": 0.6,
           "chaos": 1.0,
           "turbulence": 0.5,
@@ -517,7 +517,7 @@
           "category": "wild_card",
           "unique": false,
           "burns": false,
-          "cooldown": 3,
+          "cooldown": 2,
           "probability_decay": 0.6,
           "chaos": 2.0,
           "turbulence": 2.0,
@@ -531,7 +531,7 @@
           "category": "kit_feelings",
           "unique": false,
           "burns": false,
-          "cooldown": 3,
+          "cooldown": 2,
           "probability_decay": 0.6,
           "chaos": 2.0,
           "turbulence": 1.0,
@@ -559,7 +559,7 @@
           "category": "rielle_state",
           "unique": false,
           "burns": false,
-          "cooldown": 3,
+          "cooldown": 2,
           "probability_decay": 0.6,
           "chaos": 2.0,
           "turbulence": 1.0,
@@ -573,7 +573,7 @@
           "category": "wild_card",
           "unique": false,
           "burns": false,
-          "cooldown": 3,
+          "cooldown": 2,
           "probability_decay": 0.6,
           "chaos": 1.5,
           "turbulence": 1.0,
@@ -587,7 +587,7 @@
           "category": "field_state",
           "unique": false,
           "burns": false,
-          "cooldown": 4,
+          "cooldown": 3,
           "probability_decay": 0.5,
           "chaos": 2.5,
           "turbulence": 2.0,
@@ -708,7 +708,7 @@
         },
         {
           "id": "house_11_review",
-          "name": "House 11 Under Review",
+          "name": "Horizon 11 Under Review",
           "category": "external_pressure",
           "act": 2,
           "unique": true,
@@ -761,7 +761,7 @@
           }
         },
         "trickster": {
-          "text": "Turn the warmth into joy—tease, poke, spark shared laughter until the night feels endless.",
+          "text": "Turn the warmth into joy-tease, poke, spark shared laughter until the night feels endless.",
           "effects": {
             "chaos": -1.0,
             "turbulence": 0.5
@@ -790,7 +790,7 @@
           }
         },
         "trickster": {
-          "text": "Break the moment with mischief—bend attention away before truth lands.",
+          "text": "Break the moment with mischief-bend attention away before truth lands.",
           "effects": {
             "turbulence": 1.0,
             "chaos": -0.5
@@ -819,7 +819,7 @@
           }
         },
         "trickster": {
-          "text": "Break the tension—make a joke sharp enough to snap her back into the moment.",
+          "text": "Break the tension-make a joke sharp enough to snap her back into the moment.",
           "effects": {
             "turbulence": 1.0,
             "chaos": -0.5
@@ -854,7 +854,7 @@
           }
         },
         "devourer": {
-          "text": "You take blame subtly—just enough to shield the others.",
+          "text": "You take blame subtly-just enough to shield the others.",
           "effects": {
             "scars_maeve": 1,
             "chaos": -1.5,
@@ -876,7 +876,7 @@
           }
         },
         "trickster": {
-          "text": "You create false signals—errands, diversions, misdirections.",
+          "text": "You create false signals-errands, diversions, misdirections.",
           "effects": {
             "chaos": -1.0,
             "turbulence": 1.0
@@ -924,7 +924,7 @@
     "45": {
       "choice_id": 45,
       "event_id": "house_11_review",
-      "description": "House 11 Under Review",
+      "description": "Horizon 11 Under Review",
       "choices": {
         "witness": {
           "text": "You speak plainly about instability inside the house.",
@@ -970,7 +970,7 @@
           }
         },
         "devourer": {
-          "text": "You take the order into yourself—like swallowing a blade meant for the others.",
+          "text": "You take the order into yourself-like swallowing a blade meant for the others.",
           "effects": {
             "scars_maeve": 1,
             "pressure": 0.5,
@@ -1024,7 +1024,7 @@
           }
         },
         "trickster": {
-          "text": "You distort the moment—shift posture, blink deliberately—as if negotiating with the mirror.",
+          "text": "You distort the moment-shift posture, blink deliberately-as if negotiating with the mirror.",
           "effects": {
             "turbulence": 1.5,
             "chaos": -0.5
@@ -1054,7 +1054,7 @@
           }
         },
         "trickster": {
-          "text": "You bend the phrasing—turn a doom into a door.",
+          "text": "You bend the phrasing-turn a doom into a door.",
           "effects": {
             "turbulence": 1.5,
             "chaos": -1.0
