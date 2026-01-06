@@ -21,7 +21,9 @@ class Event:
         cooldown: int = 0,
         probability_decay: float = 1.0,
         burns: bool = False,
-        burn_effects: Dict[str, Any] = None
+        burn_effects: Dict[str, Any] = None,
+        turbulence: float = None,
+        pressure: float = None
     ):
         self.id = id
         self.name = name
@@ -34,6 +36,8 @@ class Event:
         self.probability_decay = probability_decay  # Multiplier applied after each occurrence
         self.burns = burns  # Card permanently alters game state after triggering
         self.burn_effects = burn_effects or {}  # Effects applied after card burns
+        self.turbulence = turbulence  # Turbulence component for act events
+        self.pressure = pressure  # Pressure component for act events
 
     def apply(self, simulation) -> Dict[str, Any]:
         """Apply this event to the simulation"""

@@ -9,6 +9,8 @@ from typing import Dict, List, Optional, Any
 from models import Character, Relationship
 from events import Event, create_event_deck
 from chaos_state import ChaosState, get_chaos_components
+from act_system import ActSystem, ACT_EVENT_POOLS, display_act_banner
+from act_events import EVENT_FUNCTIONS
 from constants import (
     CHAOS_THRESHOLD, CHAOS_WARNING_THRESHOLD,
     WITCH_TRINE_MEMBERS, WITCH_TRINE_DYADS
@@ -18,26 +20,38 @@ from constants import (
 class NarrativeSimulation:
     """Main simulation engine for running narrative scenarios"""
 
-    def __init__(self, name: str = "Untitled Scenario", interactive_mode: bool = False):
+    def __init__(self, name: str = "Untitled Scenario", interactive_mode: bool = False, use_act_system: bool = False):
         self.name = name
         self.characters: Dict[str, Character] = {}
         self.relationships: List[Relationship] = []
         self.chaos_state = ChaosState()  # Two-dimensional chaos: turbulence + pressure
-        self.event_deck = create_event_deck()
         self.round_number = 0
         self.event_history = []
         self.log_entries = []
 
-        # Event tracking for cooldowns, unique flags, and probability decay
-        self.event_last_played: Dict[int, int] = {}  # event_id -> round_number when last played
-        self.event_play_count: Dict[int, int] = {}   # event_id -> number of times played
-        self.event_played_unique: set = set()        # set of event_ids that are unique and have been played
-
-        # Choice system for interactive mode
+        # Choice system for interactive mode (must be set early for _load_act_data)
         self.interactive_mode = interactive_mode
         self.choices_data = None
         self.archetype_counts = {"witness": 0, "trickster": 0, "devourer": 0}
         self.choice_history = []  # Track which choices were made
+
+        # Act system (new structured event system)
+        self.use_act_system = use_act_system
+        self.act_system = None
+        self.act_data = None
+        self.last_displayed_act = 0  # Track which act banner we last displayed
+
+        if use_act_system:
+            self.act_system = ActSystem()
+            self._load_act_data()
+            self.event_deck = self.act_system.get_available_deck(1)  # Start with Act 1
+        else:
+            self.event_deck = create_event_deck()  # Use legacy event deck
+
+        # Event tracking for cooldowns, unique flags, and probability decay
+        self.event_last_played: Dict[str, str] = {}  # event_id -> round_number when last played
+        self.event_play_count: Dict[str, int] = {}   # event_id -> number of times played
+        self.event_played_unique: set = set()        # set of event_ids that are unique and have been played
 
         # Burn card system
         self.burned_cards: set = set()  # Set of card IDs that have been burned
@@ -92,8 +106,110 @@ class NarrativeSimulation:
         return [rel for rel in self.relationships
                 if rel.char_a == char_name or rel.char_b == char_name]
 
+    def _load_act_data(self):
+        """Load act data from act_data.json and build event pools"""
+        act_data_path = os.path.join(os.path.dirname(__file__), 'act_data.json')
+        try:
+            with open(act_data_path, 'r') as f:
+                self.act_data = json.load(f)
+
+            # Build event pools for each act
+            for act_num_str, act_info in self.act_data['acts'].items():
+                act_num = int(act_num_str)
+                events = []
+
+                for event_data in act_info['events']:
+                    event_id = event_data['id']
+
+                    # Get the event function
+                    if event_id not in EVENT_FUNCTIONS:
+                        print(f"⚠️  Warning: Event function not found for '{event_id}'")
+                        continue
+
+                    # Get burn effects if present
+                    burn_effects = event_data.get('burn_effects', {})
+
+                    # Create Event object
+                    event = Event(
+                        id=event_id,  # Use string ID for act events
+                        name=event_data['name'],
+                        category=event_data['category'],
+                        description=event_data['description'],
+                        chaos_base=event_data['chaos'],
+                        apply_func=EVENT_FUNCTIONS[event_id],
+                        unique=event_data.get('unique', False),
+                        cooldown=event_data.get('cooldown', 0),
+                        probability_decay=event_data.get('probability_decay', 1.0),
+                        burns=event_data.get('burns', False),
+                        burn_effects=burn_effects,
+                        turbulence=event_data.get('turbulence'),
+                        pressure=event_data.get('pressure')
+                    )
+                    events.append(event)
+
+                ACT_EVENT_POOLS[act_num] = events
+
+            print(f"✓ Loaded {len(self.act_data['acts'])} acts with events")
+
+            # Load choices from act_data if in interactive mode
+            if self.interactive_mode and 'choices' in self.act_data:
+                self._load_choices_from_act_data()
+
+        except FileNotFoundError:
+            print(f"⚠️  act_data.json not found at {act_data_path}")
+            self.use_act_system = False
+        except json.JSONDecodeError as e:
+            print(f"⚠️  Error parsing act_data.json: {e}")
+            self.use_act_system = False
+
+    def _load_choices_from_act_data(self):
+        """Load choices from act_data.json for interactive mode"""
+        try:
+            # Convert act_data choices format to the format expected by display_choice
+            choices_list = []
+            unique_card_mapping = {}
+
+            for choice_id_str, choice_data in self.act_data['choices'].items():
+                choice_id = int(choice_id_str)
+                event_id = choice_data['event_id']
+
+                # Map event_id to choice_id
+                unique_card_mapping[event_id] = choice_id
+
+                # Build choice entry
+                choices_list.append({
+                    'id': choice_id,
+                    'description': choice_data['description'],
+                    'witness': choice_data['choices']['witness']['text'],
+                    'trickster': choice_data['choices']['trickster']['text'],
+                    'devourer': choice_data['choices']['devourer']['text']
+                })
+
+            # Build archetype_effects (standard across all choices)
+            archetype_effects = {
+                'witness': {'note': 'Truth cuts deep', 'chaos': -1.0, 'target_c_self': +1.0},
+                'trickster': {'note': 'Chaos creates space', 'chaos': +1.0, 'target_c_self': -0.5},
+                'devourer': {'note': 'Sacrifice bears weight', 'chaos': -0.5, 'bearer_c_self': -1.0}
+            }
+
+            self.choices_data = {
+                'choices': choices_list,
+                'unique_card_mapping': unique_card_mapping,
+                'archetype_effects': archetype_effects
+            }
+
+            print(f"✓ Loaded {len(choices_list)} choice moments from act_data.json")
+
+        except Exception as e:
+            print(f"⚠️  Error loading choices from act_data: {e}")
+            self.interactive_mode = False
+
     def _load_choices(self):
-        """Load choices from choices.json"""
+        """Load choices from choices.json (legacy mode)"""
+        if self.use_act_system:
+            # Choices already loaded from act_data
+            return
+
         choices_path = os.path.join(os.path.dirname(__file__), 'choices.json')
         try:
             with open(choices_path, 'r') as f:
@@ -500,6 +616,18 @@ class NarrativeSimulation:
         """Run a single round with a random (or specified) event"""
         self.round_number += 1
 
+        # Check for act transition (if using act system)
+        if self.use_act_system and self.act_system:
+            current_act = self.act_system.get_current_act(self.round_number)
+
+            # Display act banner if transitioning to new act
+            if current_act != self.last_displayed_act:
+                display_act_banner(current_act)
+                self.last_displayed_act = current_act
+
+                # Update event deck for new act
+                self.event_deck = self.act_system.get_available_deck(current_act)
+
         # Pick an event if not specified
         if event is None:
             event = self.select_event_with_probability()
@@ -532,7 +660,9 @@ class NarrativeSimulation:
         if self.interactive_mode and event.unique and self.choices_data:
             # Check if this unique card has a choice mapped
             unique_card_mapping = self.choices_data.get('unique_card_mapping', {})
-            choice_id = unique_card_mapping.get(str(event.id))
+            # Handle both string and numeric event IDs
+            event_id_key = event.id if isinstance(event.id, str) else str(event.id)
+            choice_id = unique_card_mapping.get(event_id_key)
 
             if choice_id:
                 # Display choice and get selection
@@ -551,9 +681,29 @@ class NarrativeSimulation:
                     self.apply_archetype_effect(archetype, event.name)
 
         # Update chaos
-        chaos_delta = result.get("chaos", 0)
-        if chaos_delta != 0:
-            chaos_change = self.modify_chaos(chaos_delta, event.name, event_id=event.id)
+        # For act events, use event.chaos_base if the result doesn't include chaos
+        chaos_delta = result.get("chaos", event.chaos_base if hasattr(event, 'chaos_base') and event.chaos_base != 0 else 0)
+
+        if chaos_delta != 0 or (hasattr(event, 'turbulence') and event.turbulence is not None):
+            old_chaos = self.chaos
+
+            # For act events with explicit turbulence/pressure, use those
+            if hasattr(event, 'turbulence') and event.turbulence is not None and hasattr(event, 'pressure') and event.pressure is not None:
+                self.chaos_state.add_hybrid(event.turbulence, event.pressure)
+                chaos_change = {
+                    "type": "chaos",
+                    "delta": chaos_delta,
+                    "old_value": old_chaos,
+                    "new_value": self.chaos,
+                    "turbulence": self.chaos_state.turbulence,
+                    "pressure": self.chaos_state.pressure,
+                    "field": self.chaos_state.dominant_field,
+                    "reason": event.name
+                }
+            else:
+                # Legacy events: use modify_chaos
+                chaos_change = self.modify_chaos(chaos_delta, event.name, event_id=event.id)
+
             print(f"Chaos: {chaos_change['old_value']:.1f} → {chaos_change['new_value']:.1f} ({chaos_delta:+.1f})")
             print(f"  Turbulence: {chaos_change['turbulence']:.1f} | Pressure: {chaos_change['pressure']:.1f}")
 

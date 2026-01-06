@@ -1,0 +1,1074 @@
+{
+  "acts": {
+    "1": {
+      "title": "Misleading Calm",
+      "banner": "🎭 ACT I: MISLEADING CALM",
+      "tagline": "Eerie anticipation. Soft fractures.\nThe world feels wrong but safe.",
+      "events": [
+        {
+          "id": "kit_grounds_yuul_soft",
+          "name": "Kit Tries to Ground Yuul",
+          "category": "kit_feelings",
+          "act": 1,
+          "unique": false,
+          "burns": false,
+          "cooldown": 2,
+          "probability_decay": 0.7,
+          "chaos": -0.5,
+          "turbulence": 0.3,
+          "pressure": 0.2,
+          "description": "Kit pulls Yuul aside, trying to steady her with humor or ritual. Yuul responds with slight delay."
+        },
+        {
+          "id": "someone_notices",
+          "name": "Someone Notices",
+          "category": "external_pressure",
+          "act": 1,
+          "unique": true,
+          "burns": false,
+          "cooldown": 0,
+          "probability_decay": 1.0,
+          "choice_id": 40,
+          "chaos": 1.0,
+          "turbulence": 1.0,
+          "pressure": 0.0,
+          "description": "A stranger studies them too closely: 'You look hollow.'"
+        },
+        {
+          "id": "rielle_impulse_soft",
+          "name": "Rielle's Impulse",
+          "category": "wild_card",
+          "act": 1,
+          "unique": false,
+          "burns": false,
+          "cooldown": 2,
+          "probability_decay": 0.8,
+          "chaos": 1.0,
+          "turbulence": 1.5,
+          "pressure": -0.5,
+          "description": "Rielle acts on sudden instinct. It half-works."
+        },
+        {
+          "id": "grace_moment",
+          "name": "Grace Moment",
+          "category": "salvation",
+          "act": 1,
+          "unique": false,
+          "burns": false,
+          "cooldown": 3,
+          "probability_decay": 0.7,
+          "chaos": -1.0,
+          "turbulence": -0.5,
+          "pressure": -0.5,
+          "description": "A beautiful moment—a laugh, shared silence, sunrise."
+        },
+        {
+          "id": "bonfire_night",
+          "name": "Bonfire Night",
+          "category": "salvation",
+          "act": 1,
+          "unique": true,
+          "burns": false,
+          "cooldown": 0,
+          "probability_decay": 1.0,
+          "choice_id": 5,
+          "chaos": -2.0,
+          "turbulence": -1.0,
+          "pressure": -1.0,
+          "description": "Their last truly safe moment around a fire."
+        },
+        {
+          "id": "thing_avoided_soft",
+          "name": "The Thing They've Been Avoiding",
+          "category": "external_pressure",
+          "act": 1,
+          "unique": false,
+          "burns": false,
+          "cooldown": 3,
+          "probability_decay": 0.6,
+          "chaos": 0.5,
+          "turbulence": 0.3,
+          "pressure": 0.2,
+          "description": "A topic resurfaces, met with silence rather than conflict."
+        },
+        {
+          "id": "mission_wrong_low",
+          "name": "Mission Goes Wrong (Low-Stakes)",
+          "category": "external_pressure",
+          "act": 1,
+          "unique": false,
+          "burns": false,
+          "cooldown": 3,
+          "probability_decay": 0.6,
+          "chaos": 1.0,
+          "turbulence": 1.5,
+          "pressure": -0.5,
+          "description": "A simple hunt gets sloppy. No one hurt, but coordination falters."
+        },
+        {
+          "id": "rielle_questions_early",
+          "name": "Rielle Questions Maeve's Choice (Early)",
+          "category": "trine",
+          "act": 1,
+          "unique": false,
+          "burns": false,
+          "cooldown": 3,
+          "probability_decay": 0.6,
+          "chaos": 0.0,
+          "turbulence": 0.5,
+          "pressure": 0.5,
+          "description": "A soft rebuke, teasing but edged."
+        },
+        {
+          "id": "maeve_reaches_early",
+          "name": "Maeve Reaches Out to Yuul (Early)",
+          "category": "salvation",
+          "act": 1,
+          "unique": false,
+          "burns": false,
+          "cooldown": 2,
+          "probability_decay": 0.7,
+          "chaos": -0.5,
+          "turbulence": 0.0,
+          "pressure": -0.5,
+          "description": "Maeve tries connecting; Yuul deflects."
+        },
+        {
+          "id": "yuul_reversals_soft",
+          "name": "Yuul Speaks in Reversals (Soft)",
+          "category": "yuul_vulnerability",
+          "act": 1,
+          "unique": false,
+          "burns": false,
+          "cooldown": 2,
+          "probability_decay": 0.7,
+          "chaos": 1.0,
+          "turbulence": 1.0,
+          "pressure": 0.0,
+          "description": "Yuul says something backward-feeling."
+        },
+        {
+          "id": "yuul_vision_soft",
+          "name": "Yuul Has a Vision — Horror (Tremor)",
+          "category": "yuul_vulnerability",
+          "act": 1,
+          "unique": true,
+          "burns": false,
+          "cooldown": 0,
+          "probability_decay": 1.0,
+          "choice_id": 41,
+          "chaos": 1.5,
+          "turbulence": 1.0,
+          "pressure": 0.5,
+          "description": "An eerie micro-vision she shrugs off."
+        },
+        {
+          "id": "trine_ritual_stable",
+          "name": "Trine Ritual Required (Stabilizing)",
+          "category": "trine",
+          "act": 1,
+          "unique": false,
+          "burns": false,
+          "cooldown": 4,
+          "probability_decay": 0.5,
+          "chaos": 0.0,
+          "turbulence": 0.0,
+          "pressure": 0.0,
+          "description": "A small ritual stabilizes Yuul, for now."
+        },
+        {
+          "id": "soft_surveillance",
+          "name": "Soft Surveillance",
+          "category": "external_pressure",
+          "act": 1,
+          "unique": false,
+          "burns": false,
+          "cooldown": 3,
+          "probability_decay": 0.6,
+          "chaos": 0.5,
+          "turbulence": 0.0,
+          "pressure": 0.5,
+          "description": "A car, a shadow—maybe following them."
+        },
+        {
+          "id": "misaligned_questions",
+          "name": "Misaligned Questions",
+          "category": "external_pressure",
+          "act": 1,
+          "unique": false,
+          "burns": false,
+          "cooldown": 3,
+          "probability_decay": 0.6,
+          "chaos": 0.5,
+          "turbulence": 0.3,
+          "pressure": 0.2,
+          "description": "DCE asks something slightly off."
+        },
+        {
+          "id": "quiet_heroics",
+          "name": "Quiet Heroics",
+          "category": "salvation",
+          "act": 1,
+          "unique": false,
+          "burns": false,
+          "cooldown": 2,
+          "probability_decay": 0.7,
+          "chaos": -0.5,
+          "turbulence": -0.5,
+          "pressure": 0.0,
+          "description": "A mundane save, barely noticed."
+        },
+        {
+          "id": "internal_suspicion",
+          "name": "Internal Suspicion (H11)",
+          "category": "external_pressure",
+          "act": 1,
+          "unique": false,
+          "burns": false,
+          "cooldown": 3,
+          "probability_decay": 0.6,
+          "chaos": 1.0,
+          "turbulence": 0.5,
+          "pressure": 0.5,
+          "description": "A superior asks comforting questions that feel rehearsed."
+        },
+        {
+          "id": "case_solves_itself",
+          "name": "The Case That Solves Itself",
+          "category": "wild_card",
+          "act": 1,
+          "unique": false,
+          "burns": false,
+          "cooldown": 2,
+          "probability_decay": 0.8,
+          "chaos": 1.0,
+          "turbulence": 1.0,
+          "pressure": 0.0,
+          "description": "A missing person returns with no explanation."
+        },
+        {
+          "id": "quiet_town_watches",
+          "name": "A Quiet Town Watches",
+          "category": "wild_card",
+          "act": 1,
+          "unique": false,
+          "burns": false,
+          "cooldown": 3,
+          "probability_decay": 0.6,
+          "chaos": 1.5,
+          "turbulence": 1.0,
+          "pressure": 0.5,
+          "description": "Locals smile too warmly; eyes linger."
+        },
+        {
+          "id": "yuul_forgets_date",
+          "name": "Yuul Forgets the Date",
+          "category": "yuul_vulnerability",
+          "act": 1,
+          "unique": false,
+          "burns": false,
+          "cooldown": 2,
+          "probability_decay": 0.7,
+          "chaos": 0.5,
+          "turbulence": 0.5,
+          "pressure": 0.0,
+          "description": "A harmless lapse, shrugged off."
+        },
+        {
+          "id": "map_wont_stay_still",
+          "name": "The Map Won't Stay Still",
+          "category": "wild_card",
+          "act": 1,
+          "unique": true,
+          "burns": true,
+          "cooldown": 0,
+          "probability_decay": 1.0,
+          "chaos": 3.0,
+          "turbulence": 2.0,
+          "pressure": 1.0,
+          "description": "Printed directions shift. Only Maeve sees it.",
+          "burn_effects": {
+            "world_effect": "reality_drift_begins",
+            "chaos_baseline": 1.0,
+            "adds_tag": "reality_unstable"
+          }
+        }
+      ]
+    },
+    "2": {
+      "title": "Escalation",
+      "banner": "⚡ ACT II BEGINS: ESCALATION",
+      "tagline": "Pressure tightens. Prophecy sharpens.\nInstitutions falter.",
+      "events": [
+        {
+          "id": "kit_overextends",
+          "name": "Kit Overextends Himself",
+          "act": 2,
+          "category": "kit_feelings",
+          "unique": false,
+          "burns": false,
+          "cooldown": 2,
+          "probability_decay": 0.7,
+          "chaos": 1.0,
+          "turbulence": 1.5,
+          "pressure": 0.5,
+          "description": "Kit pushes too far on a case. He hides the exhaustion poorly."
+        },
+        {
+          "id": "maeve_voice_slips",
+          "name": "Maeve's Voice Slips",
+          "act": 2,
+          "category": "maeve_resonance",
+          "unique": false,
+          "burns": false,
+          "cooldown": 3,
+          "probability_decay": 0.6,
+          "chaos": 1.5,
+          "turbulence": 1.0,
+          "pressure": 0.5,
+          "description": "Maeve says something she shouldn't know. Rielle notices."
+        },
+        {
+          "id": "rielle_fracture_sign",
+          "name": "Rielle Shows a Fracture",
+          "act": 2,
+          "category": "rielle_state",
+          "unique": false,
+          "burns": false,
+          "cooldown": 2,
+          "probability_decay": 0.7,
+          "chaos": 1.0,
+          "turbulence": 1.0,
+          "pressure": 1.0,
+          "description": "A moment of sharpness breaks through her jokes."
+        },
+        {
+          "id": "trine_ritual_heavy",
+          "name": "Trine Ritual (Strained)",
+          "act": 2,
+          "category": "trine",
+          "unique": false,
+          "burns": false,
+          "cooldown": 4,
+          "probability_decay": 0.5,
+          "chaos": 0.5,
+          "turbulence": 1.0,
+          "pressure": 1.0,
+          "description": "The ritual takes more from them than it gives back."
+        },
+        {
+          "id": "soft_betrayal_h11",
+          "name": "H11 Quiet Betrayal",
+          "act": 2,
+          "category": "external_pressure",
+          "unique": false,
+          "burns": false,
+          "cooldown": 3,
+          "probability_decay": 0.6,
+          "chaos": 1.5,
+          "turbulence": 1.0,
+          "pressure": 1.5,
+          "description": "A report is filed without warning."
+        },
+        {
+          "id": "case_shifts",
+          "name": "Case Shifts Under Them",
+          "act": 2,
+          "category": "external_pressure",
+          "unique": false,
+          "burns": false,
+          "cooldown": 3,
+          "probability_decay": 0.6,
+          "chaos": 1.0,
+          "turbulence": 1.0,
+          "pressure": 0.5,
+          "description": "Evidence contradicts itself."
+        },
+        {
+          "id": "maeve_memory_glitch",
+          "name": "Maeve Has a Memory Glitch",
+          "act": 2,
+          "category": "maeve_state",
+          "unique": false,
+          "burns": false,
+          "cooldown": 3,
+          "probability_decay": 0.6,
+          "chaos": 1.5,
+          "turbulence": 1.0,
+          "pressure": 0.5,
+          "description": "She forgets a step, a face, a timeline."
+        },
+        {
+          "id": "yuul_warning",
+          "name": "Yuul Warns About Redchurch",
+          "act": 2,
+          "category": "yuul_vulnerability",
+          "unique": false,
+          "burns": false,
+          "cooldown": 3,
+          "probability_decay": 0.6,
+          "chaos": 2.0,
+          "turbulence": 1.0,
+          "pressure": 1.5,
+          "description": "She speaks a location like a confession."
+        },
+        {
+          "id": "mission_wrong_higher",
+          "name": "Mission Goes Wrong (High Stakes)",
+          "act": 2,
+          "category": "external_pressure",
+          "unique": false,
+          "burns": false,
+          "cooldown": 3,
+          "probability_decay": 0.6,
+          "chaos": 2.0,
+          "turbulence": 2.0,
+          "pressure": 1.0,
+          "description": "Blood, panic, consequences. A miss, not a disaster."
+        },
+        {
+          "id": "trine_mistrust",
+          "name": "Trine Mistrust",
+          "act": 2,
+          "category": "trine",
+          "unique": false,
+          "burns": false,
+          "cooldown": 3,
+          "probability_decay": 0.6,
+          "chaos": 2.0,
+          "turbulence": 1.5,
+          "pressure": 1.0,
+          "description": "Someone hesitates at the wrong moment."
+        },
+        {
+          "id": "ritual_backfire",
+          "name": "Ritual Backfires",
+          "act": 2,
+          "category": "trine",
+          "unique": false,
+          "burns": false,
+          "cooldown": 3,
+          "probability_decay": 0.6,
+          "chaos": 2.0,
+          "turbulence": 2.0,
+          "pressure": 1.0,
+          "description": "Light bends wrong. Someone gets hurt."
+        },
+        {
+          "id": "dce_checks_in",
+          "name": "DCE Checks In (Harder)",
+          "act": 2,
+          "category": "external_pressure",
+          "unique": false,
+          "burns": false,
+          "cooldown": 3,
+          "probability_decay": 0.6,
+          "chaos": 1.5,
+          "turbulence": 0.5,
+          "pressure": 1.5,
+          "description": "Questions that imply suspicion."
+        },
+        {
+          "id": "h11_pressure",
+          "name": "H11 Pressure Mounts",
+          "act": 2,
+          "category": "external_pressure",
+          "unique": false,
+          "burns": false,
+          "cooldown": 3,
+          "probability_decay": 0.6,
+          "chaos": 1.0,
+          "turbulence": 1.0,
+          "pressure": 1.5,
+          "description": "Deadlines grow sharp."
+        },
+        {
+          "id": "town_hostile",
+          "name": "The Town Turns Hostile",
+          "act": 2,
+          "category": "wild_card",
+          "unique": false,
+          "burns": false,
+          "cooldown": 3,
+          "probability_decay": 0.6,
+          "chaos": 1.5,
+          "turbulence": 1.5,
+          "pressure": 1.0,
+          "description": "Eyes narrow. Hospitality reverses."
+        },
+        {
+          "id": "maeve_intuition_spike",
+          "name": "Maeve's Intuition Spikes",
+          "act": 2,
+          "category": "maeve_resonance",
+          "unique": false,
+          "burns": false,
+          "cooldown": 3,
+          "probability_decay": 0.6,
+          "chaos": 1.0,
+          "turbulence": 0.5,
+          "pressure": 1.0,
+          "description": "She senses danger before it arrives."
+        },
+        {
+          "id": "reality_drift",
+          "name": "Reality Drift",
+          "act": 2,
+          "category": "wild_card",
+          "unique": false,
+          "burns": false,
+          "cooldown": 3,
+          "probability_decay": 0.6,
+          "chaos": 2.0,
+          "turbulence": 2.0,
+          "pressure": 1.0,
+          "description": "The ground beneath their choices bends."
+        },
+        {
+          "id": "kit_soft_breakdown",
+          "name": "Kit's Soft Breakdown",
+          "act": 2,
+          "category": "kit_feelings",
+          "unique": false,
+          "burns": false,
+          "cooldown": 3,
+          "probability_decay": 0.6,
+          "chaos": 2.0,
+          "turbulence": 1.0,
+          "pressure": 1.0,
+          "description": "He cries without realizing he started."
+        },
+        {
+          "id": "yuul_static_edge",
+          "name": "Yuul Speaks with Static in Her Voice",
+          "act": 2,
+          "category": "yuul_vulnerability",
+          "unique": false,
+          "burns": false,
+          "cooldown": 2,
+          "probability_decay": 0.7,
+          "chaos": 2.0,
+          "turbulence": 1.5,
+          "pressure": 0.5,
+          "description": "For a moment she sounds like two people."
+        },
+        {
+          "id": "rielle_vanishes_briefly",
+          "name": "Rielle Vanishes Briefly",
+          "act": 2,
+          "category": "rielle_state",
+          "unique": false,
+          "burns": false,
+          "cooldown": 3,
+          "probability_decay": 0.6,
+          "chaos": 2.0,
+          "turbulence": 1.0,
+          "pressure": 1.0,
+          "description": "She loses time. Comes back grinning."
+        },
+        {
+          "id": "town_memory_gap",
+          "name": "Another Memory Gap",
+          "act": 2,
+          "category": "wild_card",
+          "unique": false,
+          "burns": false,
+          "cooldown": 3,
+          "probability_decay": 0.6,
+          "chaos": 1.5,
+          "turbulence": 1.0,
+          "pressure": 0.5,
+          "description": "A collective lapse. No one can recall the last five minutes."
+        },
+        {
+          "id": "coherence_failure",
+          "name": "Coherence Failure",
+          "act": 2,
+          "category": "field_state",
+          "unique": false,
+          "burns": false,
+          "cooldown": 4,
+          "probability_decay": 0.5,
+          "chaos": 2.5,
+          "turbulence": 2.0,
+          "pressure": 1.0,
+          "description": "The field shudders. Something fundamental slips."
+        },
+        {
+          "id": "yuul_last_prophecy",
+          "name": "Yuul's Last Prophecy",
+          "act": 2,
+          "category": "yuul_vulnerability",
+          "unique": true,
+          "burns": false,
+          "cooldown": 0,
+          "probability_decay": 1.0,
+          "choice_id": 49,
+          "chaos": 2.0,
+          "turbulence": 1.0,
+          "pressure": 1.5,
+          "description": "Yuul's voice thins and deepens all at once. The words are warning, memory, and farewell."
+        },
+        {
+          "id": "prophetic_isolation",
+          "name": "Prophetic Isolation",
+          "category": "yuul_vulnerability",
+          "act": 2,
+          "unique": true,
+          "burns": true,
+          "cooldown": 0,
+          "probability_decay": 1.0,
+          "choice_id": 47,
+          "chaos": 2.0,
+          "turbulence": 2.0,
+          "pressure": 1.0,
+          "description": "Yuul retreats inward after a frightening surge of prophecy. She pushes others away.",
+          "burn_effects": {
+            "world_effect": "yuul_isolation_trauma",
+            "turbulence_modifier": 1.0,
+            "adds_tag": "yuul_distance"
+          }
+        },
+        {
+          "id": "mirror_incident",
+          "name": "The Mirror Incident",
+          "category": "wild_card",
+          "act": 2,
+          "unique": true,
+          "burns": true,
+          "cooldown": 0,
+          "probability_decay": 1.0,
+          "choice_id": 48,
+          "chaos": 3.0,
+          "turbulence": 2.0,
+          "pressure": 1.0,
+          "description": "A mirror cracks in a way that should not be possible. Reality folds at the edges.",
+          "burn_effects": {
+            "adds_event": "reality_drift",
+            "removes_event": "grace_moment",
+            "threshold_modifier": -1.0
+          }
+        },
+        {
+          "id": "dce_investigation",
+          "name": "DCE Investigation",
+          "category": "external_pressure",
+          "act": 2,
+          "unique": true,
+          "burns": true,
+          "cooldown": 0,
+          "probability_decay": 1.0,
+          "choice_id": 42,
+          "chaos": 2.0,
+          "turbulence": 1.5,
+          "pressure": 2.0,
+          "description": "Agents arrive with questions phrased too perfectly. They already know something.",
+          "burn_effects": {
+            "pressure_modifier": 1.0,
+            "adds_tag": "dce_watch"
+          }
+        },
+        {
+          "id": "dce_tightens_net",
+          "name": "DCE Tightens the Net",
+          "category": "external_pressure",
+          "act": 2,
+          "unique": true,
+          "burns": true,
+          "cooldown": 0,
+          "probability_decay": 1.0,
+          "choice_id": 43,
+          "chaos": 2.5,
+          "turbulence": 2.0,
+          "pressure": 1.5,
+          "description": "Paperwork discrepancies, shadowing teams, and subtle tests appear everywhere.",
+          "burn_effects": {
+            "h11_cards_risk": "contradictory_outcomes",
+            "adds_tag": "net_closing"
+          }
+        },
+        {
+          "id": "dce_raid_safehouse",
+          "name": "DCE Raid on a Safehouse",
+          "category": "external_pressure",
+          "act": 2,
+          "unique": true,
+          "burns": true,
+          "cooldown": 0,
+          "probability_decay": 1.0,
+          "choice_id": 44,
+          "chaos": 3.0,
+          "turbulence": 3.0,
+          "pressure": 2.0,
+          "description": "One of their fallback locations is compromised. Someone was there recently.",
+          "burn_effects": {
+            "forced_consequence": "injury_or_leak_or_emotional_break",
+            "adds_tag": "breach"
+          }
+        },
+        {
+          "id": "house_11_review",
+          "name": "House 11 Under Review",
+          "category": "external_pressure",
+          "act": 2,
+          "unique": true,
+          "burns": true,
+          "cooldown": 0,
+          "probability_decay": 1.0,
+          "choice_id": 45,
+          "chaos": 2.0,
+          "turbulence": 2.0,
+          "pressure": 2.0,
+          "description": "H11 leadership receives quiet inquiries. Someone internal is asking the wrong questions.",
+          "burn_effects": {
+            "h11_cards_risk": "internal_sabotage",
+            "adds_tag": "h11_unsteady"
+          }
+        },
+        {
+          "id": "orders_from_above",
+          "name": "Orders from Above",
+          "category": "external_pressure",
+          "act": 2,
+          "unique": true,
+          "burns": true,
+          "cooldown": 0,
+          "probability_decay": 1.0,
+          "choice_id": 46,
+          "chaos": 3.0,
+          "turbulence": 2.0,
+          "pressure": 3.0,
+          "description": "A directive arrives. It feels rehearsed, like someone else wrote it.",
+          "burn_effects": {
+            "next_three_pulls": "corruption_tag",
+            "adds_tag": "orders_weight"
+          }
+        }
+      ]
+    }
+  },
+  "choices": {
+    "5": {
+      "choice_id": 5,
+      "event_id": "bonfire_night",
+      "description": "Bonfire Night",
+      "choices": {
+        "witness": {
+          "text": "Memorize them exactly as they are. Every voice. Every light. Every fragile peace.",
+          "effects": {
+            "chaos": -1.5,
+            "turbulence": -1.0
+          }
+        },
+        "trickster": {
+          "text": "Turn the warmth into joy—tease, poke, spark shared laughter until the night feels endless.",
+          "effects": {
+            "chaos": -1.0,
+            "turbulence": 0.5
+          }
+        },
+        "devourer": {
+          "text": "Give your calm away. Let the one most wounded borrow your steadiness for this one soft hour.",
+          "effects": {
+            "chaos": -2.0,
+            "pressure": 0.5,
+            "scars_maeve": 1
+          }
+        }
+      }
+    },
+    "40": {
+      "choice_id": 40,
+      "event_id": "someone_notices",
+      "description": "Someone Notices",
+      "choices": {
+        "witness": {
+          "text": "Meet their eyes. Let them know you see what they see.",
+          "effects": {
+            "chaos": 0.5,
+            "pressure": 0.5
+          }
+        },
+        "trickster": {
+          "text": "Break the moment with mischief—bend attention away before truth lands.",
+          "effects": {
+            "turbulence": 1.0,
+            "chaos": -0.5
+          }
+        },
+        "devourer": {
+          "text": "Absorb the scrutiny. Take the stranger's unease into yourself so the others don't flinch.",
+          "effects": {
+            "pressure": 0.5,
+            "chaos": -1.0,
+            "scars_maeve": 1
+          }
+        }
+      }
+    },
+    "41": {
+      "choice_id": 41,
+      "event_id": "yuul_vision_soft",
+      "description": "Yuul Has a Vision",
+      "choices": {
+        "witness": {
+          "text": "Tell her you saw it. Name the shift she tried to hide.",
+          "effects": {
+            "pressure": 0.5,
+            "dyad_maeve_yuul": 1.0
+          }
+        },
+        "trickster": {
+          "text": "Break the tension—make a joke sharp enough to snap her back into the moment.",
+          "effects": {
+            "turbulence": 1.0,
+            "chaos": -0.5
+          }
+        },
+        "devourer": {
+          "text": "Take the fear from her expression and carry it in your bones instead.",
+          "effects": {
+            "chaos": -1.5,
+            "scars_maeve": 1
+          }
+        }
+      }
+    },
+    "42": {
+      "choice_id": 42,
+      "event_id": "dce_investigation",
+      "description": "DCE Investigation",
+      "choices": {
+        "witness": {
+          "text": "You answer plainly. No hedging. The truth lands harder than a lie.",
+          "effects": {
+            "pressure": 1.0,
+            "dyad_maeve_h11": -1.0
+          }
+        },
+        "trickster": {
+          "text": "Redirect, reframe, let them chase a shadow instead.",
+          "effects": {
+            "turbulence": 1.0,
+            "pressure": -0.5
+          }
+        },
+        "devourer": {
+          "text": "You take blame subtly—just enough to shield the others.",
+          "effects": {
+            "scars_maeve": 1,
+            "chaos": -1.5,
+            "pressure": 0.5
+          }
+        }
+      }
+    },
+    "43": {
+      "choice_id": 43,
+      "event_id": "dce_tightens_net",
+      "description": "DCE Tightens the Net",
+      "choices": {
+        "witness": {
+          "text": "You map every observation point. 'They're not hiding anymore.'",
+          "effects": {
+            "pressure": 1.0,
+            "dyad_maeve_kit": 1.0
+          }
+        },
+        "trickster": {
+          "text": "You create false signals—errands, diversions, misdirections.",
+          "effects": {
+            "chaos": -1.0,
+            "turbulence": 1.0
+          }
+        },
+        "devourer": {
+          "text": "You step forward as the likely anomaly. Let the net catch you first.",
+          "effects": {
+            "scars_maeve": 1,
+            "pressure": 0.5,
+            "chaos": -1.5
+          }
+        }
+      }
+    },
+    "44": {
+      "choice_id": 44,
+      "event_id": "dce_raid_safehouse",
+      "description": "DCE Raid on a Safehouse",
+      "choices": {
+        "witness": {
+          "text": "You take inventory of the breach with brutal clarity.",
+          "effects": {
+            "pressure": 1.0,
+            "turbulence": 0.5
+          }
+        },
+        "trickster": {
+          "text": "You erase traces, rewrite scenes, seed the room with alternative stories.",
+          "effects": {
+            "chaos": -1.0,
+            "turbulence": 1.0
+          }
+        },
+        "devourer": {
+          "text": "You step into the breach and accept the consequences personally.",
+          "effects": {
+            "scars_maeve": 1,
+            "pressure": 1.0,
+            "chaos": -2.0
+          }
+        }
+      }
+    },
+    "45": {
+      "choice_id": 45,
+      "event_id": "house_11_review",
+      "description": "House 11 Under Review",
+      "choices": {
+        "witness": {
+          "text": "You speak plainly about instability inside the house.",
+          "effects": {
+            "pressure": 1.0,
+            "dyad_maeve_h11": -1.0
+          }
+        },
+        "trickster": {
+          "text": "You make the whisper network chase its own tail.",
+          "effects": {
+            "turbulence": 1.0,
+            "chaos": -0.5
+          }
+        },
+        "devourer": {
+          "text": "You let suspicion fall toward you. Better you than them.",
+          "effects": {
+            "scars_maeve": 1,
+            "pressure": 0.5,
+            "chaos": -1.0
+          }
+        }
+      }
+    },
+    "46": {
+      "choice_id": 46,
+      "event_id": "orders_from_above",
+      "description": "Orders from Above",
+      "choices": {
+        "witness": {
+          "text": "You read the order aloud. Naming corruption is its own power.",
+          "effects": {
+            "pressure": 1.0,
+            "chaos": 0.5
+          }
+        },
+        "trickster": {
+          "text": "You obey selectively, bending the order into something survivable.",
+          "effects": {
+            "turbulence": 1.0,
+            "chaos": -1.0
+          }
+        },
+        "devourer": {
+          "text": "You take the order into yourself—like swallowing a blade meant for the others.",
+          "effects": {
+            "scars_maeve": 1,
+            "pressure": 0.5,
+            "chaos": -2.0
+          }
+        }
+      }
+    },
+    "47": {
+      "choice_id": 47,
+      "event_id": "prophetic_isolation",
+      "description": "Prophetic Isolation",
+      "choices": {
+        "witness": {
+          "text": "'Stay with me. Say it out loud.' You pull her gently back into the room.",
+          "effects": {
+            "pressure": 1.0,
+            "turbulence": -0.5,
+            "dyad_maeve_yuul": 1.0
+          }
+        },
+        "trickster": {
+          "text": "You interrupt the spiral with a joke sharp enough to cut the atmosphere.",
+          "effects": {
+            "turbulence": 1.0,
+            "pressure": -0.5,
+            "chaos": -1.0
+          }
+        },
+        "devourer": {
+          "text": "You take the weight of her vision into your own chest. 'Let me carry that.'",
+          "effects": {
+            "scars_maeve": 1,
+            "chaos": -2.0,
+            "pressure": 0.5
+          }
+        }
+      }
+    },
+    "48": {
+      "choice_id": 48,
+      "event_id": "mirror_incident",
+      "description": "The Mirror Incident",
+      "choices": {
+        "witness": {
+          "text": "'Don't look away.' You meet your own impossible reflection.",
+          "effects": {
+            "chaos": 1.0,
+            "pressure": 1.0,
+            "adds_tag": "reality_fissure"
+          }
+        },
+        "trickster": {
+          "text": "You distort the moment—shift posture, blink deliberately—as if negotiating with the mirror.",
+          "effects": {
+            "turbulence": 1.5,
+            "chaos": -0.5
+          }
+        },
+        "devourer": {
+          "text": "You press a hand to the glass and accept the fracture into yourself.",
+          "effects": {
+            "scars_maeve": 1,
+            "chaos": -1.0,
+            "pressure": 1.0
+          }
+        }
+      }
+    },
+    "49": {
+      "choice_id": 49,
+      "event_id": "yuul_last_prophecy",
+      "description": "Yuul's Last Prophecy",
+      "choices": {
+        "witness": {
+          "text": "'Let it finish.' You hold the world still around her.",
+          "effects": {
+            "pressure": 1.5,
+            "turbulence": -1.0,
+            "dyad_maeve_yuul": 1.0
+          }
+        },
+        "trickster": {
+          "text": "You bend the phrasing—turn a doom into a door.",
+          "effects": {
+            "turbulence": 1.5,
+            "chaos": -1.0
+          }
+        },
+        "devourer": {
+          "text": "You take the prophecy into your own resonance. It hooks into your ribs.",
+          "effects": {
+            "scars_maeve": 1,
+            "chaos": -2.0,
+            "pressure": 1.0
+          }
+        }
+      }
+    }
+  }
+}
