@@ -215,9 +215,9 @@ class Relationship:
         # Check if this change made the bond sacred
         became_sacred = self._check_sacred_status()
 
-        # Check if relationship should gain a scar (major rupture: |delta| >= 2)
+        # Check if relationship should gain a scar (major rupture: delta <= -2)
         gained_scar = False
-        if abs(effective_delta) >= 2.0:
+        if effective_delta <= -2.0:
             self.add_dyad_scar("major rupture event")
             gained_scar = True
 
