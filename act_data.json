@@ -745,6 +745,379 @@
           }
         }
       ]
+    },
+    "3": {
+      "title": "Collapse or Transcendence",
+      "banner": "\ud83d\udd25 ACT III: COLLAPSE OR TRANSCENDENCE",
+      "tagline": "Everything comes to a head.\nSome threads hold. Some burn.",
+      "events": [
+        {
+          "id": "first_warning_returns",
+          "name": "The First Warning Returns",
+          "category": "yuul_prophecy",
+          "act": 3,
+          "unique": true,
+          "burns": false,
+          "cooldown": 0,
+          "probability_decay": 1.0,
+          "chaos": 2.0,
+          "turbulence": 1.0,
+          "pressure": 1.0,
+          "description": "Yuul grabs Maeve's wrist-eyes glassy, speech inverted. A second warning, more frantic than the first.",
+          "triggers": {
+            "yuul_coherence_below": 5
+          }
+        },
+        {
+          "id": "rielle_sees_it_too",
+          "name": "Rielle Sees It Too",
+          "category": "trine_fracture",
+          "act": 3,
+          "unique": true,
+          "burns": false,
+          "cooldown": 0,
+          "probability_decay": 1.0,
+          "chaos": 1.0,
+          "turbulence": 0.5,
+          "pressure": 0.5,
+          "description": "Rielle corners Maeve. Sharp, honest, cutting. 'You keep leaving. Kit's drowning. She's getting worse.'",
+          "triggers": {
+            "maeve_coherence_below": 6
+          },
+          "effects": {
+            "maeve_coherence_change_if_low": -1
+          }
+        },
+        {
+          "id": "photo_album_memory",
+          "name": "The Photo Album",
+          "category": "kit_yuul_memory",
+          "act": 3,
+          "unique": true,
+          "burns": false,
+          "cooldown": 0,
+          "probability_decay": 1.0,
+          "chaos": -1.0,
+          "turbulence": -0.5,
+          "pressure": -0.5,
+          "description": "Kit brings old photos. Yuul returns fully for one fragile night. He memorizes her.",
+          "effects": {
+            "yuul_temp_coherence": 2,
+            "kit_coherence": 1
+          },
+          "special_flags": {
+            "unlocks_disappearance_path_if_witness": true
+          }
+        },
+        {
+          "id": "daniel_calls_dce",
+          "name": "Daniel Calls the DCE",
+          "category": "external_pressure",
+          "act": 3,
+          "unique": true,
+          "burns": true,
+          "cooldown": 0,
+          "probability_decay": 1.0,
+          "chaos": 3.0,
+          "turbulence": 1.0,
+          "pressure": 2.0,
+          "description": "Daniel thinks he's helping. He calls the Directorate. They send three agents for Yuul.",
+          "burn_effects": {
+            "world_effect": "dce_intervention",
+            "pressure_baseline_increase": 3
+          },
+          "choice_id": 115
+        },
+        {
+          "id": "list_theory_obsession",
+          "name": "The List Theory (Maeve's Obsession Solidifies)",
+          "category": "maeve_insight",
+          "act": 3,
+          "unique": true,
+          "burns": false,
+          "cooldown": 0,
+          "probability_decay": 1.0,
+          "chaos": 1.0,
+          "turbulence": 0.5,
+          "pressure": 0.5,
+          "description": "Maeve becomes convinced The List hunts Yuul and can be fought. Her obsession crystallizes.",
+          "effects": {
+            "add_tag": "obsession"
+          }
+        },
+        {
+          "id": "seeress_speaks",
+          "name": "The Seeress Speaks",
+          "category": "yuul_possession",
+          "act": 3,
+          "unique": true,
+          "burns": false,
+          "cooldown": 0,
+          "probability_decay": 1.0,
+          "chaos": 2.0,
+          "turbulence": 1.0,
+          "pressure": 1.0,
+          "description": "Yuul's eyes go blank. The Seeress looks out: 'You can never leave this place.'",
+          "choice_id": 101
+        },
+        {
+          "id": "rielle_burns_redchurch",
+          "name": "Rielle Burns Redchurch",
+          "category": "rielle_catastrophe",
+          "act": 3,
+          "unique": true,
+          "burns": true,
+          "cooldown": 0,
+          "probability_decay": 1.0,
+          "chaos": 4.0,
+          "turbulence": 4.0,
+          "pressure": 0.0,
+          "description": "Rielle acts alone. Burns the wound-site. Yuul screams across distance.",
+          "burn_effects": {
+            "world_effect": "redchurch_burned",
+            "trine_severed": true
+          },
+          "choice_id": 113
+        },
+        {
+          "id": "kit_breaks",
+          "name": "Kit Breaks",
+          "category": "kit_fracture",
+          "act": 3,
+          "unique": true,
+          "burns": false,
+          "cooldown": 0,
+          "probability_decay": 1.0,
+          "chaos": 2.0,
+          "turbulence": 1.0,
+          "pressure": 1.0,
+          "description": "Kit finally snaps. 'Do something. Please.' His breaking loads the gun the next card will fire.",
+          "triggers": {
+            "kit_coherence_below": 6
+          },
+          "effects": {
+            "enable_desperate_protector_mode": true
+          }
+        },
+        {
+          "id": "the_mirror_transformation",
+          "name": "The Mirror - Yuul's Ascension/Dissolution",
+          "category": "yuul_transformation",
+          "act": 3,
+          "unique": true,
+          "burns": true,
+          "cooldown": 0,
+          "probability_decay": 1.0,
+          "chaos": 5.0,
+          "turbulence": 3.0,
+          "pressure": 2.0,
+          "description": "Yuul stands before the Mirror. The Seeress dances. Yuul mirrors her. She becomes.",
+          "burn_effects": {
+            "world_effect": "mirror_transformation",
+            "yuul_coherence_set_extreme": true
+          }
+        },
+        {
+          "id": "the_list_manifests",
+          "name": "The List Manifests",
+          "category": "final_crisis",
+          "act": 3,
+          "unique": true,
+          "burns": true,
+          "cooldown": 0,
+          "probability_decay": 1.0,
+          "chaos": 10.0,
+          "turbulence": 5.0,
+          "pressure": 5.0,
+          "description": "The entity that eats names descends. High coherence and low coherence both become prey.",
+          "burn_effects": {
+            "world_effect": "list_manifestation",
+            "trigger_final_ending": true
+          },
+          "choice_id": 117
+        },
+        {
+          "id": "kit_confession_sacred",
+          "name": "Kit Confesses His Love",
+          "category": "kit_yuul_sacred",
+          "act": 3,
+          "unique": true,
+          "burns": false,
+          "cooldown": 0,
+          "probability_decay": 1.0,
+          "chaos": 0.0,
+          "turbulence": 0.0,
+          "pressure": 0.0,
+          "description": "Kit finally speaks: 'It's always been you.' Yuul remembers being a person.",
+          "triggers": {
+            "kit_yuul_dyad_min": 8
+          },
+          "choice_id": 105
+        },
+        {
+          "id": "maeve_true_insight",
+          "name": "Maeve's True Obsession - The Insight That Saves Them",
+          "category": "maeve_revelation",
+          "act": 3,
+          "unique": true,
+          "burns": false,
+          "cooldown": 0,
+          "probability_decay": 1.0,
+          "chaos": -2.0,
+          "turbulence": -1.0,
+          "pressure": -1.0,
+          "description": "Maeve realizes The List feeds on both extremes-dissolution AND ascension. She sees the real danger.",
+          "triggers": {
+            "maeve_coherence_min": 7,
+            "requires_tag": "obsession"
+          },
+          "choice_id": 107
+        },
+        {
+          "id": "redchurch_prelude",
+          "name": "Redchurch Prelude",
+          "category": "pre_climax",
+          "act": 3,
+          "unique": true,
+          "burns": false,
+          "cooldown": 0,
+          "probability_decay": 1.0,
+          "chaos": 3.0,
+          "turbulence": 1.0,
+          "pressure": 2.0,
+          "description": "The moment before everything changes. The air tastes metallic.",
+          "choice_id": 100
+        },
+        {
+          "id": "kettle_blackout",
+          "name": "The Kettle Blackout",
+          "category": "daniel_decision",
+          "act": 3,
+          "unique": true,
+          "burns": false,
+          "cooldown": 0,
+          "probability_decay": 1.0,
+          "chaos": 2.0,
+          "turbulence": 1.0,
+          "pressure": 1.0,
+          "description": "Daniel makes the call. Does Maeve lie to protect them or tell the truth?",
+          "choice_id": 103
+        },
+        {
+          "id": "dream_bleeds_through",
+          "name": "The Dream Bleeds Through",
+          "category": "reality_drift",
+          "act": 3,
+          "unique": false,
+          "burns": false,
+          "cooldown": 2,
+          "probability_decay": 0.8,
+          "chaos": 1.0,
+          "turbulence": 1.0,
+          "pressure": 0.0,
+          "description": "Images repeat. Edges double. Echo overlaps begin."
+        },
+        {
+          "id": "coherence_whiplash",
+          "name": "Coherence Whiplash",
+          "category": "field_instability",
+          "act": 3,
+          "unique": false,
+          "burns": false,
+          "cooldown": 2,
+          "probability_decay": 0.7,
+          "chaos": 1.0,
+          "turbulence": 0.5,
+          "pressure": 0.5,
+          "description": "High coherence collapses slightly; low coherence rises. The field snaps toward the deadly middle."
+        },
+        {
+          "id": "dce_restraint_order",
+          "name": "DCE Restraint Order",
+          "category": "institution_pressure",
+          "act": 3,
+          "unique": false,
+          "burns": false,
+          "cooldown": 3,
+          "probability_decay": 0.6,
+          "chaos": 2.0,
+          "turbulence": 1.0,
+          "pressure": 1.0,
+          "description": "Daniel decides: defect to save them, or authorize the raid."
+        },
+        {
+          "id": "choirbreak_moment",
+          "name": "The Choirbreak Moment",
+          "category": "sound_fracture",
+          "act": 3,
+          "unique": false,
+          "burns": false,
+          "cooldown": 3,
+          "probability_decay": 0.5,
+          "chaos": 2.0,
+          "turbulence": 1.0,
+          "pressure": 1.0,
+          "description": "A fracture in sound. Everyone loses coherence except Maeve (if she holds the True Insight)."
+        },
+        {
+          "id": "thread_cuts",
+          "name": "The Thread Cuts",
+          "category": "bond_fracture",
+          "act": 3,
+          "unique": false,
+          "burns": false,
+          "cooldown": 2,
+          "probability_decay": 0.6,
+          "chaos": 2.0,
+          "turbulence": 0.0,
+          "pressure": -1.0,
+          "description": "A Sacred dyad shatters. Pressure drops. Chaos rises."
+        },
+        {
+          "id": "name_eater_stirs",
+          "name": "The Name Eater Stirs",
+          "category": "cor_manifestation",
+          "act": 3,
+          "unique": false,
+          "burns": false,
+          "cooldown": 2,
+          "probability_decay": 0.7,
+          "chaos": 2.0,
+          "turbulence": 1.0,
+          "pressure": 1.0,
+          "description": "High coherence names begin to glow-marked as prey."
+        },
+        {
+          "id": "house_that_hears",
+          "name": "The House That Hears",
+          "category": "reality_drift",
+          "act": 3,
+          "unique": false,
+          "burns": false,
+          "cooldown": 2,
+          "probability_decay": 0.7,
+          "chaos": 2.0,
+          "turbulence": 1.0,
+          "pressure": 1.0,
+          "description": "The walls echo wrong. A pattern repeats. Something is listening.",
+          "choice_id": 109
+        },
+        {
+          "id": "radio_bleeds",
+          "name": "The Radio Bleeds",
+          "category": "dce_surveillance",
+          "act": 3,
+          "unique": false,
+          "burns": false,
+          "cooldown": 2,
+          "probability_decay": 0.7,
+          "chaos": 1.0,
+          "turbulence": 0.0,
+          "pressure": 1.0,
+          "description": "Static resolves into voices. DCE frequencies. They're triangulating.",
+          "choice_id": 111
+        }
+      ]
     }
   },
   "choices": {
@@ -1066,6 +1439,288 @@
             "scars_maeve": 1,
             "chaos": -2.0,
             "pressure": 1.0
+          }
+        }
+      }
+    },
+    "100": {
+      "choice_id": 100,
+      "event_id": "redchurch_prelude",
+      "description": "Redchurch Prelude",
+      "choices": {
+        "witness": {
+          "text": "Stand. Do not tremble. The storm knows your name, but you are older than the wind.",
+          "effects": {
+            "maeve_coherence": 1,
+            "pressure": 1
+          }
+        },
+        "trickster": {
+          "text": "Oh sweetheart, don't brace-lean. Let the world slip sideways with you.",
+          "effects": {
+            "turbulence": 2,
+            "redirect_next_event": true
+          }
+        },
+        "devourer": {
+          "text": "Give it to me. All of it. I will take the first blow and the second and the third until nothing touches you but my teeth.",
+          "effects": {
+            "farris_coherence": -1,
+            "maeve_coherence": 1,
+            "chaos_buffer": true
+          }
+        }
+      }
+    },
+    "101": {
+      "choice_id": 101,
+      "event_id": "seeress_speaks",
+      "description": "The Seeress Speaks",
+      "choices": {
+        "witness": {
+          "text": "Call her by the name she buried. Names remember when flesh forgets.",
+          "effects": {
+            "yuul_coherence": 1,
+            "kit_coherence": -1
+          }
+        },
+        "trickster": {
+          "text": "If she's falling through the cracks, darling-fall faster and grab her on the way down.",
+          "effects": {
+            "yuul_coherence": 1,
+            "turbulence": 2
+          }
+        },
+        "devourer": {
+          "text": "Let me. I can drag her back from the dark by the wrist; she will come screaming but alive.",
+          "effects": {
+            "farris_coherence": -1,
+            "yuul_coherence": 2,
+            "future_cost_flag": "seeress_owes_debt"
+          }
+        }
+      }
+    },
+    "103": {
+      "choice_id": 103,
+      "event_id": "kettle_blackout",
+      "description": "The Kettle Blackout",
+      "choices": {
+        "witness": {
+          "text": "A soft lie is sometimes a scaffold. Build it gently.",
+          "effects": {
+            "dce_pressure": -1,
+            "daniel_trust": -1
+          }
+        },
+        "trickster": {
+          "text": "Oh my god yes, lie. Lie beautifully. Lie like it's a performance art piece.",
+          "effects": {
+            "dce_tracking": -1,
+            "turbulence": 1
+          }
+        },
+        "devourer": {
+          "text": "Let him choke on your silence. I'll cover your tracks.",
+          "effects": {
+            "daniel_trust": -2,
+            "dce_path_obscured": true
+          }
+        }
+      }
+    },
+    "105": {
+      "choice_id": 105,
+      "event_id": "kit_confession_sacred",
+      "description": "Kit Confesses His Love",
+      "choices": {
+        "witness": {
+          "text": "Love is a compass even in the fire. Let him name the star he follows.",
+          "effects": {
+            "kit_yuul_dyad": 1,
+            "lock_disappearance_path": true
+          }
+        },
+        "trickster": {
+          "text": "Oh this is going to hurt deliciously. Open the curtain.",
+          "effects": {
+            "kit_coherence": 1,
+            "yuul_coherence": 1,
+            "turbulence": 1
+          }
+        },
+        "devourer": {
+          "text": "Let him bare his throat. I want to see who answers.",
+          "effects": {
+            "kit_resilience": 1,
+            "yuul_coherence": 1,
+            "fate_weight_disappearance": 1
+          }
+        }
+      }
+    },
+    "107": {
+      "choice_id": 107,
+      "event_id": "maeve_true_insight",
+      "description": "Maeve's True Insight",
+      "choices": {
+        "witness": {
+          "text": "Say it aloud. The world reshapes around spoken truth.",
+          "effects": {
+            "unlock_miracle_path": true,
+            "reduce_list_hunger": true
+          }
+        },
+        "trickster": {
+          "text": "Hell yes declare it, Queen. Break the tutorial.",
+          "effects": {
+            "unlock_miracle_path": true,
+            "chaos": 1
+          }
+        },
+        "devourer": {
+          "text": "Claim the knowledge. Let the List hear you. Let it turn toward you.",
+          "effects": {
+            "unlock_miracle_path": true,
+            "increase_final_risk": true
+          }
+        }
+      }
+    },
+    "109": {
+      "choice_id": 109,
+      "event_id": "house_that_hears",
+      "description": "The House That Hears",
+      "choices": {
+        "witness": {
+          "text": "Step sideways. Rhythm obeys you.",
+          "effects": {
+            "cancel_current_event": true,
+            "future_rupture_flag": true
+          }
+        },
+        "trickster": {
+          "text": "Kick the wall. Kick fate. Kick something.",
+          "effects": {
+            "turbulence": 2,
+            "reroll_next_event": true
+          }
+        },
+        "devourer": {
+          "text": "Tear the pattern until it screams.",
+          "effects": {
+            "chaos": 2,
+            "mark_sacred_dyad_for_fracture": true
+          }
+        }
+      }
+    },
+    "111": {
+      "choice_id": 111,
+      "event_id": "radio_bleeds",
+      "description": "The Radio Bleeds",
+      "choices": {
+        "witness": {
+          "text": "Cut the cord. End the message.",
+          "effects": {
+            "dce_tracking": -1
+          }
+        },
+        "trickster": {
+          "text": "Unplug it with flair. Kick it across the room.",
+          "effects": {
+            "turbulence": 1,
+            "dce_confusion": true
+          }
+        },
+        "devourer": {
+          "text": "Silence it. I hunger for the quiet.",
+          "effects": {
+            "chaos": -1,
+            "brief_peace_flag": true
+          }
+        }
+      }
+    },
+    "113": {
+      "choice_id": 113,
+      "event_id": "rielle_burns_redchurch",
+      "description": "Rielle Burns Redchurch",
+      "choices": {
+        "witness": {
+          "text": "Anchor her. You once promised not to leave.",
+          "effects": {
+            "rielle_coherence": 1,
+            "maeve_turbulence": 1
+          }
+        },
+        "trickster": {
+          "text": "Shake her until the world resets.",
+          "effects": {
+            "rielle_coherence": 1,
+            "turbulence": 2
+          }
+        },
+        "devourer": {
+          "text": "Give her something stronger to cling to: you.",
+          "effects": {
+            "rielle_coherence": 2,
+            "maeve_coherence": -1
+          }
+        }
+      }
+    },
+    "115": {
+      "choice_id": 115,
+      "event_id": "daniel_calls_dce",
+      "description": "Daniel Calls the DCE",
+      "choices": {
+        "witness": {
+          "text": "Hold his hand. Turn him gently.",
+          "effects": {
+            "daniel_coherence": 1,
+            "dce_pressure": -1
+          }
+        },
+        "trickster": {
+          "text": "Trip him. Literally.",
+          "effects": {
+            "turbulence": 1,
+            "delay_dce_arrival": true
+          }
+        },
+        "devourer": {
+          "text": "Say his name like a command. Make him obey.",
+          "effects": {
+            "daniel_agency": -1,
+            "dce_pressure": -1
+          }
+        }
+      }
+    },
+    "117": {
+      "choice_id": 117,
+      "event_id": "the_list_manifests",
+      "description": "The List Manifests",
+      "choices": {
+        "witness": {
+          "text": "Stand in the light of your name.",
+          "effects": {
+            "miracle_weight": 1,
+            "coherence_test_all": true
+          }
+        },
+        "trickster": {
+          "text": "Ohhh let's see how badly this ends.",
+          "effects": {
+            "chaos": 2,
+            "open_all_endings": true
+          }
+        },
+        "devourer": {
+          "text": "Stay. I want to see who survives you.",
+          "effects": {
+            "increase_redchurch_and_cor_weight": true
           }
         }
       }

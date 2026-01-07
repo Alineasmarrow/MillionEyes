@@ -1,0 +1,179 @@
+{
+  "characters": {
+    "Maeve": {
+      "role": "protagonist_insight_vector",
+      "coherence_baseline": {
+        "act_1": 7.0,
+        "act_2": 6.0,
+        "act_3": 5.0
+      },
+      "core_tags": [
+        "intuitive",
+        "obsessive",
+        "resonance_attuned",
+        "dissociation_prone"
+      ],
+      "breakpoints": {
+        "low_3": {
+          "effect": "tunnel_vision",
+          "description": "Pressure events +1 intensity"
+        },
+        "low_2": {
+          "effect": "misinterpret_prophecy",
+          "description": "Chaos baseline +0.5"
+        },
+        "high_7": {
+          "effect": "unlock_true_insight_potential",
+          "description": "Can access True Insight if obsession tag present"
+        },
+        "high_8": {
+          "effect": "coherence_radiance",
+          "description": "Stabilize nearby dyads +0.5"
+        }
+      },
+      "special_rules": {
+        "obsession_tag": {
+          "description": "Adds +1 pressure to all insight/prophecy events"
+        },
+        "voice_mirroring": {
+          "description": "Maeve's coherence modifies Farris"
+        }
+      }
+    },
+    "Yuul": {
+      "role": "prophet_dissolution_vector",
+      "coherence_baseline": {
+        "act_1": 6.0,
+        "act_2": 4.0,
+        "act_3": 2.0
+      },
+      "core_tags": [
+        "prophetic",
+        "fragile",
+        "inverted_speech",
+        "seeress_bound"
+      ],
+      "breakpoints": {
+        "low_3": {
+          "effect": "visions_intensify",
+          "description": "All prophecy events +1 pressure"
+        },
+        "low_2": {
+          "effect": "possession_risk",
+          "description": "Seeress events more likely"
+        },
+        "low_1": {
+          "effect": "seeress_threshold",
+          "description": "Next vision event triggers The Seeress"
+        },
+        "zero": {
+          "effect": "dissolution_disappearance",
+          "description": "Yuul disappears, triggers ending"
+        }
+      },
+      "special_rules": {
+        "dissolution_drift": {
+          "description": "Cannot sustain coherence gains >1 turn without Kit's Confession or Maeve's True Insight"
+        },
+        "prophecy_echo": {
+          "description": "Even positive prophecy events add +0.5 chaos"
+        }
+      }
+    },
+    "Kit": {
+      "role": "protector_anchor",
+      "coherence_baseline": {
+        "act_1": 7.0,
+        "act_2": 6.0,
+        "act_3": 5.0
+      },
+      "core_tags": [
+        "loyal",
+        "grounding",
+        "emotionally_exhausted",
+        "deeply_in_love"
+      ],
+      "breakpoints": {
+        "low_5": {
+          "effect": "desperate_protector_mode",
+          "description": "All Yuul events +1 chaos, blocks extraction"
+        },
+        "low_4": {
+          "effect": "kit_actions_add_pressure",
+          "description": "Kit's stabilization attempts add pressure"
+        },
+        "low_2": {
+          "effect": "fatal_during_act_3",
+          "description": "Unlocks Redchurch tragedy path"
+        }
+      },
+      "special_rules": {
+        "desperate_protector_mode": {
+          "description": "Triggers at C_self <= 5, increases fracture chances"
+        },
+        "love_confession": {
+          "description": "If kit_yuul dyad >= 8, stabilizes Yuul and unlocks disappearance ending"
+        }
+      }
+    },
+    "Rielle": {
+      "role": "volatile_ally_pressure_spike",
+      "coherence_baseline": {
+        "act_1": 6.0,
+        "act_2": 5.0,
+        "act_3": 5.0
+      },
+      "core_tags": [
+        "impulsive",
+        "fiercely_attached",
+        "truth_teller",
+        "firestarter"
+      ],
+      "breakpoints": {
+        "low_4": {
+          "effect": "impulse_cards_dangerous",
+          "description": "Rielle's impulse events +2 turbulence"
+        },
+        "low_3": {
+          "effect": "burn_redchurch_likelihood",
+          "description": "Increases chance of burning Redchurch"
+        },
+        "high_7": {
+          "effect": "rielle_stabilizer",
+          "description": "Becomes a stabilizing force"
+        }
+      },
+      "special_rules": {
+        "impulse_engine": {
+          "description": "All Rielle events add +0.5 turbulence"
+        },
+        "firestarter": {
+          "description": "When acting alone, can trigger burn cards"
+        }
+      }
+    },
+    "Daniel": {
+      "role": "institution_tension",
+      "coherence_baseline": {
+        "act_1": 7.0,
+        "act_2": 7.0,
+        "act_3": 6.0
+      },
+      "core_tags": [
+        "rationalist",
+        "caring_but_blind",
+        "rule_follower"
+      ],
+      "breakpoints": {
+        "pressure_7": {
+          "effect": "calls_dce",
+          "description": "Daniel calls DCE if pressure >= 7"
+        },
+        "low_4": {
+          "effect": "defection_possible",
+          "description": "Daniel may defect from H11"
+        }
+      }
+    }
+  }
+}

@@ -14,9 +14,9 @@ class ActSystem:
     def __init__(self):
         self.current_act = 1
         self.rounds_per_act = {
-            1: 10,   # Act 1 = rounds 1–10
-            2: 15,   # Act 2 = rounds 11–25
-            3: 10    # Act 3 placeholder
+            1: 10,   # Act 1 = rounds 1-10
+            2: 15,   # Act 2 = rounds 11-25
+            3: 15    # Act 3 = rounds 26-40
         }
 
     def get_current_act(self, round_num: int) -> int:
@@ -25,8 +25,10 @@ class ActSystem:
             return 1
         elif round_num <= 25:
             return 2
-        else:
+        elif round_num <= 40:
             return 3
+        else:
+            return 3  # Stay in Act 3 after round 40
 
     def get_available_deck(self, act: int) -> List[Event]:
         """Get the event deck for a specific act"""

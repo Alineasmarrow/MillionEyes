@@ -12,7 +12,7 @@ from constants import (
 class Character:
     """Represents a character with coherence metrics"""
 
-    def __init__(self, name: str, c_self: float = 7.0, special_state: Optional[str] = None):
+    def __init__(self, name: str, c_self: float = 7.0, special_state: Optional[str] = None, tags: list = None):
         self.name = name
         self._c_self = c_self
         self.special_state = special_state  # e.g., "Craycray", "Grounded", "Obsessed"
@@ -24,6 +24,12 @@ class Character:
 
         # Transcendence system
         self.transcendence_unlocked = False  # Can reach C=10 only if True
+
+        # Act 3 systems: Tags and breakpoints
+        self.tags = tags or []  # Character tags for conditional events
+        self.active_modes = []  # Active special modes (e.g., "desperate_protector")
+        self.marked_by_list = False  # Marked by The List
+        self.temp_buffs = []  # Temporary buffs with expiration
 
     @property
     def c_self(self) -> float:
@@ -113,6 +119,54 @@ class Character:
                 return state
 
         return "Gone"
+
+    def add_tag(self, tag: str):
+        """Add a tag to the character"""
+        if tag not in self.tags:
+            self.tags.append(tag)
+
+    def has_tag(self, tag: str) -> bool:
+        """Check if character has a specific tag"""
+        return tag in self.tags
+
+    def check_breakpoints(self, character_stats: dict = None) -> list:
+        """
+        Check if character hit any breakpoint thresholds
+        Returns list of triggered effects
+        """
+        if not character_stats:
+            return []
+
+        triggered = []
+        breakpoints = character_stats.get("breakpoints", {})
+
+        for condition, effect_data in breakpoints.items():
+            if "low_" in condition:
+                threshold = float(condition.split("_")[1])
+                if self._c_self <= threshold:
+                    triggered.append(effect_data.get("effect"))
+
+            elif "high_" in condition:
+                threshold = float(condition.split("_")[1])
+                if self._c_self >= threshold:
+                    triggered.append(effect_data.get("effect"))
+
+        return triggered
+
+    def apply_temp_buff(self, amount: float, duration: int):
+        """Apply temporary coherence buff"""
+        self.temp_buffs.append({
+            "amount": amount,
+            "expires": duration
+        })
+        self.c_self += amount
+
+    def expire_buffs(self, current_round: int):
+        """Remove expired temporary buffs"""
+        expired = [buff for buff in self.temp_buffs if buff["expires"] <= current_round]
+        for buff in expired:
+            self.c_self -= buff["amount"]
+            self.temp_buffs.remove(buff)
 
     def __repr__(self):
         return f"{self.name} (C_self: {self._c_self:.1f}, State: {self.get_state()})"

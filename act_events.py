@@ -848,3 +848,243 @@ EVENT_FUNCTIONS = {
     "house_11_review": event_house_11_review,
     "orders_from_above": event_orders_from_above,
 }
+
+
+# ============================================================================
+# ACT III EVENTS - Collapse or Transcendence
+# ============================================================================
+
+def event_first_warning_returns(sim):
+    """The First Warning Returns"""
+    log = []
+
+    # Yuul grabs Maeve-eyes glassy, speech inverted
+    yuul_change = sim.modify_character_c_self("Yuul", -1.0, "first warning returns")
+    maeve_change = sim.modify_character_c_self("Maeve", -0.5, "hears dire warning")
+
+    my_change = sim.modify_dyad("Maeve", "Yuul", -0.5, "prophetic terror")
+
+    log.extend([yuul_change, maeve_change, my_change])
+    log.append({"note": "→ A second warning, more frantic than the first"})
+
+    return {"log": log}
+
+
+def event_rielle_sees_it_too(sim):
+    """Rielle Sees It Too"""
+    log = []
+
+    # Rielle corners Maeve with hard truth
+    rielle_change = sim.modify_character_c_self("Rielle", -0.3, "speaks hard truth")
+    maeve = sim.get_character("Maeve")
+
+    if maeve and maeve.c_self < 6:
+        maeve_change = sim.modify_character_c_self("Maeve", -1.0, "confronted by Rielle")
+        log.append(maeve_change)
+
+    mr_change = sim.modify_dyad("Maeve", "Rielle", -0.5, "harsh confrontation")
+
+    log.extend([rielle_change, mr_change])
+    log.append({"note": "→ 'You keep leaving. Kit's drowning. She's getting worse.'"})
+
+    return {"log": log}
+
+
+def event_photo_album_memory(sim):
+    """The Photo Album"""
+    log = []
+
+    # Kit brings old photos - Yuul returns for one fragile night
+    kit_change = sim.modify_character_c_self("Kit", +1.0, "photo album memory")
+    yuul_change = sim.modify_character_c_self("Yuul", +2.0, "fully present for one night")
+
+    # Mark as temporary (will need to be reverted)
+    yuul = sim.get_character("Yuul")
+    if yuul:
+        yuul.apply_temp_buff(2.0, sim.round_number + 1)
+
+    ky_change = sim.modify_dyad("Kit", "Yuul", +1.0, "precious memory")
+
+    log.extend([kit_change, yuul_change, ky_change])
+    log.append({"note": "→ He memorizes her. Every detail."})
+    log.append({"note": "⏰ Yuul's coherence will fade next round"})
+
+    return {"log": log}
+
+
+def event_list_theory_obsession(sim):
+    """The List Theory (Maeve's Obsession Solidifies)"""
+    log = []
+
+    # Maeve's obsession crystallizes
+    maeve = sim.get_character("Maeve")
+    if maeve:
+        maeve.add_tag("obsession")
+
+    if hasattr(sim, 'act3_system'):
+        sim.act3_system.special_flags["obsession"] = True
+
+    maeve_change = sim.modify_character_c_self("Maeve", +0.5, "obsession solidifies")
+
+    log.append(maeve_change)
+    log.append({"note": "🏷️ Maeve gains tag: obsession"})
+    log.append({"note": "→ The List hunts Yuul. She can fight it."})
+
+    return {"log": log}
+
+
+def event_seeress_speaks(sim):
+    """The Seeress Speaks"""
+    log = []
+
+    # Yuul's eyes go blank - The Seeress emerges
+    yuul_change = sim.modify_character_c_self("Yuul", -1.0, "Seeress speaks")
+
+    log.append(yuul_change)
+    log.append({"note": "👁️ Yuul's eyes go blank. The Seeress looks out."})
+    log.append({"note": "→ 'You can never leave this place.'"})
+
+    return {"log": log}
+
+
+def event_kit_breaks(sim):
+    """Kit Breaks"""
+    log = []
+
+    # Kit finally snaps
+    kit_change = sim.modify_character_c_self("Kit", -1.0, "breaks under pressure")
+
+    kit = sim.get_character("Kit")
+    if kit and kit.c_self <= 5:
+        if hasattr(sim, 'act3_system'):
+            sim.act3_system.special_flags["desperate_protector_mode"] = True
+            log.append({"note": "⚔️ Kit enters DESPERATE PROTECTOR MODE"})
+
+    log.append(kit_change)
+    log.append({"note": "→ 'Do something. Please.'"})
+    log.append({"note": "→ His breaking loads the gun the next card will fire"})
+
+    return {"log": log}
+
+
+def event_maeve_true_insight(sim):
+    """Maeve's True Obsession - The Insight That Saves Them"""
+    log = []
+
+    # Maeve realizes the real pattern
+    maeve_change = sim.modify_character_c_self("Maeve", +1.0, "True Insight achieved")
+
+    if hasattr(sim, 'act3_system'):
+        sim.act3_system.ending_paths_unlocked["miracle"] = True
+        sim.act3_system.special_flags["true_insight_unlocked"] = True
+
+    log.append(maeve_change)
+    log.append({"note": "✨ MAEVE ACHIEVES TRUE INSIGHT"})
+    log.append({"note": "→ The List feeds on extremes-BOTH dissolution AND ascension"})
+    log.append({"note": "→ Survival means holding the middle"})
+    log.append({"note": "🎯 MIRACLE ENDING PATH UNLOCKED"})
+
+    return {"log": log}
+
+
+def event_redchurch_prelude(sim):
+    """Redchurch Prelude"""
+    log = []
+
+    # The moment before everything changes
+    log.append({"note": "→ The moment before everything changes"})
+    log.append({"note": "→ The air tastes metallic"})
+
+    return {"log": log}
+
+
+def event_kettle_blackout(sim):
+    """The Kettle Blackout"""
+    log = []
+
+    # Daniel makes a call
+    log.append({"note": "→ Daniel makes the call"})
+    log.append({"note": "→ Does Maeve lie to protect them, or tell the truth?"})
+
+    return {"log": log}
+
+
+def event_dream_bleeds_through(sim):
+    """The Dream Bleeds Through"""
+    log = []
+
+    # Reality drift - images repeat
+    target = random.choice(["Yuul", "Maeve"])
+    target_change = sim.modify_character_c_self(target, -0.5, "dream bleeds through")
+
+    log.append(target_change)
+    log.append({"note": "→ Images repeat. Edges double. Echo overlaps begin."})
+
+    return {"log": log}
+
+
+def event_coherence_whiplash(sim):
+    """Coherence Whiplash"""
+    log = []
+
+    # High coherence drops, low coherence rises
+    for char_name, char in sim.characters.items():
+        if char.c_self >= 7:
+            change = sim.modify_character_c_self(char_name, -1.0, "coherence whiplash (high drop)")
+            log.append(change)
+        elif char.c_self <= 4:
+            change = sim.modify_character_c_self(char_name, +1.0, "coherence whiplash (low rise)")
+            log.append(change)
+
+    log.append({"note": "→ The field snaps toward the deadly middle"})
+
+    return {"log": log}
+
+
+def event_house_that_hears(sim):
+    """The House That Hears"""
+    log = []
+
+    # The walls echo wrong
+    target = random.choice(["Maeve", "Kit", "Yuul"])
+    target_change = sim.modify_character_c_self(target, -0.5, "house listens")
+
+    log.append(target_change)
+    log.append({"note": "→ The walls echo wrong. A pattern repeats."})
+    log.append({"note": "→ Something is listening."})
+
+    return {"log": log}
+
+
+def event_radio_bleeds(sim):
+    """The Radio Bleeds"""
+    log = []
+
+    # Static resolves into DCE voices
+    if hasattr(sim, 'act3_system'):
+        sim.act3_system.dce_pressure += 1
+
+    log.append({"note": "→ Static resolves into voices. DCE frequencies."})
+    log.append({"note": "→ They're triangulating."})
+
+    return {"log": log}
+
+
+# Add to EVENT_FUNCTIONS lookup
+EVENT_FUNCTIONS.update({
+    # Act III
+    "first_warning_returns": event_first_warning_returns,
+    "rielle_sees_it_too": event_rielle_sees_it_too,
+    "photo_album_memory": event_photo_album_memory,
+    "list_theory_obsession": event_list_theory_obsession,
+    "seeress_speaks": event_seeress_speaks,
+    "kit_breaks": event_kit_breaks,
+    "maeve_true_insight": event_maeve_true_insight,
+    "redchurch_prelude": event_redchurch_prelude,
+    "kettle_blackout": event_kettle_blackout,
+    "dream_bleeds_through": event_dream_bleeds_through,
+    "coherence_whiplash": event_coherence_whiplash,
+    "house_that_hears": event_house_that_hears,
+    "radio_bleeds": event_radio_bleeds,
+})
+
