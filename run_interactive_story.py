@@ -12,6 +12,7 @@ Your choices shape the story and are tracked in the final archetype summary.
 """
 
 from simulation import NarrativeSimulation
+from constants import CHAOS_THRESHOLD
 
 
 def run_interactive_story():
@@ -57,7 +58,7 @@ def run_interactive_story():
 
     sim.chaos = 8.0
 
-    print(f"Starting Chaos: {sim.chaos:.1f}/40.0")
+    print(f"Starting Chaos: {sim.chaos:.1f}/80.0")
     print()
     input("Press ENTER to continue...")
 
@@ -71,7 +72,7 @@ def run_interactive_story():
         sim.run_round()
 
         # Check for end conditions
-        if sim.chaos >= 40:
+        if sim.chaos >= CHAOS_THRESHOLD:
             print("\n🔥 CHAOS THRESHOLD REACHED - CoR manifests!")
             print("The story spirals beyond control...\n")
             break
