@@ -11,6 +11,7 @@ from events import Event, create_event_deck
 from chaos_state import ChaosState, get_chaos_components
 from act_system import ActSystem, ACT_EVENT_POOLS, display_act_banner
 from act_events import EVENT_FUNCTIONS
+from act3_system import Act3System, FarrisEntity, ENDING_NARRATIVES
 from constants import (
     CHAOS_THRESHOLD, CHAOS_WARNING_THRESHOLD,
     WITCH_TRINE_MEMBERS, WITCH_TRINE_DYADS
@@ -41,9 +42,17 @@ class NarrativeSimulation:
         self.act_data = None
         self.last_displayed_act = 0  # Track which act banner we last displayed
 
+        # Act 3 system (conditional events, endings, Farris)
+        self.act3_system = None
+        self.farris = None
+        self.character_stats = None
+
         if use_act_system:
             self.act_system = ActSystem()
+            self.act3_system = Act3System()
+            self.farris = FarrisEntity()
             self._load_act_data()
+            self._load_character_stats()
             self.event_deck = self.act_system.get_available_deck(1)  # Start with Act 1
         else:
             self.event_deck = create_event_deck()  # Use legacy event deck
@@ -145,6 +154,11 @@ class NarrativeSimulation:
                         turbulence=event_data.get('turbulence'),
                         pressure=event_data.get('pressure')
                     )
+
+                    # Add Act 3 conditional triggers as attribute
+                    if 'triggers' in event_data:
+                        event.triggers = event_data['triggers']
+
                     events.append(event)
 
                 ACT_EVENT_POOLS[act_num] = events
@@ -221,6 +235,18 @@ class NarrativeSimulation:
         except json.JSONDecodeError as e:
             print(f"⚠️  Error parsing choices.json: {e}")
             self.interactive_mode = False
+
+    def _load_character_stats(self):
+        """Load character stat blocks for Act 3 breakpoints"""
+        stats_path = os.path.join(os.path.dirname(__file__), 'character_stats.json')
+        try:
+            with open(stats_path, 'r') as f:
+                self.character_stats = json.load(f)
+            print(f"✓ Loaded character stats for {len(self.character_stats['characters'])} characters")
+        except FileNotFoundError:
+            print(f"⚠️  character_stats.json not found")
+        except json.JSONDecodeError as e:
+            print(f"⚠️  Error parsing character_stats.json: {e}")
 
     def display_choice(self, choice_id: int) -> Optional[str]:
         """
@@ -598,6 +624,15 @@ class NarrativeSimulation:
                 if rounds_since_played < event.cooldown:
                     continue
 
+            # Act 3: Check conditional triggers
+            if self.act3_system and hasattr(event, 'triggers'):
+                # Convert event to dict for trigger checking
+                event_dict = {
+                    "triggers": getattr(event, 'triggers', {})
+                }
+                if not self.act3_system.check_event_triggers(event_dict, self.characters, self.relationships):
+                    continue  # Skip event if triggers not met
+
             # Calculate weight based on probability decay
             play_count = self.event_play_count.get(event.id, 0)
             weight = event.probability_decay ** play_count
@@ -676,6 +711,11 @@ class NarrativeSimulation:
                         "choice_id": choice_id,
                         "archetype": archetype
                     })
+
+                    # Update Farris mode (Act 3)
+                    if self.farris:
+                        self.farris.update_from_choice(archetype)
+                        self.farris.coherence = self.farris.get_coherence(self.characters.get("Maeve").c_self)
 
                     # Apply archetype effects
                     self.apply_archetype_effect(archetype, event.name)
@@ -940,6 +980,47 @@ class NarrativeSimulation:
                 print(warning)
         else:
             print("  ✓ No critical warnings")
+
+        # Act 3: Calculate and display ending
+        if self.act3_system and self.farris:
+            print(f"\n{'='*80}")
+            print("CALCULATING ENDING...")
+            print(f"{'='*80}")
+
+            # Calculate ending
+            final_ending, all_weights = self.act3_system.calculate_ending(self, self.farris)
+
+            # Display Farris final state
+            print(f"\n🗣️ FARRIS (Voice Archetype Mirror)")
+            print(f"  Mode: {self.farris.mode.upper()}")
+            print(f"  Coherence: {self.farris.coherence:.1f} (mirroring Maeve)")
+
+            # Display ending weights
+            print(f"\n📊 ENDING WEIGHTS:")
+            for ending_name, weight in sorted(all_weights.items(), key=lambda x: x[1], reverse=True):
+                bar = "█" * int(weight / 5) if weight > 0 else ""
+                print(f"  {ending_name.replace('_', ' ').title():25s}: {weight:3.0f} {bar}")
+
+            # Display the final ending
+            ending_data = ENDING_NARRATIVES.get(final_ending, {})
+            print(f"\n{'='*80}")
+            print(f"{'='*80}")
+            print(f"{ending_data.get('title', 'UNKNOWN ENDING')}")
+            print(f"{'='*80}")
+            print(f"{'='*80}")
+            print(ending_data.get('description', 'No description available.'))
+
+            # Display ending metadata
+            if 'survivors' in ending_data:
+                print(f"\n✓ SURVIVORS: {', '.join(ending_data['survivors'])}")
+            if 'dead' in ending_data:
+                print(f"\n💀 CASUALTIES: {', '.join(ending_data['dead'])}")
+            if 'transformed' in ending_data:
+                print(f"\n🌀 TRANSFORMED: {', '.join(ending_data['transformed'])}")
+            if 'status' in ending_data:
+                print(f"\n⚠️  STATUS: {ending_data['status']}")
+
+            print(f"\n{'='*80}")
 
     def _get_state_symbol(self, state: str) -> str:
         """Get a symbol for a character state"""

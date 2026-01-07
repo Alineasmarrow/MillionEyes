@@ -37,9 +37,10 @@ def run_interactive_story():
     # Setup: The Descent scenario
     print("\n📖 Scenario: The Descent")
     print("Yuul's prophetic coherence is failing. Can H11 survive the spiral?")
-    print("\nThe story unfolds in two acts:")
-    print("  ACT I: Misleading Calm (rounds 1-10)")
-    print("  ACT II: Escalation (rounds 11-25)")
+    print("\nThe story unfolds in three acts:")
+    print("  🌅 ACT I: Misleading Calm (rounds 1-10)")
+    print("  ⚡ ACT II: Escalation (rounds 11-25)")
+    print("  🔥 ACT III: Collapse or Transcendence (rounds 26-40)")
     print()
 
     sim.add_character("Yuul", c_self=6.0)
@@ -60,8 +61,8 @@ def run_interactive_story():
     print()
     input("Press ENTER to continue...")
 
-    # Run simulation (25 rounds covers both Act I and Act II)
-    num_rounds = 25
+    # Run simulation (40 rounds covers all three acts)
+    num_rounds = 40
 
     print(f"\n🎲 Running up to {num_rounds} rounds...")
     print("You will be prompted to make choices when unique events occur.\n")
