@@ -1070,6 +1070,242 @@ def event_radio_bleeds(sim):
     return {"log": log}
 
 
+def event_daniel_calls_dce(sim):
+    """Daniel Calls the DCE (BURN, CHOICE)"""
+    log = []
+
+    # Daniel thinks he's helping - calls the Directorate
+    daniel = sim.get_character("Daniel")
+    if daniel:
+        daniel_change = sim.modify_character_c_self("Daniel", -1.5, "calls DCE")
+        log.append(daniel_change)
+
+    yuul_change = sim.modify_character_c_self("Yuul", -2.0, "DCE intervention looming")
+    kit_change = sim.modify_character_c_self("Kit", -1.0, "betrayal from above")
+
+    log.extend([yuul_change, kit_change])
+    log.append({"note": "🔥 BURN: Daniel calls the Directorate"})
+    log.append({"note": "→ 'They send three agents. For Yuul.'"})
+
+    # Apply burn effects
+    if hasattr(sim, 'act3_system'):
+        sim.act3_system.pressure_baseline += 3.0
+        sim.act3_system.dce_pressure += 3
+        log.append({"note": "📈 Pressure baseline +3.0 (DCE intervention)"})
+
+    return {"log": log}
+
+
+def event_rielle_burns_redchurch(sim):
+    """Rielle Burns Redchurch (BURN, CHOICE)"""
+    log = []
+
+    # Rielle acts alone - burns the wound-site
+    rielle_change = sim.modify_character_c_self("Rielle", -2.0, "burns Redchurch")
+    yuul_change = sim.modify_character_c_self("Yuul", -1.5, "screams across distance")
+
+    # Sever the Trine
+    my_change = sim.modify_dyad("Maeve", "Yuul", -2.0, "Trine ruptures")
+    mr_change = sim.modify_dyad("Maeve", "Rielle", -2.0, "Trine ruptures")
+    yr_change = sim.modify_dyad("Yuul", "Rielle", -2.0, "Trine ruptures")
+
+    log.extend([rielle_change, yuul_change, my_change, mr_change, yr_change])
+    log.append({"note": "🔥 BURN: Redchurch burns"})
+    log.append({"note": "💔 THE WITCH TRINE SEVERS"})
+    log.append({"note": "→ Rielle acts alone. The fire spreads."})
+
+    # Apply burn effects
+    if hasattr(sim, 'act3_system'):
+        sim.act3_system.special_flags["trine_severed"] = True
+        sim.act3_system.special_flags["redchurch_burned"] = True
+
+    return {"log": log}
+
+
+def event_the_mirror_transformation(sim):
+    """The Mirror - Yuul's Ascension/Dissolution (BURN)"""
+    log = []
+
+    # Yuul stands before the Mirror - The Seeress dances
+    yuul = sim.get_character("Yuul")
+
+    if yuul:
+        # Yuul becomes extreme - either dissolves toward 0 or ascends toward 10
+        if yuul.c_self <= 3:
+            # Dissolution path
+            yuul_change = sim.modify_character_c_self("Yuul", -yuul.c_self, "dissolves into the Mirror")
+            log.append(yuul_change)
+            log.append({"note": "🔥 BURN: Yuul dissolves"})
+            log.append({"note": "→ She steps through the glass. Gone."})
+        else:
+            # Ascension path
+            ascension = 10.0 - yuul.c_self
+            yuul_change = sim.modify_character_c_self("Yuul", ascension, "becomes the Seeress")
+            log.append(yuul_change)
+            log.append({"note": "🔥 BURN: Yuul transforms"})
+            log.append({"note": "→ The Seeress dances. Yuul mirrors her. She BECOMES."})
+
+    kit = sim.get_character("Kit")
+    if kit:
+        kit_change = sim.modify_character_c_self("Kit", -2.0, "watches transformation")
+        log.append(kit_change)
+
+    return {"log": log}
+
+
+def event_the_list_manifests(sim):
+    """The List Manifests (BURN, CHOICE)"""
+    log = []
+
+    # The entity that eats names descends
+    log.append({"note": "🔥 BURN: THE LIST MANIFESTS"})
+    log.append({"note": "→ The entity descends"})
+    log.append({"note": "→ High coherence and low coherence both become prey"})
+
+    # Hit extremes hardest
+    for char_name, char in sim.characters.items():
+        if char.c_self >= 8:
+            change = sim.modify_character_c_self(char_name, -2.0, "marked by List (high)")
+            log.append(change)
+            char.marked_by_list = True
+        elif char.c_self <= 2:
+            change = sim.modify_character_c_self(char_name, -2.0, "marked by List (low)")
+            log.append(change)
+            char.marked_by_list = True
+
+    log.append({"note": "→ Names begin to glow"})
+
+    return {"log": log}
+
+
+def event_kit_confession_sacred(sim):
+    """Kit Confesses His Love (CHOICE)"""
+    log = []
+
+    # Kit finally speaks: "It's always been you."
+    kit_change = sim.modify_character_c_self("Kit", +1.0, "confesses love")
+    yuul_change = sim.modify_character_c_self("Yuul", +2.0, "remembers being a person")
+
+    ky_change = sim.modify_dyad("Kit", "Yuul", +1.5, "sacred confession")
+
+    log.extend([kit_change, yuul_change, ky_change])
+    log.append({"note": "💕 Kit confesses: 'It's always been you.'"})
+    log.append({"note": "→ Yuul remembers what it means to be loved"})
+
+    # Check if dyad becomes sacred
+    kit_yuul = sim.get_dyad("Kit", "Yuul")
+    if kit_yuul and kit_yuul.c_dyad >= 9:
+        log.append({"note": "✨ Kit-Yuul bond reaches SACRED threshold"})
+        if hasattr(sim, 'act3_system'):
+            sim.act3_system.ending_paths_unlocked["disappearance"] = True
+            log.append({"note": "🎯 DISAPPEARANCE ENDING PATH UNLOCKED"})
+
+    return {"log": log}
+
+
+def event_dce_restraint_order(sim):
+    """DCE Restraint Order"""
+    log = []
+
+    # Daniel decides: defect or authorize the raid
+    daniel = sim.get_character("Daniel")
+
+    if daniel and daniel.c_self <= 4:
+        # Daniel defects
+        daniel_change = sim.modify_character_c_self("Daniel", +1.0, "defects to protect H11")
+        log.append(daniel_change)
+        log.append({"note": "→ Daniel tears up the restraint order"})
+        log.append({"note": "→ 'I won't let them take her.'"})
+
+        if hasattr(sim, 'act3_system'):
+            sim.act3_system.dce_pressure -= 1
+    else:
+        # Daniel authorizes
+        kit_change = sim.modify_character_c_self("Kit", -1.0, "DCE closing in")
+        yuul_change = sim.modify_character_c_self("Yuul", -0.5, "hunted")
+
+        log.extend([kit_change, yuul_change])
+        log.append({"note": "→ Daniel signs the order"})
+        log.append({"note": "→ The net tightens"})
+
+        if hasattr(sim, 'act3_system'):
+            sim.act3_system.dce_pressure += 1
+
+    return {"log": log}
+
+
+def event_choirbreak_moment(sim):
+    """The Choirbreak Moment"""
+    log = []
+
+    # A fracture in sound - everyone loses coherence except Maeve with True Insight
+    log.append({"note": "→ A fracture in sound. Reality splinters."})
+
+    has_true_insight = False
+    if hasattr(sim, 'act3_system'):
+        has_true_insight = sim.act3_system.special_flags.get("true_insight_unlocked", False)
+
+    for char_name, char in sim.characters.items():
+        if char_name == "Maeve" and has_true_insight:
+            # Maeve is protected
+            log.append({"note": f"  ✓ Maeve protected by True Insight"})
+        else:
+            change = sim.modify_character_c_self(char_name, -1.0, "choirbreak fracture")
+            log.append(change)
+
+    return {"log": log}
+
+
+def event_thread_cuts(sim):
+    """The Thread Cuts"""
+    log = []
+
+    # A Sacred dyad shatters
+    sacred_dyads = [rel for rel in sim.relationships if rel.is_sacred]
+
+    if sacred_dyads:
+        # Pick a random sacred dyad to shatter
+        import random
+        target_dyad = random.choice(sacred_dyads)
+
+        dyad_change = sim.modify_dyad(target_dyad.char_a, target_dyad.char_b, -3.0, "thread cuts")
+        log.append(dyad_change)
+        log.append({"note": f"💔 SACRED DYAD SHATTERS: {target_dyad.char_a}-{target_dyad.char_b}"})
+        log.append({"note": "→ The thread cuts. Pressure drops. Chaos rises."})
+    else:
+        # No sacred dyads - hit strongest dyad
+        strongest = max(sim.relationships, key=lambda r: r.c_dyad)
+        dyad_change = sim.modify_dyad(strongest.char_a, strongest.char_b, -2.0, "thread strains")
+        log.append(dyad_change)
+        log.append({"note": "→ The strongest thread strains under pressure"})
+
+    return {"log": log}
+
+
+def event_name_eater_stirs(sim):
+    """The Name Eater Stirs"""
+    log = []
+
+    # High coherence names begin to glow - marked as prey
+    log.append({"note": "→ The Name Eater stirs"})
+
+    marked_any = False
+    for char_name, char in sim.characters.items():
+        if char.c_self >= 7:
+            char.marked_by_list = True
+            change = sim.modify_character_c_self(char_name, -0.5, "name glows")
+            log.append(change)
+            log.append({"note": f"  ⚠️ {char_name}'s name begins to GLOW"})
+            marked_any = True
+
+    if marked_any:
+        log.append({"note": "→ High coherence = visible prey"})
+    else:
+        log.append({"note": "→ No high coherence targets... yet"})
+
+    return {"log": log}
+
+
 # Add to EVENT_FUNCTIONS lookup
 EVENT_FUNCTIONS.update({
     # Act III
@@ -1086,5 +1322,14 @@ EVENT_FUNCTIONS.update({
     "coherence_whiplash": event_coherence_whiplash,
     "house_that_hears": event_house_that_hears,
     "radio_bleeds": event_radio_bleeds,
+    "daniel_calls_dce": event_daniel_calls_dce,
+    "rielle_burns_redchurch": event_rielle_burns_redchurch,
+    "the_mirror_transformation": event_the_mirror_transformation,
+    "the_list_manifests": event_the_list_manifests,
+    "kit_confession_sacred": event_kit_confession_sacred,
+    "dce_restraint_order": event_dce_restraint_order,
+    "choirbreak_moment": event_choirbreak_moment,
+    "thread_cuts": event_thread_cuts,
+    "name_eater_stirs": event_name_eater_stirs,
 })
 
