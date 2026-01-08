@@ -48,13 +48,26 @@ def run_interactive_story():
     sim.add_character("Maeve", c_self=7.0)
     sim.add_character("Kit", c_self=7.0)
     sim.add_character("Rielle", c_self=7.0)
+    sim.add_character("Farris", c_self=8.0)  # Archetype-Anchor, Wolf-aligned
+    sim.add_character("Daniel", c_self=6.0)  # H11 Operative, Institutional
 
+    # Original Witch Trine + connections
     sim.add_relationship("Yuul", "Maeve", c_dyad=6.5)
     sim.add_relationship("Kit", "Yuul", c_dyad=7.0)
     sim.add_relationship("Yuul", "Rielle", c_dyad=6.0)
     sim.add_relationship("Maeve", "Kit", c_dyad=6.5)
     sim.add_relationship("Maeve", "Rielle", c_dyad=8.0)
     sim.add_relationship("Kit", "Rielle", c_dyad=6.0)
+
+    # Farris dyads
+    sim.add_relationship("Maeve", "Farris", c_dyad=7.0)  # Resonant bond, stabilizing
+    sim.add_relationship("Farris", "Yuul", c_dyad=4.0)   # Omen link
+    sim.add_relationship("Farris", "Kit", c_dyad=5.0)    # Loyalty
+    sim.add_relationship("Farris", "Rielle", c_dyad=3.0) # Rivalry
+
+    # Daniel dyads
+    sim.add_relationship("Maeve", "Daniel", c_dyad=6.0)  # Fractured, institutional
+    sim.add_relationship("Daniel", "Yuul", c_dyad=2.0)   # Fragile
 
     sim.chaos = 8.0
 

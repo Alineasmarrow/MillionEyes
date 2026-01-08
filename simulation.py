@@ -896,6 +896,43 @@ class NarrativeSimulation:
             field_desc = self.field_state.get_state_description()
             print(f"\n🌊 Field State: {field_desc}")
 
+        # Apply special character effects (Farris mirroring, etc.)
+        self._apply_special_character_effects()
+
+    def _apply_special_character_effects(self):
+        """Apply special character-specific effects at end of round"""
+        # Farris mirrors Maeve's coherence
+        farris = self.get_character("Farris")
+        maeve = self.get_character("Maeve")
+
+        if farris and maeve:
+            old_farris_c = farris.c_self
+
+            if maeve.c_self >= 7:
+                # Farris mirrors Maeve when she's stable/high
+                farris._c_self = maeve.c_self
+                if abs(old_farris_c - farris.c_self) > 0.1:
+                    print(f"\n🐺 Farris mirrors Maeve: {old_farris_c:.1f} → {farris.c_self:.1f}")
+
+            elif maeve.c_self <= 4:
+                # Farris becomes volatile when Maeve is low
+                if not hasattr(farris, 'instability'):
+                    farris.instability = 0
+                farris.instability += 1
+
+                if farris.instability > 0:
+                    print(f"\n🐺 Farris destabilizes as Maeve falls (instability: {farris.instability})")
+
+        # Daniel pressure check
+        daniel = self.get_character("Daniel")
+        if daniel and maeve:
+            maeve_daniel_dyad = self.get_dyad("Maeve", "Daniel")
+            if maeve_daniel_dyad and maeve_daniel_dyad.c_dyad < 3:
+                if hasattr(self, 'act3_system'):
+                    if not self.act3_system.special_flags.get("h11_unstable", False):
+                        self.act3_system.special_flags["h11_unstable"] = True
+                        print(f"\n⚠️  H11 becomes unstable (Maeve-Daniel dyad fractured)")
+
     def run_scenario(self, num_rounds: int = 10, events: Optional[List[Event]] = None):
         """Run a complete scenario with multiple rounds"""
         print(f"\n🎭 STARTING SCENARIO: {self.name}")

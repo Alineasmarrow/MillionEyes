@@ -1306,6 +1306,255 @@ def event_name_eater_stirs(sim):
     return {"log": log}
 
 
+# ============================================================================
+# FARRIS & DANIEL EVENTS
+# ============================================================================
+
+# ACT 1 - Farris Events
+
+def event_farris_sees_shadow(sim):
+    """Farris Sees the Shadow First"""
+    log = []
+
+    # Farris stares at a corner no one else feels drawn to
+    maeve = sim.get_character("Maeve")
+    farris = sim.get_character("Farris")
+
+    if farris:
+        farris_change = sim.modify_character_c_self("Farris", +0.5, "wolf-sense active")
+        log.append(farris_change)
+
+    if maeve and farris:
+        mf_change = sim.modify_dyad("Maeve", "Farris", +0.2, "shared omen awareness")
+        log.append(mf_change)
+
+    log.append({"note": "🐺 Farris: 'Something is leaning too close to her.'"})
+    log.append({"note": "→ Omens become visible"})
+
+    # Add tag
+    if maeve:
+        maeve.add_tag("omens_visible")
+
+    return {"log": log}
+
+
+def event_farris_reaches_maeve(sim):
+    """Farris Reaches Maeve First"""
+    log = []
+
+    # Maeve slips into dissociation. Farris steps in close
+    maeve_change = sim.modify_character_c_self("Maeve", +0.5, "grounded by Farris")
+    mf_change = sim.modify_dyad("Maeve", "Farris", +0.7, "protective anchor")
+
+    log.extend([maeve_change, mf_change])
+    log.append({"note": "🐺 Farris grounds Maeve with a word and a touch"})
+    log.append({"note": "→ She comes back"})
+
+    return {"log": log}
+
+
+# ACT 1 - Daniel Events
+
+def event_daniel_wrong_questions(sim):
+    """Daniel Asks the Wrong Questions"""
+    log = []
+
+    # Daniel checks in gently, but his phrasing feels rehearsed
+    md_change = sim.modify_dyad("Maeve", "Daniel", -0.3, "clinical concern")
+
+    log.append(md_change)
+    log.append({"note": "→ Daniel: 'Have you been sleeping enough?'"})
+    log.append({"note": "→ Too specific. Borrowed from DCE briefings."})
+
+    daniel = sim.get_character("Daniel")
+    if daniel:
+        daniel.add_tag("daniel_concerned")
+
+    return {"log": log}
+
+
+def event_daniel_notices_yuul(sim):
+    """Daniel Noticed Yuul's Slip"""
+    log = []
+
+    # Daniel notices Yuul misidentifying the date
+    yuul_change = sim.modify_character_c_self("Yuul", -0.5, "date confusion noticed")
+    dy_change = sim.modify_dyad("Daniel", "Yuul", +0.1, "masks alarm poorly")
+
+    log.extend([yuul_change, dy_change])
+    log.append({"note": "→ Daniel notices. He masks his alarm poorly."})
+
+    return {"log": log}
+
+
+# ACT 2 - Farris Events
+
+def event_farris_intercepts_stress(sim):
+    """Farris Intercepts the Spiral"""
+    log = []
+
+    # Maeve's focus fractures. Farris steps in
+    maeve_change = sim.modify_character_c_self("Maeve", +1.0, "grounded by Farris")
+    mf_change = sim.modify_dyad("Maeve", "Farris", +0.5, "protective intervention")
+
+    log.extend([maeve_change, mf_change])
+    log.append({"note": "🐺 Farris intercepts: hand to the back of her neck"})
+    log.append({"note": "→ Maeve's spiral breaks"})
+
+    return {"log": log}
+
+
+def event_farris_smells_wrongness(sim):
+    """Farris Smells Wrongness"""
+    log = []
+
+    # He halts mid-sentence
+    farris = sim.get_character("Farris")
+    if farris:
+        mf_change = sim.modify_dyad("Maeve", "Farris", +0.3, "shared omen tracking")
+        log.append(mf_change)
+        farris.add_tag("entity_tracking")
+
+    log.append({"note": "🐺 Farris halts: 'It's closer now.'"})
+    log.append({"note": "→ No one else senses it"})
+
+    return {"log": log}
+
+
+def event_farris_breaks_tension(sim):
+    """Farris Breaks the Tension"""
+    log = []
+
+    # He makes a remark so dry it shatters the suffocating quiet
+    for char_name in ["Maeve", "Kit", "Yuul", "Rielle"]:
+        char = sim.get_character(char_name)
+        if char:
+            change = sim.modify_character_c_self(char_name, +0.5, "tension breaks")
+            log.append(change)
+
+    log.append({"note": "🐺 Farris makes a dry remark"})
+    log.append({"note": "→ Everyone breathes again"})
+
+    return {"log": log}
+
+
+# ACT 2 - Daniel Events
+
+def event_daniel_covers_for_maeve(sim):
+    """Daniel Covers for Maeve"""
+    log = []
+
+    # He lies to H11 about Maeve's condition
+    md_change = sim.modify_dyad("Maeve", "Daniel", +0.5, "covers for her")
+    log.append(md_change)
+
+    log.append({"note": "→ Daniel lies to H11 about Maeve's condition"})
+    log.append({"note": "→ The lie fits too easily in his mouth"})
+
+    # Increase H11 pressure
+    if hasattr(sim, 'act3_system'):
+        sim.act3_system.dce_pressure += 1
+        log.append({"note": "📈 H11 pressure +1"})
+
+    return {"log": log}
+
+
+def event_daniel_detects_pattern(sim):
+    """Daniel Detects a Pattern"""
+    log = []
+
+    # He notices the entity's feeding cycle before Maeve does
+    log.append({"note": "→ Daniel: 'I think I see the pattern.'"})
+    log.append({"note": "→ The air goes still when he says it aloud"})
+
+    maeve = sim.get_character("Maeve")
+    if maeve:
+        maeve.add_tag("list_pattern_revealed")
+
+    # Add pressure
+    if hasattr(sim, 'act3_system'):
+        sim.act3_system.dce_pressure += 1
+
+    return {"log": log}
+
+
+# ACT 3 - Farris Events
+
+def event_farris_refuses_alone(sim):
+    """Farris Refuses to Let Her Go Alone"""
+    log = []
+
+    # Farris simply says: if she goes, he goes
+    mf_change = sim.modify_dyad("Maeve", "Farris", +1.0, "unwavering loyalty")
+    log.append(mf_change)
+
+    log.append({"note": "🐺 Farris: 'If you go, I go.'"})
+    log.append({"note": "→ Non-negotiable"})
+
+    # If Maeve is low coherence, this adds pressure instead
+    maeve = sim.get_character("Maeve")
+    if maeve and maeve.c_self <= 4:
+        if hasattr(sim, 'act3_system'):
+            sim.act3_system.dce_pressure += 1
+            log.append({"note": "→ His loyalty becomes weight"})
+
+    return {"log": log}
+
+
+def event_farris_wolf_sense_door(sim):
+    """Wolf-Sense: The Door Is Already Open"""
+    log = []
+
+    # Farris can feel it: something at Redchurch opened itself
+    log.append({"note": "🐺 Farris: 'The door is already open.'"})
+    log.append({"note": "→ Something opened when a name cracked"})
+
+    # Mark Redchurch as inevitable
+    if hasattr(sim, 'act3_system'):
+        sim.act3_system.special_flags["redchurch_inevitable"] = True
+
+    return {"log": log}
+
+
+# ACT 3 - Daniel Events
+
+def event_daniel_makes_call(sim):
+    """Daniel Makes the Call (BURN)"""
+    log = []
+
+    # Daniel calls H11 again. They send a strategist, not a counselor
+    md_change = sim.modify_dyad("Maeve", "Daniel", -2.0, "betrayal")
+    log.append(md_change)
+
+    log.append({"note": "🔥 BURN: Daniel calls H11"})
+    log.append({"note": "→ They send a strategist, not a counselor"})
+
+    # Mark DCE path and max pressure
+    if hasattr(sim, 'act3_system'):
+        sim.act3_system.special_flags["h11_max_pressure"] = True
+        sim.act3_system.ending_paths_unlocked["dce_path"] = True
+        sim.act3_system.dce_pressure += 5
+        log.append({"note": "📈 H11 pressure MAXIMIZED"})
+        log.append({"note": "🎯 DCE ENDING PATH UNLOCKED"})
+
+    return {"log": log}
+
+
+def event_daniel_last_warning(sim):
+    """Daniel's Last Warning"""
+    log = []
+
+    # Daniel begs Maeve to stop
+    maeve_change = sim.modify_character_c_self("Maeve", -1.0, "Daniel's fear")
+    md_change = sim.modify_dyad("Maeve", "Daniel", +1.0, "desperate plea")
+
+    log.extend([maeve_change, md_change])
+    log.append({"note": "→ Daniel begs Maeve to stop"})
+    log.append({"note": "→ Fear in his voice she's never heard"})
+
+    return {"log": log}
+
+
 # Add to EVENT_FUNCTIONS lookup
 EVENT_FUNCTIONS.update({
     # Act III
@@ -1331,5 +1580,23 @@ EVENT_FUNCTIONS.update({
     "choirbreak_moment": event_choirbreak_moment,
     "thread_cuts": event_thread_cuts,
     "name_eater_stirs": event_name_eater_stirs,
+
+    # Farris & Daniel Events
+    # Act 1
+    "farris_sees_shadow": event_farris_sees_shadow,
+    "farris_reaches_maeve": event_farris_reaches_maeve,
+    "daniel_wrong_questions": event_daniel_wrong_questions,
+    "daniel_notices_yuul": event_daniel_notices_yuul,
+    # Act 2
+    "farris_intercepts_stress": event_farris_intercepts_stress,
+    "farris_smells_wrongness": event_farris_smells_wrongness,
+    "farris_breaks_tension": event_farris_breaks_tension,
+    "daniel_covers_for_maeve": event_daniel_covers_for_maeve,
+    "daniel_detects_pattern": event_daniel_detects_pattern,
+    # Act 3
+    "farris_refuses_alone": event_farris_refuses_alone,
+    "farris_wolf_sense_door": event_farris_wolf_sense_door,
+    "daniel_makes_call": event_daniel_makes_call,
+    "daniel_last_warning": event_daniel_last_warning,
 })
 
