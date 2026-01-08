@@ -82,7 +82,14 @@ def run_interactive_story():
     print("You will be prompted to make choices when unique events occur.\n")
 
     for i in range(num_rounds):
-        sim.run_round()
+        game_over = sim.run_round()
+
+        # Check for game over from dissolution
+        if game_over:
+            print("\n" + "="*80)
+            print("THE STORY ENDS HERE")
+            print("="*80)
+            break
 
         # Check for end conditions
         if sim.chaos >= CHAOS_THRESHOLD:

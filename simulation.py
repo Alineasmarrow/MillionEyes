@@ -899,6 +899,11 @@ class NarrativeSimulation:
         # Apply special character effects (Farris mirroring, etc.)
         self._apply_special_character_effects()
 
+        # Check for dissolution and game over conditions
+        game_over = self.check_dissolution_and_survival()
+        if game_over:
+            return game_over  # Return game over type to caller
+
     def _apply_special_character_effects(self):
         """Apply special character-specific effects at end of round"""
         # Farris mirrors Maeve's coherence
@@ -932,6 +937,173 @@ class NarrativeSimulation:
                     if not self.act3_system.special_flags.get("h11_unstable", False):
                         self.act3_system.special_flags["h11_unstable"] = True
                         print(f"\n⚠️  H11 becomes unstable (Maeve-Daniel dyad fractured)")
+
+    def check_dissolution_and_survival(self):
+        """
+        Check for characters at C=0 and handle survival rolls
+
+        Returns:
+            game_over_type if catastrophic failure, None otherwise
+        """
+        import random
+        from game_over_screens import get_death_screen, get_yuul_death_screen
+
+        for char_name, char in self.characters.items():
+            # Skip if already dead
+            if char.is_dead:
+                continue
+
+            if char.c_self <= 0:
+                # Increment rounds at zero
+                char.rounds_at_zero += 1
+
+                # Get character's dyads
+                char_dyads = [rel for rel in self.relationships if rel.involves(char_name)]
+
+                # Get survival chance
+                survival_chance = char.get_survival_chance(char_dyads)
+                max_rounds = char.get_max_survival_rounds()
+
+                # Check if exceeded max rounds
+                if char.rounds_at_zero > max_rounds:
+                    print(f"\n💀 {char_name} has been at C=0 for {char.rounds_at_zero} rounds")
+                    print(f"   Maximum survival time exceeded...")
+                    self._apply_death(char_name)
+                    return self._check_game_over()
+
+                # Check if can survive at all
+                if survival_chance == 0:
+                    print(f"\n💀 {char_name} hits C=0 with no anchor")
+                    print(f"   Instant dissolution...")
+
+                    # Special Yuul screen
+                    if char_name == "Yuul":
+                        print(get_yuul_death_screen(has_sacred_bond=False, at_wound_site=False))
+                    else:
+                        print(get_death_screen(char_name, "dyad_collapse"))
+
+                    self._apply_death(char_name)
+                    return self._check_game_over()
+
+                # Roll for survival
+                roll = random.random() * 100
+                print(f"\n⚠️  {char_name} at C=0 (Round {char.rounds_at_zero}/{max_rounds})")
+                print(f"   Survival chance: {survival_chance:.0f}%")
+                print(f"   Roll: {roll:.0f}%")
+
+                if roll > survival_chance:
+                    print(f"   Survival roll FAILED")
+                    self._apply_death(char_name)
+                    return self._check_game_over()
+                else:
+                    print(f"   {char_name} clings to existence...")
+
+                    # Yuul special: degrade sacred bond
+                    if char_name == "Yuul":
+                        sacred_dyads = [d for d in char_dyads if d.is_sacred and d.c_dyad >= 9]
+                        if sacred_dyads:
+                            # Degrade the sacred bond
+                            for dyad in sacred_dyads:
+                                other_char = dyad.get_other(char_name)
+                                self.modify_dyad(char_name, other_char, -1.0, "Yuul's dissolution strains bond")
+                                print(f"   💔 Sacred bond degrades as Yuul flickers")
+
+        return None  # No game over
+
+    def _apply_death(self, char_name: str):
+        """
+        Apply death consequences when a character dies
+
+        Args:
+            char_name: Name of character who died
+        """
+        from game_over_screens import get_death_screen, get_yuul_death_screen
+
+        char = self.get_character(char_name)
+        if not char:
+            return
+
+        # Mark as dead
+        char.is_dead = True
+
+        # Get character's dyads
+        char_dyads = [rel for rel in self.relationships if rel.involves(char_name)]
+
+        # Display death screen
+        if char_name == "Yuul":
+            # Check for special Yuul circumstances
+            at_wound_site = hasattr(self, 'act3_system') and self.act3_system.special_flags.get("redchurch_endgame", False)
+            had_sacred = any(d.is_sacred for d in char_dyads)
+            print(get_yuul_death_screen(has_sacred_bond=had_sacred, at_wound_site=at_wound_site))
+        else:
+            # Determine death type
+            if char.scars >= 4:
+                death_type = "scar_collapse"
+            elif not any(d.c_dyad >= 5 for d in char_dyads):
+                death_type = "dyad_collapse"
+            elif hasattr(self, 'act3_system') and self.act3_system.dce_pressure >= 5:
+                death_type = "pressure"
+            else:
+                death_type = "generic"
+
+            print(get_death_screen(char_name, death_type))
+
+        # Sever all connected dyads and add scars to survivors
+        for dyad in char_dyads:
+            other_name = dyad.get_other(char_name)
+            other_char = self.get_character(other_name)
+
+            if other_char and not other_char.is_dead:
+                # Add scar to survivor
+                other_char.add_scar(f"witnessed {char_name}'s death")
+                print(f"\n💔 {other_name} gains a scar from witnessing {char_name}'s death")
+
+            # Sever the dyad
+            dyad.c_dyad = 0.0
+            print(f"   {dyad.char_a}-{dyad.char_b} dyad SEVERED")
+
+        # Chaos spike
+        self.chaos_state.add_hybrid(5.0, 3.0)  # +5 turbulence, +3 pressure
+        print(f"\n💀 Death ripples through reality: +5 chaos, +3 pressure")
+        print(f"   Total chaos: {self.chaos:.1f}")
+
+        # Break positive momentum
+        if self.field_state.state == "ascending":
+            self.field_state.reset()
+            print(f"   🌊 Field momentum BREAKS")
+
+    def _check_game_over(self) -> Optional[str]:
+        """
+        Check for Act 3 catastrophic game over conditions
+
+        Returns:
+            game_over_type if triggered, None otherwise
+        """
+        from game_over_screens import get_game_over_screen
+
+        core_crew = ["Maeve", "Kit", "Yuul", "Rielle"]
+        trine = ["Maeve", "Yuul", "Rielle"]
+
+        # Count dissolved core crew
+        dissolved = [name for name in core_crew if name in self.characters and self.characters[name].is_dead]
+
+        # Check: Protagonist Lost (Maeve at C=0 in Act 3)
+        if "Maeve" in self.characters and self.characters["Maeve"].is_dead:
+            print(get_game_over_screen("protagonist_lost"))
+            return "protagonist_lost"
+
+        # Check: Mass Dissolution (2+ core crew dead in Act 3)
+        if len(dissolved) >= 2:
+            print(get_game_over_screen("mass_dissolution"))
+            return "mass_dissolution"
+
+        # Check: Trine Collapsed (all three below 3)
+        if all(name in self.characters for name in trine):
+            if all(self.characters[name].c_self <= 3 for name in trine):
+                print(get_game_over_screen("trine_collapsed"))
+                return "trine_collapsed"
+
+        return None
 
     def run_scenario(self, num_rounds: int = 10, events: Optional[List[Event]] = None):
         """Run a complete scenario with multiple rounds"""

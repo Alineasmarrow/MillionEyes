@@ -35,6 +35,11 @@ class Character:
         # Momentum system: Coherence breeds coherence
         self.momentum = MomentumTracker()  # Individual momentum tracking
 
+        # Dissolution tracking system
+        self.rounds_at_zero = 0  # How many rounds spent at C=0
+        self.is_dead = False  # Whether character has died
+        self.death_type = None  # How they died (for appropriate screen)
+
     @property
     def c_self(self) -> float:
         return self._c_self
@@ -171,6 +176,52 @@ class Character:
         for buff in expired:
             self.c_self -= buff["amount"]
             self.temp_buffs.remove(buff)
+
+    def get_survival_chance(self, dyads: list) -> float:
+        """
+        Calculate survival chance when at C=0
+
+        Base: 50%
+        +20% for each dyad ≥7
+        -20% for each memory scar
+        Special: Yuul requires sacred bond (≥9) to survive AT ALL
+
+        Args:
+            dyads: List of Relationship objects involving this character
+
+        Returns:
+            Survival chance as percentage (0-100), or 0 if cannot survive
+        """
+        # Yuul special case: requires sacred bond
+        if self.name == "Yuul":
+            has_sacred = any(d.is_sacred and d.c_dyad >= 9 for d in dyads)
+            if not has_sacred:
+                return 0.0  # Cannot survive without sacred bond
+
+        # Check if has any dyad ≥5 (minimum requirement for survival)
+        has_anchor = any(d.c_dyad >= 5 for d in dyads)
+        if not has_anchor:
+            return 0.0  # Cannot survive without any anchor
+
+        # Base chance
+        chance = 50.0
+
+        # Bonus from strong dyads
+        strong_dyads = sum(1 for d in dyads if d.c_dyad >= 7)
+        chance += strong_dyads * 20.0
+
+        # Penalty from scars
+        chance -= self.scars * 20.0
+
+        # Clamp to 0-100
+        return max(0.0, min(100.0, chance))
+
+    def get_max_survival_rounds(self) -> int:
+        """Get maximum rounds this character can survive at C=0"""
+        if self.name == "Yuul":
+            return 2  # Yuul only gets 2 rounds
+        else:
+            return 3  # Standard characters get 3 rounds
 
     def __repr__(self):
         return f"{self.name} (C_self: {self._c_self:.1f}, State: {self.get_state()})"
@@ -361,6 +412,18 @@ class Relationship:
         elif from_char == self.char_b:
             return self._BtoA
         return 0.0
+
+    def involves(self, char_name: str) -> bool:
+        """Check if this relationship involves the given character"""
+        return char_name == self.char_a or char_name == self.char_b
+
+    def get_other(self, char_name: str) -> Optional[str]:
+        """Get the other character in this relationship"""
+        if char_name == self.char_a:
+            return self.char_b
+        elif char_name == self.char_b:
+            return self.char_a
+        return None
 
     def _check_sacred_status(self) -> bool:
         """Check if this dyad should become sacred (avg >= 9.0 and diff <= 1.0)"""
