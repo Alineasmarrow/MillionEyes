@@ -9,7 +9,7 @@ Each screen is tailored to the specific failure mode.
 # ACT 3 CATASTROPHIC GAME OVERS
 # ============================================================================
 
-GAME_OVER_MASS_DISSOLUTION = """
+GAME_OVER_MASS_DISSOLUTION = f"""
 {'='*80}
 💀 GAME OVER: MASS DISSOLUTION
 {'='*80}
@@ -46,7 +46,7 @@ A single line remains where the story used to be:
 {'='*80}
 """
 
-GAME_OVER_PROTAGONIST_LOST = """
+GAME_OVER_PROTAGONIST_LOST = f"""
 {'='*80}
 💀 GAME OVER: PROTAGONIST LOST
 {'='*80}
@@ -84,7 +84,7 @@ A final imprint remains:
 {'='*80}
 """
 
-GAME_OVER_TRINE_COLLAPSED = """
+GAME_OVER_TRINE_COLLAPSED = f"""
 {'='*80}
 💀 GAME OVER: TRINE COLLAPSED
 {'='*80}
@@ -129,7 +129,7 @@ You made one."
 # CHARACTER-SPECIFIC DEATH SCREENS
 # ============================================================================
 
-DEATH_SCREEN_MAEVE = """
+DEATH_SCREEN_MAEVE = f"""
 {'='*80}
 💀 MAEVE — THE LENS SHATTERS
 {'='*80}
@@ -161,7 +161,7 @@ PROTAGONIST LOST
 {'='*80}
 """
 
-DEATH_SCREEN_KIT = """
+DEATH_SCREEN_KIT = f"""
 {'='*80}
 💀 KIT — THE HEART BREAKS
 {'='*80}
@@ -194,7 +194,7 @@ THE ANCHOR HAS BEEN CUT
 {'='*80}
 """
 
-DEATH_SCREEN_YUUL_NO_BOND = """
+DEATH_SCREEN_YUUL_NO_BOND = f"""
 {'='*80}
 🌑 YUUL — THE GIRL BECOMES THE ECHO
 {'='*80}
@@ -226,7 +226,7 @@ And written where she used to be:
 "Some echoes outlive their source."
 """
 
-DEATH_SCREEN_YUUL_BOND_FAILED = """
+DEATH_SCREEN_YUUL_BOND_FAILED = f"""
 {'='*80}
 🌑 YUUL — SACRED BOND FAILS
 {'='*80}
@@ -259,7 +259,7 @@ Last imprint:
 "You held me as long as anyone could."
 """
 
-DEATH_SCREEN_YUUL_WOUND_SITE = """
+DEATH_SCREEN_YUUL_WOUND_SITE = f"""
 {'='*80}
 🌑 YUUL — THE WOUND-SITE CLAIMS HER
 {'='*80}
@@ -291,7 +291,7 @@ A sigil appears on the screen, pulsing like a heartbeat:
 "She knew."
 """
 
-DEATH_SCREEN_RIELLE = """
+DEATH_SCREEN_RIELLE = f"""
 {'='*80}
 💀 RIELLE — THE KNIFE DROPS
 {'='*80}
@@ -324,7 +324,7 @@ THE IMPULSE ENDS
 {'='*80}
 """
 
-DEATH_SCREEN_DANIEL = """
+DEATH_SCREEN_DANIEL = f"""
 {'='*80}
 💀 DANIEL — THE STRUCTURE CRACKS
 {'='*80}
@@ -358,7 +358,7 @@ THE STRUCTURE COLLAPSES
 {'='*80}
 """
 
-DEATH_SCREEN_FARRIS = """
+DEATH_SCREEN_FARRIS = f"""
 {'='*80}
 💀 FARRIS — THE WOLF FALLS SILENT
 {'='*80}
@@ -400,7 +400,7 @@ THE WARDEN IS GONE
 # GENERIC DEATH SCREENS (FOR DIFFERENT FAILURE MODES)
 # ============================================================================
 
-DEATH_SCREEN_GENERIC = """
+DEATH_SCREEN_GENERIC = f"""
 {'='*80}
 💀 {character_name} — DISSOLUTION
 {'='*80}
@@ -432,7 +432,7 @@ PLAY ON IF YOU CAN.
 {'='*80}
 """
 
-DEATH_SCREEN_PRESSURE_OVERLOAD = """
+DEATH_SCREEN_PRESSURE_OVERLOAD = f"""
 {'='*80}
 💀 {character_name} — PRESSURE OVERLOAD
 {'='*80}
@@ -466,7 +466,7 @@ A whisper lingers:
 "They were loyal to the end. To the wrong thing."
 """
 
-DEATH_SCREEN_SCAR_COLLAPSE = """
+DEATH_SCREEN_SCAR_COLLAPSE = f"""
 {'='*80}
 💀 {character_name} — MEMORY SCAR COLLAPSE
 {'='*80}
@@ -493,7 +493,7 @@ On the air, faint and almost grateful:
 "I can rest now."
 """
 
-DEATH_SCREEN_DYAD_COLLAPSE = """
+DEATH_SCREEN_DYAD_COLLAPSE = f"""
 {'='*80}
 💀 {character_name} — DYAD COLLAPSE
 {'='*80}

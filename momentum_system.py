@@ -30,10 +30,10 @@ class MomentumTracker:
             event_was_positive: True if character gained coherence, False if lost
         """
         if event_was_positive:
-            self.positive_streak += 1
+            self.positive_streak = min(5, self.positive_streak + 1)  # Cap at 5
             self.negative_streak = 0
         else:
-            self.negative_streak += 1
+            self.negative_streak = min(5, self.negative_streak + 1)  # Cap at 5
             self.positive_streak = 0
 
     def get_coherence_modifier(self) -> float:
@@ -120,9 +120,9 @@ class FieldState:
         else:
             new_state = "neutral"
 
-        # Update duration
+        # Update duration (cap at 5)
         if new_state == self.state:
-            self.duration += 1
+            self.duration = min(5, self.duration + 1)
         else:
             self.state = new_state
             self.duration = 1

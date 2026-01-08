@@ -9,7 +9,7 @@ Secret endings only appear if player committed heavily to one archetype.
 # MAIN ENDING EPILOGUES
 # ============================================================================
 
-EPILOGUE_REDCHURCH_CANON = """
+EPILOGUE_REDCHURCH_CANON = f"""
 {'='*80}
 ⭐ EPILOGUE — "The Burning Pattern"
 {'='*80}
@@ -21,22 +21,22 @@ The walls still hum faintly, as if echoing the moment the world tore open
 and swallowed the people who loved each other too fiercely
 to survive their own conviction.
 
-Maeve does not come back inside.
+Maeve Amell does not come back inside.
 
 She sits on the steps until dawn breaks,
 staring at her hands as though the blood might finally wash off
 if she just waits long enough.
-Rielle finds her there, but Maeve does not look up.
+Rielle LeClair finds her there, but Maeve does not look up.
 She is present only in shape, not in spirit.
 
-Kit is buried in the Sanctuary garden,
-under the cedar Yuul once braided ribbons into.
+Kit Kitsuragi is buried in the Sanctuary garden,
+under the cedar Yuul Amell once braided ribbons into.
 
 Yuul has no grave.
 
-Daniel never quite recovers from what he set in motion.
+Daniel Hargrave never quite recovers from what he set in motion.
 He defects, but too late for redemption.
-Farris lingers near Maeve like a ghost guarding a ghost.
+Farris Alvalin lingers near Maeve like a ghost guarding a ghost.
 
 The world turns.
 Redchurch remains crooked in its foundations —
@@ -50,7 +50,7 @@ It did not have to be this way.
 {'='*80}
 """
 
-EPILOGUE_DISAPPEARANCE = """
+EPILOGUE_DISAPPEARANCE = f"""
 {'='*80}
 ⭐ EPILOGUE — "The Unfound"
 {'='*80}
@@ -59,11 +59,11 @@ They search for weeks.
 
 The Sanctuary's halls stay lit through the night;
 the maps are drawn, redrawn, torn apart.
-Maeve sleeps three hours at a time.
-Rielle stops sleeping altogether.
-Daniel avoids every mirror he passes.
+Maeve Amell sleeps three hours at a time.
+Rielle LeClair stops sleeping altogether.
+Daniel Hargrave avoids every mirror he passes.
 
-But Kit and Yuul are not dead.
+But Kit Kitsuragi and Yuul Amell are not dead.
 
 There is no blood, no body, no sign of violence.
 Their dyad — mythic, impossible — flickers on every reading Maeve takes.
@@ -88,7 +88,7 @@ And the world holds its breath.
 {'='*80}
 """
 
-EPILOGUE_TOTAL_COLLAPSE = """
+EPILOGUE_TOTAL_COLLAPSE = f"""
 {'='*80}
 ⭐ EPILOGUE — "The Unmaking"
 {'='*80}
@@ -107,9 +107,9 @@ There are no bodies left.
 Only distortions — places where it hurts to look,
 places where echoes form of people who once were.
 
-In one echo, Kit reaches for Yuul forever.
-In another, Maeve screams a question she can't remember asking.
-In another, Rielle burns the church again and again, but it never catches.
+In one echo, Kit Kitsuragi reaches for Yuul Amell forever.
+In another, Maeve Amell screams a question she can't remember asking.
+In another, Rielle LeClair burns the church again and again, but it never catches.
 
 The final page the machine prints is blank.
 
@@ -121,7 +121,7 @@ The world never answers.
 {'='*80}
 """
 
-EPILOGUE_DCE_OVERRUN = """
+EPILOGUE_DCE_OVERRUN = f"""
 {'='*80}
 ⭐ EPILOGUE — "Institutional Mercy"
 {'='*80}
@@ -130,13 +130,13 @@ Files are sealed.
 
 Reports are written in careful, sanitized language.
 Containment successful. Subjects stabilized. No lethal force required.
-Daniel's signature sits at the bottom of one of them;
+Daniel Hargrave's signature sits at the bottom of one of them;
 his hand shook too much to hide it.
 
-Yuul is transferred to a classified facility.
-Maeve is sedated, then reclassified as a "volatile cognitive hazard."
-Kit is injured but alive; he is placed under observation.
-Rielle vanishes before they can find her.
+Yuul Amell is transferred to a classified facility.
+Maeve Amell is sedated, then reclassified as a "volatile cognitive hazard."
+Kit Kitsuragi is injured but alive; he is placed under observation.
+Rielle LeClair vanishes before they can find her.
 
 Months pass.
 
@@ -156,16 +156,16 @@ The report never mentions that.
 {'='*80}
 """
 
-EPILOGUE_COR_TAKEOVER = """
+EPILOGUE_COR_TAKEOVER = f"""
 {'='*80}
 ⭐ EPILOGUE — "The Shadow Choir"
 {'='*80}
 
 It starts with flickers in the corner of the eye.
 
-Rielle swears she sees people smiling in perfect synchronicity.
-Kit hears footsteps following him that stop when he stops.
-Daniel dreams of mirrors that do not reflect him.
+Rielle LeClair swears she sees people smiling in perfect synchronicity.
+Kit Kitsuragi hears footsteps following him that stop when he stops.
+Daniel Hargrave dreams of mirrors that do not reflect him.
 
 Turbulence spills into pressure.
 Pressure spills into doctrine.
@@ -178,10 +178,10 @@ A perfect harmonic, vibrating through ribcages, rewriting the air.
 
 People vanish.
 Others speak in loops.
-Yuul stands in the doorway of her room with all the lights off,
+Yuul Amell stands in the doorway of her room with all the lights off,
 whispering answers to questions no one asked.
 
-Maeve holds the line as long as she can,
+Maeve Amell holds the line as long as she can,
 her coherence flickering like a candle in a cathedral full of wind.
 
 Then the light bends.
@@ -197,7 +197,7 @@ They are inevitable.
 {'='*80}
 """
 
-EPILOGUE_MIRACLE = """
+EPILOGUE_MIRACLE = f"""
 {'='*80}
 ⭐ EPILOGUE — "The Ninth Name Refused"
 {'='*80}
@@ -205,9 +205,9 @@ EPILOGUE_MIRACLE = """
 Redchurch hums with the old hunger.
 
 The List stirs. The pressure peaks. The Dyads tremble on the brink of rupture.
-Yuul stands in the doorway of dissolution — her last step one breath away.
+Yuul Amell stands in the doorway of dissolution — her last step one breath away.
 
-Maeve sees it all at once.
+Maeve Amell sees it all at once.
 
 Not the fear. Not the prophecy. The pattern.
 The truth she was never meant to name.
@@ -230,10 +230,10 @@ She denies the List its feast.
 
 The world lurches — then exhales.
 
-Yuul collapses into Kit's arms, her mind whole for the first time in years.
-Rielle laughs and cries at the same time.
-Daniel drops to his knees.
-Farris looks at Maeve like she rewrote fate with her bare hands.
+Yuul collapses into Kit Kitsuragi's arms, her mind whole for the first time in years.
+Rielle LeClair laughs and cries at the same time.
+Daniel Hargrave drops to his knees.
+Farris Alvalin looks at Maeve like she rewrote fate with her bare hands.
 
 Redchurch quiets.
 
@@ -248,7 +248,7 @@ For once in this story, the witches win.
 # SECRET ARCHETYPE ENDINGS
 # ============================================================================
 
-SECRET_WITNESS = """
+SECRET_WITNESS = f"""
 {'='*80}
 ✨ SECRET ENDING — THE WITNESS
 {'='*80}
@@ -301,7 +301,7 @@ The light dies.
 {'='*80}
 """
 
-SECRET_TRICKSTER = """
+SECRET_TRICKSTER = f"""
 {'='*80}
 ✨ SECRET ENDING — THE TRICKSTER
 {'='*80}
@@ -355,7 +355,7 @@ The applause devours the room.
 {'='*80}
 """
 
-SECRET_DEVOURER = """
+SECRET_DEVOURER = f"""
 {'='*80}
 ✨ SECRET ENDING — THE DEVOURER
 {'='*80}
