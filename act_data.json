@@ -292,6 +292,62 @@
             "chaos_baseline": 1.0,
             "adds_tag": "reality_unstable"
           }
+        },
+        {
+          "id": "farris_sees_shadow",
+          "name": "Farris Sees the Shadow First",
+          "category": "farris_presence",
+          "act": 1,
+          "unique": false,
+          "burns": false,
+          "cooldown": 3,
+          "probability_decay": 0.85,
+          "chaos": 0.5,
+          "turbulence": 0.3,
+          "pressure": 0.2,
+          "description": "Farris stares at a corner no one else feels drawn to. 'It's already watching.'"
+        },
+        {
+          "id": "farris_reaches_maeve",
+          "name": "Farris Reaches for Maeve",
+          "category": "farris_presence",
+          "act": 1,
+          "unique": false,
+          "burns": false,
+          "cooldown": 2,
+          "probability_decay": 0.8,
+          "chaos": -0.5,
+          "turbulence": 0.0,
+          "pressure": -0.3,
+          "description": "Farris quietly sits beside Maeve. No words. Just presence."
+        },
+        {
+          "id": "daniel_wrong_questions",
+          "name": "Daniel Asks the Wrong Questions",
+          "category": "daniel_institutional",
+          "act": 1,
+          "unique": false,
+          "burns": false,
+          "cooldown": 2,
+          "probability_decay": 0.75,
+          "chaos": 0.5,
+          "turbulence": 0.5,
+          "pressure": 0.5,
+          "description": "Daniel tries to help with protocol and paperwork. Maeve feels more distant."
+        },
+        {
+          "id": "daniel_notices_yuul",
+          "name": "Daniel Notices Yuul",
+          "category": "daniel_institutional",
+          "act": 1,
+          "unique": false,
+          "burns": false,
+          "cooldown": 3,
+          "probability_decay": 0.8,
+          "chaos": 0.3,
+          "turbulence": 0.2,
+          "pressure": 0.3,
+          "description": "Daniel watches Yuul closely. Something in his expression shifts."
         }
       ]
     },
@@ -743,6 +799,76 @@
             "next_three_pulls": "corruption_tag",
             "adds_tag": "orders_weight"
           }
+        },
+        {
+          "id": "farris_intercepts_stress",
+          "name": "Farris Intercepts the Stress",
+          "category": "farris_presence",
+          "act": 2,
+          "unique": false,
+          "burns": false,
+          "cooldown": 2,
+          "probability_decay": 0.8,
+          "chaos": -0.8,
+          "turbulence": -0.3,
+          "pressure": 0.0,
+          "description": "Farris steps in when Maeve's about to snap. 'Not yet. Not here.'"
+        },
+        {
+          "id": "farris_smells_wrongness",
+          "name": "Farris Smells the Wrongness",
+          "category": "farris_presence",
+          "act": 2,
+          "unique": false,
+          "burns": false,
+          "cooldown": 3,
+          "probability_decay": 0.85,
+          "chaos": 0.8,
+          "turbulence": 0.8,
+          "pressure": 0.0,
+          "description": "Farris stops mid-sentence, nostrils flaring. 'It's here. Close.'"
+        },
+        {
+          "id": "farris_breaks_tension",
+          "name": "Farris Breaks the Tension",
+          "category": "farris_presence",
+          "act": 2,
+          "unique": false,
+          "burns": false,
+          "cooldown": 2,
+          "probability_decay": 0.75,
+          "chaos": -0.5,
+          "turbulence": -0.5,
+          "pressure": 0.2,
+          "description": "Farris does something absurd at exactly the right moment. Everyone exhales."
+        },
+        {
+          "id": "daniel_covers_for_maeve",
+          "name": "Daniel Covers for Maeve",
+          "category": "daniel_institutional",
+          "act": 2,
+          "unique": false,
+          "burns": false,
+          "cooldown": 3,
+          "probability_decay": 0.8,
+          "chaos": -0.3,
+          "turbulence": 0.0,
+          "pressure": 0.5,
+          "description": "Daniel lies to H11 to protect Maeve. It costs him."
+        },
+        {
+          "id": "daniel_detects_pattern",
+          "name": "Daniel Detects the Pattern",
+          "category": "daniel_institutional",
+          "act": 2,
+          "unique": false,
+          "burns": false,
+          "cooldown": 2,
+          "probability_decay": 0.85,
+          "chaos": 0.8,
+          "turbulence": 0.5,
+          "pressure": 0.8,
+          "description": "Daniel sees the data. The disappearances aren't random. His hands shake."
         }
       ]
     },
@@ -1116,6 +1242,66 @@
           "pressure": 1.0,
           "description": "Static resolves into voices. DCE frequencies. They're triangulating.",
           "choice_id": 111
+        },
+        {
+          "id": "farris_refuses_alone",
+          "name": "Farris Refuses to Let Maeve Go Alone",
+          "category": "farris_presence",
+          "act": 3,
+          "unique": false,
+          "burns": false,
+          "cooldown": 2,
+          "probability_decay": 0.9,
+          "chaos": -0.5,
+          "turbulence": 0.0,
+          "pressure": 0.0,
+          "description": "Farris blocks the door. 'If you're walking into it, I'm coming too.'"
+        },
+        {
+          "id": "farris_wolf_sense_door",
+          "name": "Wolf-Sense: The Door Is Already Open",
+          "category": "farris_presence",
+          "act": 3,
+          "unique": true,
+          "burns": false,
+          "cooldown": 0,
+          "probability_decay": 1.0,
+          "chaos": 2.0,
+          "turbulence": 1.5,
+          "pressure": 0.5,
+          "description": "Farris can feel it: something at Redchurch opened itself. 'The door is already open.'"
+        },
+        {
+          "id": "daniel_makes_call",
+          "name": "Daniel Makes the Call",
+          "category": "daniel_institutional",
+          "act": 3,
+          "unique": false,
+          "burns": true,
+          "cooldown": 0,
+          "probability_decay": 1.0,
+          "chaos": 3.0,
+          "turbulence": 1.0,
+          "pressure": 2.0,
+          "description": "Daniel calls H11 again. They send a strategist, not a counselor.",
+          "burn_effects": {
+            "h11_max_pressure": true,
+            "dce_ending_path": true
+          }
+        },
+        {
+          "id": "daniel_last_warning",
+          "name": "Daniel's Last Warning",
+          "category": "daniel_institutional",
+          "act": 3,
+          "unique": false,
+          "burns": false,
+          "cooldown": 2,
+          "probability_decay": 0.9,
+          "chaos": 0.5,
+          "turbulence": 0.3,
+          "pressure": 0.2,
+          "description": "Daniel begs Maeve to stop. Fear in his voice she's never heard."
         }
       ]
     }
