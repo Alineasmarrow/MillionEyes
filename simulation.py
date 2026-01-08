@@ -12,6 +12,7 @@ from chaos_state import ChaosState, get_chaos_components
 from act_system import ActSystem, ACT_EVENT_POOLS, display_act_banner
 from act_events import EVENT_FUNCTIONS
 from act3_system import Act3System, FarrisEntity, ENDING_NARRATIVES
+from momentum_system import FieldState, calculate_stacked_modifier, get_momentum_display
 from constants import (
     CHAOS_THRESHOLD, CHAOS_WARNING_THRESHOLD,
     WITCH_TRINE_MEMBERS, WITCH_TRINE_DYADS
@@ -46,6 +47,9 @@ class NarrativeSimulation:
         self.act3_system = None
         self.farris = None
         self.character_stats = None
+
+        # Momentum system (coherence breeds coherence)
+        self.field_state = FieldState()  # Environmental field affects all characters
 
         if use_act_system:
             self.act_system = ActSystem()
@@ -407,7 +411,23 @@ class NarrativeSimulation:
             return {"error": f"Character {char_name} not found"}
 
         old_c_self = char.c_self
+
+        # Apply momentum modifiers to positive gains only
+        original_delta = delta
+        momentum_bonus = ""
+        if delta > 0:
+            char_mod = char.momentum.get_coherence_modifier()
+            field_mod = self.field_state.get_coherence_modifier()
+            stacked_mod = calculate_stacked_modifier(char_mod, field_mod)
+
+            if stacked_mod > 1.0:
+                delta = delta * stacked_mod
+                momentum_bonus = get_momentum_display(char_mod, field_mod)
+
         change = char.modify_c_self(delta, reason)
+
+        # Update character momentum (track if this was positive or negative)
+        char.momentum.update(delta > 0)
 
         # Check for catastrophic collapse BEFORE applying coupling
         if old_c_self > 0 and char.c_self <= 0 and apply_sacred_coupling:
@@ -429,6 +449,7 @@ class NarrativeSimulation:
             "type": "character",
             "character": char_name,
             "delta": delta,
+            "original_delta": original_delta,
             "effective_delta": change.get('effective_delta', delta),
             "new_value": char.c_self,
             "new_state": char.get_state(),
@@ -436,7 +457,8 @@ class NarrativeSimulation:
             "sacred_echoes": change.get('sacred_echoes', []),
             "sacred_chaos": change.get('sacred_chaos', 0),
             "scar_penalty": change.get('scar_penalty', 0),
-            "gained_scar": change.get('gained_scar', False)
+            "gained_scar": change.get('gained_scar', False),
+            "momentum_bonus": momentum_bonus
         }
 
     def modify_dyad(self, char_a: str, char_b: str, delta: float, reason: str = "",
@@ -765,6 +787,7 @@ class NarrativeSimulation:
             elif entry.get("type") == "character":
                 char = entry["character"]
                 delta = entry["delta"]
+                original_delta = entry.get("original_delta", delta)
                 effective_delta = entry.get("effective_delta", delta)
                 new_val = entry["new_value"]
                 state = entry["new_state"]
@@ -773,6 +796,7 @@ class NarrativeSimulation:
                 sacred_chaos = entry.get("sacred_chaos", 0)
                 scar_penalty = entry.get("scar_penalty", 0)
                 gained_scar = entry.get("gained_scar", False)
+                momentum_bonus = entry.get("momentum_bonus", "")
 
                 symbol = "↑" if delta > 0 else "↓"
 
@@ -780,6 +804,9 @@ class NarrativeSimulation:
                 if abs(effective_delta - delta) > 0.01:
                     print(f"  {symbol} {char}: C_self {delta:+.1f} (effective: {effective_delta:+.1f}) → {new_val:.1f} [{state}]")
                     print(f"     💔 Scar penalty: -{scar_penalty:.1f}")
+                # Show momentum bonus if present
+                elif momentum_bonus:
+                    print(f"  {symbol} {char}: C_self {original_delta:+.1f} → {delta:+.1f} {momentum_bonus} → {new_val:.1f} [{state}]")
                 else:
                     print(f"  {symbol} {char}: C_self {delta:+.1f} → {new_val:.1f} [{state}]")
 
@@ -850,6 +877,24 @@ class NarrativeSimulation:
         if scar_chaos > 0:
             self.chaos_state.add_hybrid(0.0, scar_chaos)
             print(f"\n💔 Memory Scars add {scar_chaos:.1f} passive pressure (Total: {self.chaos:.1f})")
+
+        # Update Field State based on round outcomes
+        positive_count = 0
+        negative_count = 0
+        for entry in result.get("log", []):
+            if entry.get("type") == "character":
+                delta = entry.get("delta", 0)
+                if delta > 0:
+                    positive_count += 1
+                elif delta < 0:
+                    negative_count += 1
+
+        self.field_state.update_from_round(positive_count, negative_count)
+
+        # Display field state if it's significant
+        if self.field_state.state != "neutral":
+            field_desc = self.field_state.get_state_description()
+            print(f"\n🌊 Field State: {field_desc}")
 
     def run_scenario(self, num_rounds: int = 10, events: Optional[List[Event]] = None):
         """Run a complete scenario with multiple rounds"""

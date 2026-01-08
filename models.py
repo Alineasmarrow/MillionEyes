@@ -7,6 +7,7 @@ from constants import (
     C_SELF_MIN, C_SELF_MAX, C_DYAD_MIN, C_DYAD_MAX,
     CHARACTER_STATE_THRESHOLDS, RELATIONSHIP_STATE_THRESHOLDS
 )
+from momentum_system import MomentumTracker
 
 
 class Character:
@@ -30,6 +31,9 @@ class Character:
         self.active_modes = []  # Active special modes (e.g., "desperate_protector")
         self.marked_by_list = False  # Marked by The List
         self.temp_buffs = []  # Temporary buffs with expiration
+
+        # Momentum system: Coherence breeds coherence
+        self.momentum = MomentumTracker()  # Individual momentum tracking
 
     @property
     def c_self(self) -> float:
