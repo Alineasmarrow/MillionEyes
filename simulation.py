@@ -976,12 +976,7 @@ class NarrativeSimulation:
                     print(f"\n💀 {char_name} hits C=0 with no anchor")
                     print(f"   Instant dissolution...")
 
-                    # Special Yuul screen
-                    if char_name == "Yuul":
-                        print(get_yuul_death_screen(has_sacred_bond=False, at_wound_site=False))
-                    else:
-                        print(get_death_screen(char_name, "dyad_collapse"))
-
+                    # _apply_death handles final words and death screen
                     self._apply_death(char_name)
                     return self._check_game_over()
 
@@ -1018,6 +1013,7 @@ class NarrativeSimulation:
             char_name: Name of character who died
         """
         from game_over_screens import get_death_screen, get_yuul_death_screen
+        from final_words import display_final_words, get_highest_dyad_partner
 
         char = self.get_character(char_name)
         if not char:
@@ -1028,6 +1024,10 @@ class NarrativeSimulation:
 
         # Get character's dyads
         char_dyads = [rel for rel in self.relationships if rel.involves(char_name)]
+
+        # Display final words to strongest bond
+        partner_name, dyad_value = get_highest_dyad_partner(char_name, char_dyads)
+        display_final_words(char_name, partner_name, dyad_value)
 
         # Display death screen
         if char_name == "Yuul":
@@ -1041,7 +1041,7 @@ class NarrativeSimulation:
                 death_type = "scar_collapse"
             elif not any(d.c_dyad >= 5 for d in char_dyads):
                 death_type = "dyad_collapse"
-            elif hasattr(self, 'act3_system') and self.act3_system.dce_pressure >= 5:
+            elif hasattr(self, 'act3_system') and self.act3_system and self.act3_system.dce_pressure >= 5:
                 death_type = "pressure"
             else:
                 death_type = "generic"
