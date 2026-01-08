@@ -1058,8 +1058,9 @@ class NarrativeSimulation:
                 other_char.add_scar(f"witnessed {char_name}'s death")
                 print(f"\n💔 {other_name} gains a scar from witnessing {char_name}'s death")
 
-            # Sever the dyad
-            dyad.c_dyad = 0.0
+            # Sever the dyad by setting both directions to 0
+            dyad.AtoB = 0.0
+            dyad.BtoA = 0.0
             print(f"   {dyad.char_a}-{dyad.char_b} dyad SEVERED")
 
         # Chaos spike
