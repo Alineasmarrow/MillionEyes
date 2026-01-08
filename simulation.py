@@ -1276,6 +1276,19 @@ class NarrativeSimulation:
 
             print(f"\n{'='*80}")
 
+            # Display epilogue
+            from epilogues import get_epilogue, get_secret_ending
+
+            epilogue = get_epilogue(final_ending)
+            if epilogue:
+                print(epilogue)
+
+            # Check for secret ending (70% archetype threshold)
+            if self.interactive_mode and self.archetype_counts:
+                secret_ending = get_secret_ending(self.archetype_counts)
+                if secret_ending:
+                    print(secret_ending)
+
     def _get_state_symbol(self, state: str) -> str:
         """Get a symbol for a character state"""
         state_symbols = {
