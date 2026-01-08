@@ -400,10 +400,10 @@ THE WARDEN IS GONE
 # GENERIC DEATH SCREENS (FOR DIFFERENT FAILURE MODES)
 # ============================================================================
 
-DEATH_SCREEN_GENERIC = f"""
-{'='*80}
+DEATH_SCREEN_GENERIC = """
+================================================================================
 💀 {character_name} — DISSOLUTION
-{'='*80}
+================================================================================
 
 Name: {character_name}
 Coherence: 0
@@ -429,13 +429,13 @@ missing a weight it can't recover.
 
 THE FIELD MARKS THE ABSENCE.
 PLAY ON IF YOU CAN.
-{'='*80}
+================================================================================
 """
 
-DEATH_SCREEN_PRESSURE_OVERLOAD = f"""
-{'='*80}
+DEATH_SCREEN_PRESSURE_OVERLOAD = """
+================================================================================
 💀 {character_name} — PRESSURE OVERLOAD
-{'='*80}
+================================================================================
 
 There's a moment where resistance becomes ritual.
 Then ritual becomes habit.
@@ -460,16 +460,16 @@ the field barely registers the loss.
 But the story does.
 
 AN AGENT CRUSHED UNDER THE WEIGHT OF THE WORLD
-{'='*80}
+================================================================================
 
 A whisper lingers:
 "They were loyal to the end. To the wrong thing."
 """
 
-DEATH_SCREEN_SCAR_COLLAPSE = f"""
-{'='*80}
+DEATH_SCREEN_SCAR_COLLAPSE = """
+================================================================================
 💀 {character_name} — MEMORY SCAR COLLAPSE
-{'='*80}
+================================================================================
 
 Some wounds repeat themselves until the body learns to die from them.
 
@@ -487,16 +487,16 @@ There is mercy in this—
 but it's the kind of mercy that leaves the room colder.
 
 SCARS CONSUME THE SELF
-{'='*80}
+================================================================================
 
 On the air, faint and almost grateful:
 "I can rest now."
 """
 
-DEATH_SCREEN_DYAD_COLLAPSE = f"""
-{'='*80}
+DEATH_SCREEN_DYAD_COLLAPSE = """
+================================================================================
 💀 {character_name} — DYAD COLLAPSE
-{'='*80}
+================================================================================
 
 People are held together by other people.
 Even the strongest.
@@ -519,7 +519,7 @@ They slipped under.
 
 A BOND SEVERED
 A LIFE UNMADE
-{'='*80}
+================================================================================
 
 In the vacuum left behind:
 "I needed someone to stay."
