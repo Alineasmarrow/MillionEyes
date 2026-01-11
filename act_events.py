@@ -6,6 +6,24 @@ These events are organized by act and have textured chaos (turbulence/pressure).
 """
 
 import random
+from salvation_events import (
+    # Act 2 Salvation
+    event_brief_reprieve,
+    event_unexpected_kindness,
+    event_house_remembers,
+    event_maeve_field_bows,
+    event_kit_refuses_to_give_up,
+    event_rielle_truth,
+    event_daniel_fixes,
+    event_farris_stands_guard,
+    # Act 3 Miracles
+    event_maeve_field_bows_act3,
+    event_kit_refuses_act3,
+    event_rielle_breaks_pattern_act3,
+    event_daniel_protocol_null_act3,
+    event_farris_holds_line_act3,
+    event_yuul_remembers_act3,
+)
 
 
 # ============================================================================
@@ -1598,5 +1616,23 @@ EVENT_FUNCTIONS.update({
     "farris_wolf_sense_door": event_farris_wolf_sense_door,
     "daniel_makes_call": event_daniel_makes_call,
     "daniel_last_warning": event_daniel_last_warning,
+
+    # Act 2 Salvation Events
+    "brief_reprieve": event_brief_reprieve,
+    "unexpected_kindness": event_unexpected_kindness,
+    "house_remembers": event_house_remembers,
+    "maeve_field_bows": event_maeve_field_bows,
+    "kit_refuses_to_give_up": event_kit_refuses_to_give_up,
+    "rielle_truth": event_rielle_truth,
+    "daniel_fixes": event_daniel_fixes,
+    "farris_stands_guard": event_farris_stands_guard,
+
+    # Act 3 Miracle Events
+    "maeve_field_bows_act3": event_maeve_field_bows_act3,
+    "kit_refuses_act3": event_kit_refuses_act3,
+    "rielle_breaks_pattern_act3": event_rielle_breaks_pattern_act3,
+    "daniel_protocol_null_act3": event_daniel_protocol_null_act3,
+    "farris_holds_line_act3": event_farris_holds_line_act3,
+    "yuul_remembers_act3": event_yuul_remembers_act3,
 })
 
