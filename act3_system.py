@@ -207,10 +207,16 @@ class Act3System:
         maeve = characters.get("Maeve")
         rielle = characters.get("Rielle")
 
-        yuul_final = yuul.c_self if yuul else 0
-        kit_final = kit.c_self if kit else 0
-        maeve_final = maeve.c_self if maeve else 0
-        rielle_final = rielle.c_self if rielle else 0
+        # Check if characters are alive
+        yuul_alive = yuul and not yuul.is_dead
+        kit_alive = kit and not kit.is_dead
+        maeve_alive = maeve and not maeve.is_dead
+        rielle_alive = rielle and not rielle.is_dead
+
+        yuul_final = yuul.c_self if yuul_alive else 0
+        kit_final = kit.c_self if kit_alive else 0
+        maeve_final = maeve.c_self if maeve_alive else 0
+        rielle_final = rielle.c_self if rielle_alive else 0
 
         # Initialize ending weights
         endings = {
@@ -224,19 +230,24 @@ class Act3System:
         for ending, modifier in self.ending_weights_modifier.items():
             endings[ending] += modifier
 
-        # MIRACLE ENDING
-        if self.ending_paths_unlocked["miracle"]:
+        # MIRACLE ENDING (Requires all core crew alive)
+        core_crew_alive = yuul_alive and kit_alive and maeve_alive and rielle_alive
+
+        if core_crew_alive and self.ending_paths_unlocked["miracle"]:
             endings["miracle"] += 30
 
-        if maeve_final >= 7 and self.special_flags.get("obsession"):
-            endings["miracle"] += 20  # True Insight achieved
+            if maeve_final >= 7 and self.special_flags.get("obsession"):
+                endings["miracle"] += 20  # True Insight achieved
 
-        all_alive = all(c.c_self >= 6 for c in characters.values())
-        if all_alive:
-            endings["miracle"] += 15  # Everyone survived intact
+            all_alive = all(c.c_self >= 6 and not c.is_dead for c in characters.values())
+            if all_alive:
+                endings["miracle"] += 15  # Everyone survived intact
 
-        if farris.mode == "witness":
-            endings["miracle"] += 10
+            if farris.mode == "witness":
+                endings["miracle"] += 10
+        elif not core_crew_alive:
+            # Miracle ending impossible if anyone died
+            endings["miracle"] = -999
 
         # DISAPPEARANCE ENDING
         if self.ending_paths_unlocked.get("disappearance", True):  # Default available
@@ -253,18 +264,23 @@ class Act3System:
         if farris.mode == "trickster":
             endings["disappearance"] += 10
 
-        # REDCHURCH TRAGEDY (Canon)
-        if yuul_final <= 2 and kit_final <= 5:
-            endings["redchurch"] += 30
+        # REDCHURCH TRAGEDY (Canon) - Requires Yuul alive or dying at the site
+        # Redchurch is fundamentally about Yuul's sacrifice/dissolution
+        if yuul_alive or (not yuul_alive and self.special_flags.get("redchurch_endgame")):
+            if yuul_final <= 2 and kit_final <= 5:
+                endings["redchurch"] += 30
 
-        if self.special_flags.get("trine_severed"):
-            endings["redchurch"] += 20
+            if self.special_flags.get("trine_severed"):
+                endings["redchurch"] += 20
 
-        if maeve_final <= 4:
-            endings["redchurch"] += 15  # Obsession consumed her
+            if maeve_final <= 4:
+                endings["redchurch"] += 15  # Obsession consumed her
 
-        if farris.mode == "devourer":
-            endings["redchurch"] += 10
+            if farris.mode == "devourer":
+                endings["redchurch"] += 10
+        elif not yuul_alive:
+            # Redchurch ending requires Yuul's presence
+            endings["redchurch"] = -999
 
         # COR MANIFESTATION
         if chaos_total >= 25:

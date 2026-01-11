@@ -621,6 +621,50 @@ class NarrativeSimulation:
 
         return sum(trine_dyads) / len(trine_dyads)
 
+    def _event_involves_dead_character(self, event: Event) -> bool:
+        """
+        Check if an event involves a dead character and should be filtered out
+
+        Args:
+            event: Event to check
+
+        Returns:
+            True if event should be skipped (involves dead character)
+        """
+        # Character-specific event categories
+        character_events = {
+            "kit_feelings": "Kit",
+            "kit_heroics": "Kit",
+            "maeve_resonance": "Maeve",
+            "rielle_insight": "Rielle",
+            "rielle_wild": "Rielle",
+            "yuul_prophecy": "Yuul",
+            "yuul_decay": "Yuul",
+            "farris_presence": "Farris",
+            "farris_protection": "Farris",
+            "farris_resonance": "Farris",
+            "h11_daniel": "Daniel",
+            "daniel_decision": "Daniel",
+            "daniel_institutional": "Daniel",
+        }
+
+        # Check if event category implies a specific character
+        if event.category in character_events:
+            char_name = character_events[event.category]
+            char = self.get_character(char_name)
+            if not char or char.is_dead:
+                return True  # Skip event
+
+        # Check event ID patterns for character-specific events
+        event_id_lower = event.id.lower()
+        for char_name, char in self.characters.items():
+            if char.is_dead:
+                # Check if character name appears in event ID
+                if char_name.lower() in event_id_lower:
+                    return True  # Skip event
+
+        return False  # Event is valid
+
     def select_event_with_probability(self) -> Optional[Event]:
         """
         Select an event using probability weights, respecting cooldowns and unique flags
@@ -638,6 +682,10 @@ class NarrativeSimulation:
 
             # Skip unique events that have already been played
             if event.unique and event.id in self.event_played_unique:
+                continue
+
+            # Skip events involving dead characters
+            if self._event_involves_dead_character(event):
                 continue
 
             # Skip events on cooldown
