@@ -106,12 +106,20 @@ def event_bonfire_night(sim):
     kit_change = sim.modify_character_c_self("Kit", +1.0, "belonging")
     rielle_change = sim.modify_character_c_self("Rielle", +1.0, "connection")
 
+    log.extend([yuul_change, maeve_change, kit_change, rielle_change])
+
+    # Farris is part of the household
+    farris = sim.get_character("Farris")
+    if farris and not farris.is_dead:
+        farris_change = sim.modify_character_c_self("Farris", +1.0, "warmth and belonging")
+        log.append(farris_change)
+
     # Strengthen all dyads slightly
     my_change = sim.modify_dyad("Maeve", "Yuul", +0.5, "bonfire togetherness")
     ky_change = sim.modify_dyad("Kit", "Yuul", +0.5, "bonfire togetherness")
     mr_change = sim.modify_dyad("Maeve", "Rielle", +0.5, "bonfire togetherness")
 
-    log.extend([yuul_change, maeve_change, kit_change, rielle_change, my_change, ky_change, mr_change])
+    log.extend([my_change, ky_change, mr_change])
     log.append({"note": "🔥 Their last truly safe moment"})
 
     return {"log": log}
@@ -271,7 +279,7 @@ def event_quiet_heroics(sim):
 
 
 def event_internal_suspicion(sim):
-    """Internal Suspicion"""
+    """Internal Suspicion (H11)"""
     log = []
 
     # A superior asks comforting questions that feel rehearsed
@@ -279,6 +287,13 @@ def event_internal_suspicion(sim):
     target_change = sim.modify_character_c_self(target, -0.5, "rehearsed comfort")
 
     log.append(target_change)
+
+    # Daniel is caught in the middle - H11 suspects something
+    daniel = sim.get_character("Daniel")
+    if daniel and not daniel.is_dead:
+        daniel_change = sim.modify_character_c_self("Daniel", -0.8, "H11 suspects something")
+        log.append(daniel_change)
+
     log.append({"note": "→ The comfort feels scripted"})
 
     return {"log": log}
@@ -404,6 +419,13 @@ def event_trine_ritual_heavy(sim):
     rielle_change = sim.modify_character_c_self("Rielle", -0.5, "ritual exhausts")
 
     log.extend([yuul_change, maeve_change, rielle_change])
+
+    # Farris participates and feels the strain
+    farris = sim.get_character("Farris")
+    if farris and not farris.is_dead:
+        farris_change = sim.modify_character_c_self("Farris", -0.3, "ritual strain")
+        log.append(farris_change)
+
     log.append({"note": "→ The ritual holds, but at a cost"})
 
     return {"log": log}
