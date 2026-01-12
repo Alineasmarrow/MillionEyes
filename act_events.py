@@ -30,6 +30,11 @@ from salvation_events import (
     event_daniel_real_intel,
     event_daniel_snaps,
     event_daniel_structural_override,
+    # Act 3 Miracle Choice Events
+    event_act3_door_breathes,
+    event_act3_choir_not_choir,
+    event_act3_field_blinks,
+    event_act3_name_wants_to_live,
 )
 
 
@@ -1669,5 +1674,11 @@ EVENT_FUNCTIONS.update({
     "yuul_remembers_act3": event_yuul_remembers_act3,
     "farris_breaks_threshold": event_farris_breaks_threshold,
     "daniel_structural_override": event_daniel_structural_override,
+
+    # Act 3 Miracle Choice Events
+    "act3_door_breathes": event_act3_door_breathes,
+    "act3_choir_not_choir": event_act3_choir_not_choir,
+    "act3_field_blinks": event_act3_field_blinks,
+    "act3_name_wants_to_live": event_act3_name_wants_to_live,
 })
 

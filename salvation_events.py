@@ -613,3 +613,147 @@ def event_daniel_structural_override(sim):
 
     return {"log": log}
 
+
+# ============================================================================
+# ACT III MIRACLE CHOICE EVENTS - High Stakes
+# ============================================================================
+
+def event_act3_door_breathes(sim):
+    """The Door That Breathes (CHOICE)
+
+    The Sanctuary door exhales. Wood ripples like skin.
+    Yuul flickers—half here, half echo. A crossing point forms.
+
+    Choice determines if they navigate it safely.
+    """
+    log = []
+
+    yuul = sim.get_character("Yuul")
+    if not yuul or yuul.is_dead:
+        return {"log": log}
+
+    log.append({"note": "🚪 The Sanctuary door exhales"})
+    log.append({"note": "→ Wood ripples like skin"})
+    log.append({"note": "→ Yuul flickers—half here, half echo"})
+
+    # Base effects before choice
+    sim.chaos_state.add_hybrid(0.5, 0.5)  # +1 chaos total
+    log.append({"note": "   Chaos rises"})
+
+    log.append({"note": "⚡ A crossing point forms..."})
+
+    # Choice will be presented by game system
+    # Effects depend on archetype chosen
+
+    return {"log": log}
+
+
+def event_act3_choir_not_choir(sim):
+    """The Choir That Isn't (CHOICE)
+
+    There is singing in the walls—overtones of something thinking.
+    Yuul hums along without realizing it.
+
+    Choice determines if they can navigate the auditory trap.
+    """
+    log = []
+
+    yuul = sim.get_character("Yuul")
+    if not yuul or yuul.is_dead:
+        return {"log": log}
+
+    log.append({"note": "🎵 Singing echoes through the walls"})
+    log.append({"note": "→ Overtones of something thinking"})
+    log.append({"note": "→ Yuul hums along without realizing"})
+
+    # Base effects before choice
+    # Pressure spike
+    if hasattr(sim, 'chaos_state'):
+        old_pressure = sim.chaos_state.pressure
+        sim.chaos_state.pressure = min(10.0, old_pressure + 2.0)
+        log.append({"note": f"   Pressure {old_pressure:.1f} → {sim.chaos_state.pressure:.1f}"})
+
+    log.append({"note": "⚡ The chorus waits for response..."})
+
+    # Choice will be presented by game system
+
+    return {"log": log}
+
+
+def event_act3_field_blinks(sim):
+    """When the Field Blinks (CHOICE)
+
+    Maps fold. Reality un-renders for a heartbeat.
+    Names slide. Futures shake loose.
+
+    Choice determines if they can stay grounded.
+    """
+    log = []
+
+    log.append({"note": "🌀 Maps fold—reality un-renders"})
+    log.append({"note": "→ Names slide sideways"})
+    log.append({"note": "→ Futures shake loose"})
+
+    # Base effects before choice
+    sim.chaos_state.add_hybrid(1.5, 1.5)  # +3 chaos total
+    log.append({"note": "   Chaos spikes violently"})
+
+    # Random dyad strain
+    if sim.relationships:
+        dyad = random.choice(sim.relationships)
+        dyad_change = sim.modify_dyad(dyad.char_a, dyad.char_b, -1.0, "field blinks—bonds strain")
+        log.append(dyad_change)
+
+    log.append({"note": "⚡ The world holds its breath..."})
+
+    # Choice will be presented by game system
+
+    return {"log": log}
+
+
+def event_act3_name_wants_to_live(sim):
+    """The Name That Wants to Live (CHOICE)
+
+    Maeve hears the hidden name—the one beneath the Pattern,
+    the one she never dared to claim.
+
+    CRITICAL: Correct choice unlocks the Miracle ending path.
+    """
+    log = []
+
+    maeve = sim.get_character("Maeve")
+    if not maeve or maeve.is_dead:
+        return {"log": log}
+
+    # Only trigger if Maeve's coherence is high enough
+    if maeve.c_self < 7:
+        return {"log": log}
+
+    log.append({"note": "✨ Maeve hears the hidden name"})
+    log.append({"note": "→ Not the List's hunger"})
+    log.append({"note": "→ The name beneath the Pattern"})
+    log.append({"note": "→ Her own"})
+
+    # Base positive effect
+    maeve_change = sim.modify_character_c_self("Maeve", +3.0, "hears her true name")
+    log.append(maeve_change)
+
+    # Pressure relief
+    if hasattr(sim, 'chaos_state'):
+        old_pressure = sim.chaos_state.pressure
+        sim.chaos_state.pressure = max(0.0, old_pressure - 2.0)
+        log.append({"note": f"   Pressure {old_pressure:.1f} → {sim.chaos_state.pressure:.1f}"})
+
+    log.append({"note": "⚡ THE CRITICAL MOMENT..."})
+    log.append({"note": "→ If she claims it, the miracle becomes possible"})
+
+    # The choice system will handle player selection
+    # After this event, we need to check what they chose and unlock miracle if correct
+
+    # NOTE: The miracle unlock will happen via the choice handler
+    # For now, mark that this event occurred
+    if hasattr(sim, 'act3_system'):
+        sim.act3_system.special_flags["name_event_occurred"] = True
+
+    return {"log": log}
+

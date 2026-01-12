@@ -342,6 +342,90 @@ class NarrativeSimulation:
                                                       apply_sacred_coupling=False)
                 print(f"   Maeve (bearer) C_self {bearer_delta:+.1f} → {result['new_value']:.1f}")
 
+    def apply_choice_specific_effects(self, choice_id: int, archetype: str):
+        """
+        Apply choice-specific effects beyond standard archetype effects
+
+        These effects are defined in act_data.json for each choice/archetype combination
+        and can include special mechanics like unlocking endings, modifying specific characters, etc.
+        """
+        if not self.act_data or 'choices' not in self.act_data:
+            return
+
+        # Find the choice
+        choice_data = self.act_data['choices'].get(str(choice_id))
+        if not choice_data:
+            return
+
+        # Get effects for this archetype
+        archetype_choice = choice_data['choices'].get(archetype)
+        if not archetype_choice or 'effects' not in archetype_choice:
+            return
+
+        effects = archetype_choice['effects']
+
+        # Check if this is the "true" choice for miracle events
+        is_true_choice = archetype_choice.get('is_true_choice', False)
+
+        # Apply specific character coherence changes
+        for char_name in ["yuul", "kit", "maeve", "rielle", "daniel", "farris"]:
+            key = f"{char_name}_c"
+            if key in effects:
+                delta = effects[key]
+                char_obj = self.get_character(char_name.title())
+                if char_obj and not char_obj.is_dead:
+                    result = self.modify_character_c_self(char_name.title(), delta,
+                                                          f"choice effect",
+                                                          apply_sacred_coupling=False)
+                    print(f"   {char_name.title()} C_self {delta:+.1f} → {result['new_value']:.1f}")
+
+        # Apply chaos changes
+        if 'chaos' in effects:
+            delta = effects['chaos']
+            if delta != 0:
+                half = delta / 2.0
+                self.chaos_state.add_hybrid(half, half)
+                print(f"   Chaos {delta:+.1f} → {self.chaos:.1f}")
+
+        # Apply pressure changes
+        if 'pressure' in effects:
+            delta = effects['pressure']
+            if delta != 0:
+                old_pressure = self.chaos_state.pressure
+                self.chaos_state.pressure = max(0.0, min(10.0, old_pressure + delta))
+                print(f"   Pressure {delta:+.1f} → {self.chaos_state.pressure:.1f}")
+
+        # Apply dyad changes
+        if 'dyads_all' in effects:
+            delta = effects['dyads_all']
+            print(f"   All dyads {delta:+.1f}")
+            for dyad in self.relationships:
+                self.modify_dyad(dyad.char_a, dyad.char_b, delta, "choice effect")
+
+        # Handle special flags/unlocks
+        if hasattr(self, 'act3_system'):
+            # Unlock miracle ending
+            if 'unlock_flag' in effects:
+                flags = effects['unlock_flag']
+                if 'miracle_ending' in flags and is_true_choice:
+                    self.act3_system.ending_paths_unlocked["miracle"] = True
+                    print(f"   ✨ ✨ ✨ MIRACLE ENDING PATH UNLOCKED ✨ ✨ ✨")
+
+            # Add tags
+            if 'add_tag' in effects:
+                tags = effects['add_tag']
+                for tag in tags:
+                    self.act3_system.special_flags[tag] = True
+                    print(f"   🏷️  Tag added: {tag}")
+
+            # Remove tags
+            if 'remove_tag' in effects:
+                tags = effects['remove_tag']
+                for tag in tags:
+                    if tag in self.act3_system.special_flags:
+                        del self.act3_system.special_flags[tag]
+                        print(f"   🏷️  Tag removed: {tag}")
+
     def apply_burn_effect(self, event: Event):
         """
         Apply permanent burn effects from a burn card
@@ -789,6 +873,9 @@ class NarrativeSimulation:
 
                     # Apply archetype effects
                     self.apply_archetype_effect(archetype, event.name)
+
+                    # Apply choice-specific effects
+                    self.apply_choice_specific_effects(choice_id, archetype)
 
         # Update chaos
         # For act events, use event.chaos_base if the result doesn't include chaos

@@ -1582,6 +1582,66 @@
           "turbulence": 0.0,
           "pressure": -3.0,
           "description": "Daniel overrides a Directorate protocol at the structural level. Reality rewrites for one glorious second."
+        },
+        {
+          "id": "act3_door_breathes",
+          "name": "The Door That Breathes",
+          "act": 3,
+          "category": "miracle_moment",
+          "unique": true,
+          "burns": false,
+          "cooldown": 0,
+          "probability_decay": 1.0,
+          "choice_id": 118,
+          "chaos": 1.0,
+          "turbulence": 0.5,
+          "pressure": 0.5,
+          "description": "The Sanctuary door exhales. Wood ripples like skin. Yuul flickers\u2014half here, half echo. A crossing point forms."
+        },
+        {
+          "id": "act3_choir_not_choir",
+          "name": "The Choir That Isn't",
+          "act": 3,
+          "category": "miracle_moment",
+          "unique": true,
+          "burns": false,
+          "cooldown": 0,
+          "probability_decay": 1.0,
+          "choice_id": 119,
+          "chaos": 0.0,
+          "turbulence": 0.0,
+          "pressure": 2.0,
+          "description": "There is singing in the walls\u2014overtones of something thinking. Yuul hums along without realizing it."
+        },
+        {
+          "id": "act3_field_blinks",
+          "name": "When the Field Blinks",
+          "act": 3,
+          "category": "miracle_moment",
+          "unique": true,
+          "burns": false,
+          "cooldown": 0,
+          "probability_decay": 1.0,
+          "choice_id": 120,
+          "chaos": 3.0,
+          "turbulence": 1.5,
+          "pressure": 1.5,
+          "description": "Maps fold. Reality un-renders for a heartbeat. Names slide. Futures shake loose."
+        },
+        {
+          "id": "act3_name_wants_to_live",
+          "name": "The Name That Wants to Live",
+          "act": 3,
+          "category": "miracle_moment",
+          "unique": true,
+          "burns": false,
+          "cooldown": 0,
+          "probability_decay": 1.0,
+          "choice_id": 121,
+          "chaos": -3.0,
+          "turbulence": 0.0,
+          "pressure": -2.0,
+          "description": "Maeve hears the hidden name\u2014the one beneath the Pattern, the one she never dared to claim."
         }
       ]
     }
@@ -2187,6 +2247,135 @@
           "text": "Stay. I want to see who survives you.",
           "effects": {
             "increase_redchurch_and_cor_weight": true
+          }
+        }
+      }
+    },
+    "118": {
+      "choice_id": 118,
+      "event_id": "act3_door_breathes",
+      "description": "The Door That Breathes",
+      "choices": {
+        "witness": {
+          "text": "Step gently. The threshold watches you the way a wounded animal watches its hunter. Do not force the door\u2014listen for the inhale before you move.",
+          "is_true_choice": true,
+          "effects": {
+            "yuul_c": 2,
+            "maeve_c": 1,
+            "chaos": -2,
+            "add_tag": ["door_recognizes_you"]
+          }
+        },
+        "trickster": {
+          "text": "Kick it. Kick the door. Doors love that. Besides, who\u2019s going to stop you now?",
+          "is_true_choice": false,
+          "effects": {
+            "yuul_c": -2,
+            "kit_c": -1,
+            "chaos": 2
+          }
+        },
+        "devourer": {
+          "text": "Open it with your name. Carve the letters from your coherence and feed them to the hinges.",
+          "is_true_choice": false,
+          "effects": {
+            "maeve_c": -3,
+            "add_tag": ["hunted_by_list"]
+          }
+        }
+      }
+    },
+    "119": {
+      "choice_id": 119,
+      "event_id": "act3_choir_not_choir",
+      "description": "The Choir That Isn't",
+      "choices": {
+        "witness": {
+          "text": "Let them speak. They are only you, after all, and what danger could come from listening to yourself?",
+          "is_true_choice": false,
+          "effects": {
+            "pressure": 3,
+            "add_tag": ["echoed_form"]
+          }
+        },
+        "trickster": {
+          "text": "Don\u2019t listen for the words. Listen for the rhythm beneath them\u2014the pulse that knows you. Step to that beat, and only that beat.",
+          "is_true_choice": true,
+          "effects": {
+            "pressure": -3,
+            "dyads_all": 1,
+            "remove_tag": ["reality_fracture_minor"]
+          }
+        },
+        "devourer": {
+          "text": "Join the choir. Sing your name until it bleeds into theirs.",
+          "is_true_choice": false,
+          "effects": {
+            "add_tag": ["name_consumed"]
+          }
+        }
+      }
+    },
+    "120": {
+      "choice_id": 120,
+      "event_id": "act3_field_blinks",
+      "description": "When the Field Blinks",
+      "choices": {
+        "witness": {
+          "text": "Stand still and observe. If it wishes to harm you, you will know.",
+          "is_true_choice": false,
+          "effects": {
+            "kit_c": -2,
+            "add_tag": ["field_marked"]
+          }
+        },
+        "trickster": {
+          "text": "Run. Obviously. The field loves when you run\u2014it rearranges itself to keep up.",
+          "is_true_choice": false,
+          "effects": {
+            "chaos": 2,
+            "maeve_c": -1
+          }
+        },
+        "devourer": {
+          "text": "Still your pulse. Name nothing. Claim nothing. In the void between breaths, monsters starve.",
+          "is_true_choice": true,
+          "effects": {
+            "chaos": -3,
+            "pressure": -1,
+            "add_tag": ["void_walker"]
+          }
+        }
+      }
+    },
+    "121": {
+      "choice_id": 121,
+      "event_id": "act3_name_wants_to_live",
+      "description": "The Name That Wants to Live",
+      "choices": {
+        "witness": {
+          "text": "Let the name pass through you. It was never meant to be held.",
+          "is_true_choice": false,
+          "effects": {
+            "maeve_c": -2,
+            "add_tag": ["identity_shear"]
+          }
+        },
+        "trickster": {
+          "text": "You finally hear it\u2014the name beneath the Pattern. Not the List\u2019s hunger. Your own.",
+          "is_true_choice": true,
+          "effects": {
+            "maeve_c": 3,
+            "yuul_c": 1,
+            "unlock_flag": ["miracle_ending"]
+          }
+        },
+        "devourer": {
+          "text": "Eat it. Swallow the name. Become the thing that hunts.",
+          "is_true_choice": false,
+          "effects": {
+            "maeve_c": -4,
+            "chaos": 4
           }
         }
       }
