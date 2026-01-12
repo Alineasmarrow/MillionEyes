@@ -981,6 +981,62 @@
           "turbulence": -1.0,
           "pressure": 0.0,
           "description": "A presence moves toward the Sanctuary. Farris moves faster. He destroys what approaches, at cost to himself."
+        },
+        {
+          "id": "farris_sees_before_it_moves",
+          "name": "He Sees the Thing Before It Moves",
+          "act": 2,
+          "category": "farris_presence",
+          "unique": false,
+          "burns": false,
+          "cooldown": 3,
+          "probability_decay": 0.85,
+          "chaos": -1.5,
+          "turbulence": -0.5,
+          "pressure": 0.0,
+          "description": "Farris freezes mid-step. His hand shoots out to stop someone before a presence breaches. He sees it seconds before it moves."
+        },
+        {
+          "id": "farris_asks_maeve",
+          "name": "He Asks Maeve What's Wrong",
+          "act": 2,
+          "category": "farris_presence",
+          "unique": false,
+          "burns": false,
+          "cooldown": 2,
+          "probability_decay": 0.8,
+          "chaos": -1.0,
+          "turbulence": 0.0,
+          "pressure": 0.0,
+          "description": "Farris corners Maeve with a quiet, steady: 'Tell me.' His presence stabilizes her when nothing else can."
+        },
+        {
+          "id": "daniel_real_intel",
+          "name": "Real Intel: Daniel Delivers",
+          "act": 2,
+          "category": "daniel_institutional",
+          "unique": false,
+          "burns": false,
+          "cooldown": 3,
+          "probability_decay": 0.8,
+          "chaos": -1.0,
+          "turbulence": 0.0,
+          "pressure": -1.0,
+          "description": "Daniel arrives with actual intel—coordinates, names, weak points. For once, it's actionable."
+        },
+        {
+          "id": "daniel_snaps",
+          "name": "He Snaps (In Their Defense)",
+          "act": 2,
+          "category": "daniel_institutional",
+          "unique": false,
+          "burns": false,
+          "cooldown": 2,
+          "probability_decay": 0.85,
+          "chaos": -0.5,
+          "turbulence": 0.0,
+          "pressure": -1.5,
+          "description": "A Directorate agent pushes Yuul too hard. Daniel's response is surgical, furious, and deeply out of protocol."
         }
       ]
     },
@@ -1498,6 +1554,34 @@
           "turbulence": 0.0,
           "pressure": 0.0,
           "description": "For one impossible moment, Yuul is whole\u2014prophet and human, bound and free. She hands them a vision of the perfect path."
+        },
+        {
+          "id": "farris_breaks_threshold",
+          "name": "He Breaks Through the Threshold",
+          "act": 3,
+          "category": "farris_resonance",
+          "unique": true,
+          "burns": false,
+          "cooldown": 0,
+          "probability_decay": 1.0,
+          "chaos": -2.5,
+          "turbulence": -1.5,
+          "pressure": 0.0,
+          "description": "The boundary between here and there weakens. Farris tears through it with his bare hands to pull someone back."
+        },
+        {
+          "id": "daniel_structural_override",
+          "name": "Structural Override: Daniel's Rewrite",
+          "act": 3,
+          "category": "daniel_institutional",
+          "unique": true,
+          "burns": false,
+          "cooldown": 0,
+          "probability_decay": 1.0,
+          "chaos": -2.0,
+          "turbulence": 0.0,
+          "pressure": -3.0,
+          "description": "Daniel overrides a Directorate protocol at the structural level. Reality rewrites for one glorious second."
         }
       ]
     }

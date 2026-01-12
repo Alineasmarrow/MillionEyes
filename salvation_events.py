@@ -439,3 +439,177 @@ def event_yuul_remembers_act3(sim):
         log.append({"note": "⚠️  FAILURE: Seeress takes control"})
 
     return {"log": log}
+
+
+# ============================================================================
+# ADDITIONAL FARRIS & DANIEL EVENTS (Act 2 & 3)
+# ============================================================================
+
+def event_farris_sees_before_it_moves(sim):
+    """He Sees the Thing Before It Moves (Act 2)"""
+    log = []
+
+    farris = sim.get_character("Farris")
+    maeve = sim.get_character("Maeve")
+
+    if not (farris and maeve):
+        return {"log": log}
+
+    log.append({"note": "🐺 Farris senses a threat before it breaches"})
+    log.append({"note": "→ He orders them to move"})
+
+    # Maeve-Farris bond strengthens (she trusts his instincts)
+    dyad_change = sim.modify_dyad("Maeve", "Farris", +1.0, "saved by seconds")
+    log.append(dyad_change)
+
+    log.append({"note": "→ They move by seconds. It's enough."})
+
+    return {"log": log}
+
+
+def event_farris_asks_maeve(sim):
+    """He Asks Maeve What's Wrong (Act 2)"""
+    log = []
+
+    farris = sim.get_character("Farris")
+    maeve = sim.get_character("Maeve")
+
+    if not (farris and maeve):
+        return {"log": log}
+
+    log.append({"note": "🐺 Farris corners Maeve with a quiet, steady: 'Tell me.'"})
+
+    # Maeve stabilizes
+    maeve_change = sim.modify_character_c_self("Maeve", +1.0, "Farris' presence stabilizes")
+    log.append(maeve_change)
+
+    # Bond strengthens significantly
+    dyad_change = sim.modify_dyad("Maeve", "Farris", +2.0, "his presence stabilizes her")
+    log.append(dyad_change)
+
+    log.append({"note": "→ His presence stabilizes her far more than she admits"})
+
+    return {"log": log}
+
+
+def event_farris_breaks_threshold(sim):
+    """He Breaks the Threshold (Act 3 Miracle)"""
+    log = []
+
+    farris = sim.get_character("Farris")
+    if not farris:
+        return {"log": log}
+
+    log.append({"note": "🐺 The field collapses inward"})
+    log.append({"note": "→ Farris tears through the boundary itself"})
+
+    # Farris takes damage
+    farris_change = sim.modify_character_c_self("Farris", -1.0, "tears through reality")
+    log.append(farris_change)
+
+    # Group stability boost
+    for char_name, char in sim.characters.items():
+        if not char.is_dead and char_name != "Farris":
+            change = sim.modify_character_c_self(char_name, +1.0, "field stabilizes")
+            log.append(change)
+
+    log.append({"note": "✨ Reality forced open with sheer will"})
+
+    # Penalty if Farris was already weak
+    if farris.c_self < 4.0:
+        farris_penalty = sim.modify_character_c_self("Farris", -1.0, "frayed boundary")
+        log.append(farris_penalty)
+        farris.add_scar("frayed_boundary")
+        log.append({"note": "⚠️  Farris gains scar: frayed_boundary"})
+
+    return {"log": log}
+
+
+def event_daniel_real_intel(sim):
+    """He Shows Up With Real Intel (Act 2)"""
+    log = []
+
+    daniel = sim.get_character("Daniel")
+    maeve = sim.get_character("Maeve")
+
+    if not (daniel and maeve):
+        return {"log": log}
+
+    log.append({"note": "📋 Daniel brings a full, actionable report"})
+    log.append({"note": "→ Maps, timestamps, movement data"})
+
+    # Maeve-Daniel bond improves
+    dyad_change = sim.modify_dyad("Maeve", "Daniel", +1.0, "broke rules to get intel")
+    log.append(dyad_change)
+
+    log.append({"note": "→ He broke rules to get it"})
+
+    return {"log": log}
+
+
+def event_daniel_snaps(sim):
+    """Daniel Snaps at a Directorate Agent (Act 2)"""
+    log = []
+
+    daniel = sim.get_character("Daniel")
+    maeve = sim.get_character("Maeve")
+
+    if not (daniel and maeve):
+        return {"log": log}
+
+    log.append({"note": "📋 A Directorate agent speaks about Yuul like she's a specimen"})
+    log.append({"note": "→ Daniel loses his composure—for them"})
+
+    # Daniel gains coherence from choosing his side
+    daniel_change = sim.modify_character_c_self("Daniel", +1.0, "chooses them over protocol")
+    log.append(daniel_change)
+
+    # Bond with Maeve improves
+    dyad_change = sim.modify_dyad("Maeve", "Daniel", +1.0, "Daniel defends Yuul")
+    log.append(dyad_change)
+
+    log.append({"note": "→ He chose them"})
+
+    return {"log": log}
+
+
+def event_daniel_structural_override(sim):
+    """Structural Override: Daniel's Rewrite (Act 3 Miracle)"""
+    log = []
+
+    daniel = sim.get_character("Daniel")
+    maeve = sim.get_character("Maeve")
+
+    if not (daniel and maeve):
+        return {"log": log}
+
+    # Check if DCE path is fully locked
+    dce_locked = False
+    if hasattr(sim, 'act3_system'):
+        dce_locked = sim.act3_system.special_flags.get("h11_max_pressure", False)
+
+    if dce_locked:
+        log.append({"note": "⚠️  Daniel is too deep in the Directorate"})
+        log.append({"note": "→ This card cannot be played"})
+        return {"log": log}
+
+    log.append({"note": "📋 Daniel overrides a Directorate protocol"})
+    log.append({"note": "→ He wasn't meant to access this"})
+
+    # Daniel takes damage for the override
+    daniel_change = sim.modify_character_c_self("Daniel", -1.0, "structural override")
+    log.append(daniel_change)
+
+    # Bonds improve
+    md_change = sim.modify_dyad("Maeve", "Daniel", +1.0, "Daniel rewrites reality for them")
+    log.append(md_change)
+
+    kit = sim.get_character("Kit")
+    if kit and not kit.is_dead:
+        kd_change = sim.modify_dyad("Kit", "Daniel", +1.0, "Daniel chooses them")
+        log.append(kd_change)
+
+    log.append({"note": "✨ The world buckles and rights itself"})
+
+    return {"log": log}
+

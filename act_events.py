@@ -23,6 +23,13 @@ from salvation_events import (
     event_daniel_protocol_null_act3,
     event_farris_holds_line_act3,
     event_yuul_remembers_act3,
+    # New Farris/Daniel Events
+    event_farris_sees_before_it_moves,
+    event_farris_asks_maeve,
+    event_farris_breaks_threshold,
+    event_daniel_real_intel,
+    event_daniel_snaps,
+    event_daniel_structural_override,
 )
 
 
@@ -1648,6 +1655,10 @@ EVENT_FUNCTIONS.update({
     "rielle_truth": event_rielle_truth,
     "daniel_fixes": event_daniel_fixes,
     "farris_stands_guard": event_farris_stands_guard,
+    "farris_sees_before_it_moves": event_farris_sees_before_it_moves,
+    "farris_asks_maeve": event_farris_asks_maeve,
+    "daniel_real_intel": event_daniel_real_intel,
+    "daniel_snaps": event_daniel_snaps,
 
     # Act 3 Miracle Events
     "maeve_field_bows_act3": event_maeve_field_bows_act3,
@@ -1656,5 +1667,7 @@ EVENT_FUNCTIONS.update({
     "daniel_protocol_null_act3": event_daniel_protocol_null_act3,
     "farris_holds_line_act3": event_farris_holds_line_act3,
     "yuul_remembers_act3": event_yuul_remembers_act3,
+    "farris_breaks_threshold": event_farris_breaks_threshold,
+    "daniel_structural_override": event_daniel_structural_override,
 })
 
