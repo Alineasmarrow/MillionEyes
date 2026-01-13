@@ -1,0 +1,41 @@
+{
+  "witness": {
+    "soft": [
+      "A quiet voice inside me murmurs: this is the part you already knew.",
+      "Something patient watches the memory form and says: keep going.",
+      "The air stills, and the Witness whispers: name it truthfully.",
+      "A presence behind my shoulder breathes: you saw everything; don't avert your eyes now."
+    ],
+    "sharp": [
+      "The Witness cuts in: you looked away once. Don't do it again.",
+      "I hear a calm, merciless voice say: tell it clean or not at all.",
+      "A clarity not mine insists: you knew the cost long before you paid it."
+    ]
+  },
+
+  "trickster": {
+    "soft": [
+      "Something laughs in the margins of the story: are you sure it happened that way?",
+      "The Trickster hums, amused: the truth bends funny here.",
+      "A grin slips through the cracks: write it slanted, Maeve."
+    ],
+    "chaotic": [
+      "The Trickster interrupts: everything collapses more beautifully when you lie a little.",
+      "A voice like static hisses: nothing happened in the right order anyway.",
+      "Reality wobbles as something whispers: say the wrong thing on purpose."
+    ]
+  },
+
+  "devourer": {
+    "hunger": [
+      "A dark pulse throbs through my sentence: feed me the part that hurts.",
+      "The Devourer presses against my ribs: name the wound, and let me taste it.",
+      "Something immense leans close: the memory is meat—carve it."
+    ],
+    "prophetic": [
+      "A deeper voice intrudes: collapse is not tragedy, it is alignment.",
+      "The Devourer whispers: you were never prey, only unfinished.",
+      "The shadow inside the field growls: the story doesn't end—it consumes."
+    ]
+  }
+}

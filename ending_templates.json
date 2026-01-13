@@ -1,0 +1,49 @@
+{
+  "redchurch_canon": {
+    "narrator": "maeve",
+    "maeve_open": "I've told this story so many times it barely feels like mine anymore. Redchurch. The collapse. The way the air went thin like it was trying to forget we'd ever been there.\n\nThey ask what went wrong, like there was a single angle you could tilt it from that would reveal the flaw. There wasn't. It was a thousand small concessions, a thousand moments I let the wrong pattern win. I know every one of them by heart now.",
+    "maeve_before_characters": "I can't tell you the story without telling you who burned inside it. There's no neat sequence, no clean report. Just people, pulled apart by a thing I mistook for an answer.",
+    "maeve_after_characters": "Sometimes I think if I'd turned back one day earlier, or believed Yuul one time more, or listened when Rielle said I was making it worse, we wouldn't have brought a feast to something that only knows how to empty plates.\n\nI know that's not true. The pattern was already closing around us. But knowing doesn't stop me from seeing their faces every time someone says 'incident' like it was a weather report.",
+    "maeve_close": "So that's what happened at Redchurch. We didn't just die. We were devoured by an idea I carried there myself.\n\nIf you're looking for comfort, you won't find it in these pages. All I have is a map of how fast love can become kindling."
+  },
+
+  "disappearance": {
+    "narrator": "maeve",
+    "maeve_open": "There are worse things than death. Ask anyone who's ever had to live with not knowing.\n\nWe never found bodies. Just readings, spiking and then vanishing, like the field took a sharp breath and refused to exhale. Officially, they're 'missing.' Unofficially… no one knows what word to use.",
+    "maeve_before_characters": "Everyone wants me to say they're dead so they can shelve it. I can't. Maybe that's denial. Maybe it's data. All I know is the way the air changes when I say their names out loud.",
+    "maeve_after_characters": "I still catch myself setting out one extra mug. Hearing a laugh that isn't there. Waking up with fragments of someone else's dream in my throat.\n\nMaybe they're gone. Maybe they stepped sideways into something that doesn't have doors. Or maybe they're walking toward us from very far away, and it just hasn't reached us yet.",
+    "maeve_close": "So no, I won't call it a death. Not yet.\n\nI will keep telling this version of the story instead: there was a day when we almost lost everything, and instead the world misfiled them somewhere I can't reach.\n\nIf they ever find a way back, I want there to be something here waiting for them besides a closed file."
+  },
+
+  "miracle_run": {
+    "narrator": "maeve",
+    "maeve_open": "I don't know how to write about a disaster that didn't happen.\n\nRedchurch should have broken us. Every variable said so. I can still feel the hinge-moment where the air went sharp and thin and every instinct in me screamed, this is where it collapses.\n\nAnd then… it didn't.",
+    "maeve_before_characters": "It feels wrong to call it a miracle. Like I'm tempting whatever watched us and decided to let us walk away. But I have to name what I saw in them—what held.",
+    "maeve_after_characters": "There was a second—just one—where I swear I felt the List notice us. Not hungry. Curious. Like it was measuring the distance between what should have happened and what did.\n\nMaybe we were spared. Maybe we were overlooked. Maybe we built enough coherence between us that, just this once, the field chose to bend around us instead of through us.",
+    "maeve_close": "I'm writing this a week later and they're all still alive. Do you understand how insane that sentence is?\n\nI'm not naïve. The world hasn't turned kind overnight. There will be other Redchurches, other thresholds. But now I know this much: collapse isn't inevitable. There is, buried somewhere in the noise, a path where we walk out together.\n\nIf this was grace, I'm not wasting it."
+  },
+
+  "cor_manifestation": {
+    "narrator": "maeve",
+    "maeve_open": "This will probably be the last thing I write before they find me. 'They' meaning the Children, the shadow, the whatever-name-you-want for the pattern that stepped fully through when we pushed the field too far.\n\nI'm not sure if there was a single mistake this time. Redchurch was one wound. This was more like the whole body remembering it was injured.",
+    "maeve_before_characters": "I don't know who else is left. Signals cut in and out. Coherence traces flicker like bad reception. All I have are impressions of who stood their ground and who vanished into the new geometry.",
+    "maeve_after_characters": "The town doesn't look wrong if you squint. That's the worst part. Doors still open. Lights still change. People still smile, but their eyes track something just over my shoulder.\n\nI know that means they're here. The Children. The ones who think collapse is a form of worship.",
+    "maeve_close": "If anyone ever reads this, know: we didn't lose to a monster. We lost to a conviction. To people who believed in erasure more fiercely than we believed in staying.\n\nI'm going to keep moving until I can't. Not because I think I can win. Because as long as I'm still here, naming what happened, they haven't finished the story yet."
+  },
+
+  "dce_win": {
+    "narrator": "maeve",
+    "maeve_open": "They told me to write a statement in my own words. Then gave me a list of phrases I'm not allowed to use.\n\nSo here it is, in language they can live with: an incident occurred. External intervention was deemed necessary. Standard coherence containment protocols were executed. Collateral damage was within acceptable parameters.\n\nThat's the version they want.",
+    "maeve_before_characters": "The real version is quieter. It lives between headcount and charge sheet. In who didn't make it into the official narrative at all.",
+    "maeve_after_characters": "Sometimes I think the DCE hates us more for surviving than for breaking. Broken people fit their paperwork. Survivors ask questions.\n\nThey talk about us like we're failed experiments. As if we were trying to become monsters and just didn't get there fast enough. They never consider that we were trying to become whole.",
+    "maeve_close": "I don't know what they'll do with this document. Edit it. Bury it. Use it to justify the next raid.\n\nBut I wrote their version and mine on the same page, and that's the one thing they can't separate. Somewhere under all their redactions, the truth will still be humming."
+  },
+
+  "tpk_redchurch": {
+    "narrator": "dce",
+    "dce_open": "Subject: Horizon-11 / Redchurch Site – Final Assessment\n\nThe Horizon-11 field unit is confirmed lost. All primary and secondary agents assigned to the Redchurch perimeter experienced complete coherence collapse or terminal physiological failure within the incident window.\n\nNo functional witnesses remain.",
+    "dce_mid": "Retrospective analysis indicates multiple procedural deviations:\n– Unauthorized mythic-class theorizing by lead agent (Amell, M.)\n– Uncontrolled emotional entanglement between team members\n– Failure to defer to Directorate oversight at early anomaly stages\n\nThese factors are considered primary contributors to outcome severity.",
+    "dce_after": "The Redchurch structure has been designated a Level-Black resonance hazard. Site access is restricted to Directorate personnel with appropriate clearance and dampening equipment.\n\nAll public records of Horizon-11 have been reclassified. Families of involved parties have been issued standardized incident notifications.",
+    "dce_close": "Conclusion:\n\nThe Horizon-11 event demonstrates the risk of allowing field units extended epistemic autonomy in high-variance resonance environments.\n\nRecommendation: reduce reliance on subjective pattern recognition. Increase deployment of standardized DCE protocols.\n\nNo further action required."
+  }
+}

@@ -1,0 +1,46 @@
+{
+  "soft": [
+    "I keep coming back to this.",
+    "And then there's this:",
+    "I think about them more than I mean to.",
+    "Which brings me to the next name I can't let go of.",
+    "I don't know how to talk about this part gently, but I'll try.",
+    "Some stories refuse to stay in sequence, especially theirs."
+  ],
+
+  "neutral": [
+    "Next was —",
+    "After that came —",
+    "Then there was —",
+    "I should speak of them too:",
+    "Another name I can't leave out:",
+    "It wouldn't be the truth if I didn't include them."
+  ],
+
+  "fractured": [
+    "I don't know how to say this cleanly.",
+    "I shouldn't talk about them, but I have to.",
+    "This part still catches in my throat.",
+    "The memory glitches here, but I'll try.",
+    "Everything tilts when I say this name.",
+    "My hand shakes writing this next part."
+  ],
+
+  "archetype_bleed": {
+    "witness": [
+      "Something old in me says: tell this part carefully.",
+      "The quiet voice in the walls whispers: this name matters.",
+      "I feel watched as I write this next one."
+    ],
+    "trickster": [
+      "The story laughs here, bending sideways.",
+      "Somewhere, something smirks: go on, say it.",
+      "Reality tilts its head, waiting for the punchline."
+    ],
+    "devourer": [
+      "The dark hum sharpens when I write this name.",
+      "I hear the field's teeth click against the next memory.",
+      "Something hungry leans closer as I continue."
+    ]
+  }
+}
