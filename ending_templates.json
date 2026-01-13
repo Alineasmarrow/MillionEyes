@@ -9,7 +9,7 @@
 
   "disappearance": {
     "narrator": "maeve",
-    "maeve_open": "There are worse things than death. Ask anyone who's ever had to live with not knowing.\n\nWe never found bodies. Just readings, spiking and then vanishing, like the field took a sharp breath and refused to exhale. Officially, they're 'missing.' Unofficially… no one knows what word to use.",
+    "maeve_open": "There are worse things than death. Ask anyone who's ever had to live with not knowing.\n\nWe never found bodies. Just readings, spiking and then vanishing, like the field took a sharp breath and refused to exhale. Officially, they're 'missing.' Unofficially... no one knows what word to use.",
     "maeve_before_characters": "Everyone wants me to say they're dead so they can shelve it. I can't. Maybe that's denial. Maybe it's data. All I know is the way the air changes when I say their names out loud.",
     "maeve_after_characters": "I still catch myself setting out one extra mug. Hearing a laugh that isn't there. Waking up with fragments of someone else's dream in my throat.\n\nMaybe they're gone. Maybe they stepped sideways into something that doesn't have doors. Or maybe they're walking toward us from very far away, and it just hasn't reached us yet.",
     "maeve_close": "So no, I won't call it a death. Not yet.\n\nI will keep telling this version of the story instead: there was a day when we almost lost everything, and instead the world misfiled them somewhere I can't reach.\n\nIf they ever find a way back, I want there to be something here waiting for them besides a closed file."
@@ -17,9 +17,9 @@
 
   "miracle_run": {
     "narrator": "maeve",
-    "maeve_open": "I don't know how to write about a disaster that didn't happen.\n\nRedchurch should have broken us. Every variable said so. I can still feel the hinge-moment where the air went sharp and thin and every instinct in me screamed, this is where it collapses.\n\nAnd then… it didn't.",
-    "maeve_before_characters": "It feels wrong to call it a miracle. Like I'm tempting whatever watched us and decided to let us walk away. But I have to name what I saw in them—what held.",
-    "maeve_after_characters": "There was a second—just one—where I swear I felt the List notice us. Not hungry. Curious. Like it was measuring the distance between what should have happened and what did.\n\nMaybe we were spared. Maybe we were overlooked. Maybe we built enough coherence between us that, just this once, the field chose to bend around us instead of through us.",
+    "maeve_open": "I don't know how to write about a disaster that didn't happen.\n\nRedchurch should have broken us. Every variable said so. I can still feel the hinge-moment where the air went sharp and thin and every instinct in me screamed, this is where it collapses.\n\nAnd then... it didn't.",
+    "maeve_before_characters": "It feels wrong to call it a miracle. Like I'm tempting whatever watched us and decided to let us walk away. But I have to name what I saw in them--what held.",
+    "maeve_after_characters": "There was a second--just one--where I swear I felt the List notice us. Not hungry. Curious. Like it was measuring the distance between what should have happened and what did.\n\nMaybe we were spared. Maybe we were overlooked. Maybe we built enough coherence between us that, just this once, the field chose to bend around us instead of through us.",
     "maeve_close": "I'm writing this a week later and they're all still alive. Do you understand how insane that sentence is?\n\nI'm not naïve. The world hasn't turned kind overnight. There will be other Redchurches, other thresholds. But now I know this much: collapse isn't inevitable. There is, buried somewhere in the noise, a path where we walk out together.\n\nIf this was grace, I'm not wasting it."
   },
 
@@ -41,8 +41,8 @@
 
   "tpk_redchurch": {
     "narrator": "dce",
-    "dce_open": "Subject: Horizon-11 / Redchurch Site – Final Assessment\n\nThe Horizon-11 field unit is confirmed lost. All primary and secondary agents assigned to the Redchurch perimeter experienced complete coherence collapse or terminal physiological failure within the incident window.\n\nNo functional witnesses remain.",
-    "dce_mid": "Retrospective analysis indicates multiple procedural deviations:\n– Unauthorized mythic-class theorizing by lead agent (Amell, M.)\n– Uncontrolled emotional entanglement between team members\n– Failure to defer to Directorate oversight at early anomaly stages\n\nThese factors are considered primary contributors to outcome severity.",
+    "dce_open": "Subject: Horizon-11 / Redchurch Site - Final Assessment\n\nThe Horizon-11 field unit is confirmed lost. All primary and secondary agents assigned to the Redchurch perimeter experienced complete coherence collapse or terminal physiological failure within the incident window.\n\nNo functional witnesses remain.",
+    "dce_mid": "Retrospective analysis indicates multiple procedural deviations:\n- Unauthorized mythic-class theorizing by lead agent (Amell, M.)\n- Uncontrolled emotional entanglement between team members\n- Failure to defer to Directorate oversight at early anomaly stages\n\nThese factors are considered primary contributors to outcome severity.",
     "dce_after": "The Redchurch structure has been designated a Level-Black resonance hazard. Site access is restricted to Directorate personnel with appropriate clearance and dampening equipment.\n\nAll public records of Horizon-11 have been reclassified. Families of involved parties have been issued standardized incident notifications.",
     "dce_close": "Conclusion:\n\nThe Horizon-11 event demonstrates the risk of allowing field units extended epistemic autonomy in high-variance resonance environments.\n\nRecommendation: reduce reliance on subjective pattern recognition. Increase deployment of standardized DCE protocols.\n\nNo further action required."
   }

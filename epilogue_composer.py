@@ -134,11 +134,12 @@ class EpilogueComposer:
 
         return block
 
-    def choose_transition_phrase(self, run_state: Dict[str, Any], ending_key: str) -> str:
+    def choose_transition_phrase(self, run_state: Dict[str, Any], ending_key: str, used_transitions: set) -> str:
         """
         Choose a transition phrase between character blocks
 
         Based on ending tone + small chance of archetype bleed
+        Tracks used transitions to avoid repetition
         """
         # Choose base pool
         if ending_key == 'miracle_run':
@@ -156,9 +157,23 @@ class EpilogueComposer:
             if archetype:
                 bleed_pool = self.transition_phrases['archetype_bleed'].get(archetype, [])
                 if bleed_pool:
-                    return random.choice(bleed_pool)
+                    # Filter out used transitions
+                    available = [t for t in bleed_pool if t not in used_transitions]
+                    if available:
+                        chosen = random.choice(available)
+                        used_transitions.add(chosen)
+                        return chosen
 
-        return random.choice(pool)
+        # Filter out used transitions from base pool
+        available = [t for t in pool if t not in used_transitions]
+
+        # If all transitions used, reset and use full pool
+        if not available:
+            available = pool
+
+        chosen = random.choice(available)
+        used_transitions.add(chosen)
+        return chosen
 
     def _archetype_transition_chance(self, run_state: Dict[str, Any], ending_key: str) -> float:
         """Calculate chance of archetype bleed in transitions"""
@@ -284,6 +299,7 @@ class EpilogueComposer:
     def _compose_maeve_epilogue(self, run_state: Dict[str, Any], ending_key: str, template: Dict[str, str]) -> str:
         """Compose Maeve-narrated epilogue with character blocks"""
         output = []
+        used_transitions = set()  # Track transitions to avoid repetition
 
         # Open
         output.append(template['maeve_open'])
@@ -303,7 +319,7 @@ class EpilogueComposer:
 
             # Insert transition (except first)
             if index > 0:
-                transition = self.choose_transition_phrase(run_state, ending_key)
+                transition = self.choose_transition_phrase(run_state, ending_key, used_transitions)
                 output.append(transition)
 
             # Get character block
