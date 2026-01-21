@@ -1,0 +1,209 @@
+{
+  "1": [
+    {
+      "id": "kit_grounds_yuul_soft",
+      "name": "Kit Tries to Ground Yuul",
+      "type": "kit_feelings",
+      "act": 1,
+      "burnable": false,
+      "description": "Kit pulls Yuul aside, trying to steady her with humor or ritual. Yuul responds with slight delay."
+    },
+    {
+      "id": "someone_notices",
+      "name": "Someone Notices",
+      "type": "external_pressure",
+      "act": 1,
+      "burnable": false,
+      "has_choice": true,
+      "description": "A stranger studies them too closely: 'You look hollow.'"
+    },
+    {
+      "id": "rielle_impulse_soft",
+      "name": "Rielle's Impulse",
+      "type": "wild_card",
+      "act": 1,
+      "burnable": false,
+      "description": "Rielle acts on sudden instinct. It half-works."
+    },
+    {
+      "id": "grace_moment",
+      "name": "Grace Moment",
+      "type": "salvation",
+      "act": 1,
+      "burnable": false,
+      "description": "A beautiful moment--a laugh, shared silence, sunrise."
+    },
+    {
+      "id": "bonfire_night",
+      "name": "Bonfire Night",
+      "type": "salvation",
+      "act": 1,
+      "burnable": false,
+      "has_choice": true,
+      "description": "Their last truly safe moment around a fire."
+    },
+    {
+      "id": "farris_sees_shadow",
+      "name": "Farris Senses Something",
+      "type": "farris_presence",
+      "act": 1,
+      "burnable": false,
+      "description": "Farris tenses. His eyes track something no one else sees."
+    },
+    {
+      "id": "daniel_wrong_questions",
+      "name": "Daniel Asks the Wrong Questions",
+      "type": "daniel_institutional",
+      "act": 1,
+      "burnable": false,
+      "description": "Daniel presses for details they can't give. Pressure mounts."
+    }
+  ],
+
+  "2": [
+    {
+      "id": "kit_desperate_protector",
+      "name": "Kit, Desperate Protector",
+      "type": "kit_heroics",
+      "act": 2,
+      "burnable": true,
+      "description": "Kit steps between danger and the group. Again. It costs him."
+    },
+    {
+      "id": "maeve_spiral",
+      "name": "Maeve Spirals",
+      "type": "maeve_resonance",
+      "act": 2,
+      "burnable": false,
+      "description": "The pattern pulls at her. She can't look away."
+    },
+    {
+      "id": "internal_suspicion",
+      "name": "Internal Suspicion",
+      "type": "external_pressure",
+      "act": 2,
+      "burnable": false,
+      "has_choice": true,
+      "description": "Someone in the group questions Yuul's visions. Bonds strain."
+    },
+    {
+      "id": "brief_reprieve",
+      "name": "Brief Reprieve",
+      "type": "salvation",
+      "act": 2,
+      "burnable": false,
+      "description": "A quiet moment. No one screams, dissolves, or bleeds."
+    },
+    {
+      "id": "unexpected_kindness",
+      "name": "Unexpected Kindness",
+      "type": "salvation",
+      "act": 2,
+      "burnable": false,
+      "description": "A stranger returns a kindness. Not everything hunts them."
+    },
+    {
+      "id": "farris_sees_before_it_moves",
+      "name": "He Sees the Thing Before It Moves",
+      "type": "farris_presence",
+      "act": 2,
+      "burnable": false,
+      "description": "Farris senses a threat before it breaches. He saves them by seconds."
+    },
+    {
+      "id": "daniel_real_intel",
+      "name": "Real Intel: Daniel Delivers",
+      "type": "daniel_institutional",
+      "act": 2,
+      "burnable": false,
+      "description": "Daniel arrives with actual intel--coordinates, names, weak points."
+    },
+    {
+      "id": "h11_pressure",
+      "name": "H11 Pressure Spike",
+      "type": "h11_pressure",
+      "act": 2,
+      "burnable": true,
+      "description": "The Directorate tightens its grip. Someone has to answer."
+    }
+  ],
+
+  "3": [
+    {
+      "id": "first_warning_returns",
+      "name": "The First Warning Returns",
+      "type": "yuul_prophecy",
+      "act": 3,
+      "burnable": false,
+      "description": "Yuul grabs Maeve's wrist--eyes glassy, speech inverted. A second warning."
+    },
+    {
+      "id": "kit_breaks",
+      "name": "Kit Breaks",
+      "type": "kit_heroics",
+      "act": 3,
+      "burnable": true,
+      "description": "The protector finally fractures. He can't hold anymore."
+    },
+    {
+      "id": "maeve_true_insight",
+      "name": "Maeve's True Insight",
+      "type": "maeve_resonance",
+      "act": 3,
+      "burnable": false,
+      "has_choice": true,
+      "description": "She sees the pattern completely. It sees her back."
+    },
+    {
+      "id": "redchurch_prelude",
+      "name": "Redchurch Prelude",
+      "type": "redchurch",
+      "act": 3,
+      "burnable": false,
+      "description": "The structure hums. They're all standing at the threshold."
+    },
+    {
+      "id": "act3_door_breathes",
+      "name": "The Door That Breathes",
+      "type": "miracle_moment",
+      "act": 3,
+      "burnable": false,
+      "has_choice": true,
+      "description": "The Sanctuary door exhales. Wood ripples like skin. A crossing point forms."
+    },
+    {
+      "id": "act3_name_wants_to_live",
+      "name": "The Name That Wants to Live",
+      "type": "miracle_moment",
+      "act": 3,
+      "burnable": false,
+      "has_choice": true,
+      "description": "Maeve hears the hidden name--the one beneath the Pattern, the one she never dared to claim."
+    },
+    {
+      "id": "farris_breaks_threshold",
+      "name": "He Breaks Through the Threshold",
+      "type": "farris_resonance",
+      "act": 3,
+      "burnable": false,
+      "description": "The boundary weakens. Farris tears through it to pull someone back."
+    },
+    {
+      "id": "daniel_structural_override",
+      "name": "Structural Override: Daniel's Rewrite",
+      "type": "daniel_institutional",
+      "act": 3,
+      "burnable": false,
+      "description": "Daniel overrides a Directorate protocol. Reality rewrites for one glorious second."
+    },
+    {
+      "id": "the_list_manifests",
+      "name": "The List Manifests",
+      "type": "list_event",
+      "act": 3,
+      "burnable": true,
+      "has_choice": true,
+      "description": "The List isn't a metaphor anymore. It's here. Hungry."
+    }
+  ]
+}
