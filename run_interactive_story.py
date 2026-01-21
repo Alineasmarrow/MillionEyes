@@ -13,6 +13,8 @@ Your choices shape the story and are tracked in the final archetype summary.
 
 from simulation import NarrativeSimulation
 from constants import CHAOS_THRESHOLD
+from epilogue_composer import compose_epilogue
+from run_logger import log_run
 
 
 def run_interactive_story():
@@ -103,6 +105,35 @@ def run_interactive_story():
 
     # Display final state
     sim.print_final_state()
+
+    # Generate and display epilogue
+    print(f"\n{'='*80}")
+    print("GENERATING EPILOGUE...")
+    print(f"{'='*80}\n")
+
+    try:
+        # Build run state from simulation
+        run_state = sim.build_run_state()
+
+        # Compose epilogue in Maeve's voice (or DCE for TPK)
+        epilogue_text = compose_epilogue(run_state)
+
+        print(epilogue_text)
+
+        # Optionally save run log
+        print(f"\n{'='*80}")
+        save_choice = input("\nSave this run to logs? (y/n): ").strip().lower()
+
+        if save_choice == 'y':
+            log_path = log_run(run_state, epilogue_text)
+            print(f"\n✓ Run saved to: {log_path}")
+        else:
+            print("\n✓ Run not saved")
+
+    except Exception as e:
+        print(f"\n⚠️  Error generating epilogue: {e}")
+        import traceback
+        traceback.print_exc()
 
 
 if __name__ == "__main__":

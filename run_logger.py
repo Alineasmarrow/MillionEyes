@@ -138,6 +138,4 @@ def log_run(run_state, epilogue_text):
     with open(filepath, 'w', encoding='utf-8') as f:
         f.write(final_text)
 
-    print(f"✓ Run saved to {filepath}")
-
-    return final_text
+    return filepath

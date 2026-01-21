@@ -10,6 +10,57 @@ import random
 from typing import Dict, Any, List, Optional
 
 
+# New transition phrases for cluster-based system
+NEW_TRANSITIONS = {
+    "before_dead": [
+        "This is where the story tightens.",
+        "I have to slow down for this part.",
+        "Everything in me goes still when I speak their names.",
+        "The air changes here.",
+        "I never get this part right, but I'll try.",
+        "This is the part that still bruises."
+    ],
+    "before_survivors": [
+        "The story tilts here.",
+        "Not everyone was taken.",
+        "There were still voices left to answer.",
+        "The map changes when I talk about the ones who stayed.",
+        "This is the part that breathes a little easier."
+    ],
+    "before_disappeared": [
+        "Some names don't fit into death.",
+        "This next part feels... unfinished.",
+        "There are shapes the field doesn't classify.",
+        "I don't know what verb belongs to them.",
+        "They didn't die. They shifted."
+    ],
+    "optional_survivor_start": [
+        "",
+        "Their names land differently.",
+        "I still don't know how to talk about this without shaking.",
+        "Somehow, all of them made it through.",
+        "The world sounds different when I say these names."
+    ],
+    "archetype_bleed": {
+        "witness": [
+            "Something quiet in me leans forward here.",
+            "A voice older than memory murmurs: pay attention.",
+            "The Witness brushes a hand against the thread."
+        ],
+        "trickster": [
+            "The line wavers -- something amused cuts through.",
+            "I can hear laughter in the margins.",
+            "The Trickster tugs the thread sideways for a breath."
+        ],
+        "devourer": [
+            "The dark geometry presses closer.",
+            "A hunger in the field stirs at this part.",
+            "The Devourer tastes the shape of this memory."
+        ]
+    }
+}
+
+
 class EpilogueComposer:
     """Composes narrative epilogues based on game ending state"""
 
@@ -296,59 +347,113 @@ class EpilogueComposer:
         ]
         return '\n\n'.join(parts)
 
+    def _glitch_tier(self, run_state: Dict[str, Any]) -> str:
+        """Choose glitch intensity tier based on Maeve's coherence"""
+        c = run_state['metrics'].get('maeve_coherence', 5.0)
+        if c > 6:
+            return "soft"
+        elif c > 3:
+            return "sharp"
+        else:
+            return "hunger"
+
     def _compose_maeve_epilogue(self, run_state: Dict[str, Any], ending_key: str, template: Dict[str, str]) -> str:
-        """Compose Maeve-narrated epilogue with character blocks"""
+        """Compose Maeve-narrated epilogue with character blocks using cluster logic"""
         output = []
-        used_transitions = set()  # Track transitions to avoid repetition
 
         # Open
         output.append(template['maeve_open'])
-        output.append('')  # Blank line
+        output.append('')
 
         # Before characters
         output.append(template['maeve_before_characters'])
         output.append('')
 
-        # Character blocks
+        # -------------------------------
+        # CLUSTERING BY FATE
+        # -------------------------------
+        dead_cluster = []
+        disappeared_cluster = []
+        survivor_cluster = []
+
         character_order = ['yuul', 'kit', 'rielle', 'daniel', 'farris', 'maeve']
 
-        for index, char_name in enumerate(character_order):
-            # Skip if character not in run
-            if char_name not in run_state['characters']:
+        for name in character_order:
+            if name not in run_state['characters']:
                 continue
+            c = run_state['characters'][name]
 
-            # Insert transition (except first)
-            if index > 0:
-                transition = self.choose_transition_phrase(run_state, ending_key, used_transitions)
-                output.append(transition)
+            if c.get('dead', False):
+                dead_cluster.append(name)
+            elif c.get('dissolved', False):
+                disappeared_cluster.append(name)
+            else:
+                survivor_cluster.append(name)
 
-            # Get character block
-            block = self.get_character_block(char_name, run_state)
-            if block:
-                output.append(block)
-                output.append('')  # Blank line after each character
+        # -------------------------------
+        # DEAD CLUSTER
+        # -------------------------------
+        if dead_cluster:
+            # ONE transition line before all deaths
+            output.append(random.choice(NEW_TRANSITIONS["before_dead"]))
+            output.append('')
 
-        # After characters
+            for name in dead_cluster:
+                block = self.get_character_block(name, run_state)
+                if block:
+                    output.append(block)
+                    output.append('')
+
+        # -------------------------------
+        # DISAPPEARED CLUSTER
+        # (only used in disappearance endings)
+        # -------------------------------
+        if disappeared_cluster:
+            output.append(random.choice(NEW_TRANSITIONS["before_disappeared"]))
+            output.append('')
+
+            for name in disappeared_cluster:
+                block = self.get_character_block(name, run_state)
+                if block:
+                    output.append(block)
+                    output.append('')
+
+        # -------------------------------
+        # SURVIVOR CLUSTER
+        # -------------------------------
+        if survivor_cluster:
+            # If we already had dead/dissolved -> pivot tone
+            if dead_cluster or disappeared_cluster:
+                output.append(random.choice(NEW_TRANSITIONS["before_survivors"]))
+                output.append('')
+            else:
+                # If it's a clean miracle/survival run
+                start = random.choice(NEW_TRANSITIONS["optional_survivor_start"])
+                if start:
+                    output.append(start)
+                    output.append('')
+
+            for name in survivor_cluster:
+                block = self.get_character_block(name, run_state)
+                if block:
+                    output.append(block)
+                    output.append('')
+
+        # -------------------------------
+        # AFTER CHARACTERS
+        # -------------------------------
         output.append(template['maeve_after_characters'])
         output.append('')
 
-        # Optional archetype glitch
+        # ARCHETYPE GLITCH (after reflection)
         if self._should_glitch(run_state, ending_key):
             archetype = self._choose_archetype(run_state, ending_key)
             if archetype:
-                intensity = self._choose_glitch_intensity(run_state)
-
-                # Handle archetype-specific intensity keys
-                if archetype == 'trickster' and intensity == 'sharp':
-                    intensity = 'chaotic'
-                elif archetype == 'devourer' and intensity == 'hunger':
-                    intensity = 'prophetic' if run_state['metrics'].get('maeve_coherence', 5) < 3 else 'hunger'
-
-                glitch_lines = self.archetype_glitches.get(archetype, {}).get(intensity, [])
-                if glitch_lines:
-                    glitch_line = random.choice(glitch_lines)
-                    output.append(glitch_line)
-                    output.append('')
+                tier = self._glitch_tier(run_state)
+                # Use archetype bleed transition from NEW_TRANSITIONS
+                bleed_line = random.choice(NEW_TRANSITIONS["archetype_bleed"][archetype])
+                output.append(bleed_line)
+                output.append('')
 
         # Close
         output.append(template['maeve_close'])

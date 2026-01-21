@@ -1425,6 +1425,90 @@ class NarrativeSimulation:
                 if secret_ending:
                     print(secret_ending)
 
+    def build_run_state(self) -> Dict[str, Any]:
+        """
+        Build run_state dictionary for epilogue composer and run logger
+
+        Returns:
+            Dict containing characters, flags, metrics, end_state, and cards_played
+        """
+        # Build characters dictionary
+        characters = {}
+        for name, char in self.characters.items():
+            characters[name] = {
+                "dead": char.c_self <= 0 and not char.dissolved,
+                "dissolved": char.dissolved,
+                "coherence": char.c_self
+            }
+
+        # Determine dominant archetype
+        dominant_archetype = "witness"
+        if self.archetype_counts:
+            dominant_archetype = max(self.archetype_counts.items(), key=lambda x: x[1])[0]
+
+        # Build flags dictionary
+        flags = {
+            "sacred_with_yuul": False,  # Check if Yuul has sacred dyads
+            "rielle_recursion": False,   # TODO: Track this in game
+            "farris_death_echo": False,  # Check if Farris died
+            "maeve_learned_list_hunger": False,  # TODO: Track this in game
+            "cor_manifestation": self.chaos >= CHAOS_THRESHOLD,
+            "dce_pressure_high": self.chaos_state.pressure > 40,
+            "h11_team_compromised": False,  # TODO: Track this in game
+            "miracle_ending_possible": all(char.c_self > 0 for char in self.characters.values()),
+            "dominant_archetype": dominant_archetype
+        }
+
+        # Check for sacred bond with Yuul
+        for rel in self.relationships:
+            if rel.is_sacred and (rel.char_a == "yuul" or rel.char_b == "yuul"):
+                flags["sacred_with_yuul"] = True
+                break
+
+        # Check if Farris died
+        if "farris" in self.characters:
+            farris_char = self.characters["farris"]
+            if farris_char.c_self <= 0 and not farris_char.dissolved:
+                flags["farris_death_echo"] = True
+
+        # Build metrics dictionary
+        metrics = {
+            "chaos_total": self.chaos_state.total,
+            "turbulence": self.chaos_state.turbulence,
+            "pressure": self.chaos_state.pressure,
+            "maeve_coherence": self.characters["maeve"].c_self if "maeve" in self.characters else 5.0
+        }
+
+        # Build end_state dictionary
+        end_state = {
+            "total_party_kill": all(char.c_self <= 0 for char in self.characters.values()),
+            "everyone_survived": all(char.c_self > 0 for char in self.characters.values()),
+            "kit_dead": self.characters["kit"].c_self <= 0 and not self.characters["kit"].dissolved if "kit" in self.characters else False,
+            "yuul_dead": self.characters["yuul"].c_self <= 0 and not self.characters["yuul"].dissolved if "yuul" in self.characters else False,
+            "kit_dissolved": self.characters["kit"].dissolved if "kit" in self.characters else False,
+            "yuul_dissolved": self.characters["yuul"].dissolved if "yuul" in self.characters else False
+        }
+
+        # Build cards_played list (if using act system)
+        cards_played = []
+        if self.use_act_system and hasattr(self, 'event_history'):
+            for event in self.event_history:
+                if isinstance(event, dict) and 'event_id' in event:
+                    cards_played.append({
+                        "id": event['event_id'],
+                        "act": event.get('act', 1),
+                        "choice": event.get('choice', None),
+                        "burned": event.get('burned', False)
+                    })
+
+        return {
+            "characters": characters,
+            "flags": flags,
+            "metrics": metrics,
+            "end_state": end_state,
+            "cards_played": cards_played
+        }
+
     def _get_state_symbol(self, state: str) -> str:
         """Get a symbol for a character state"""
         state_symbols = {
