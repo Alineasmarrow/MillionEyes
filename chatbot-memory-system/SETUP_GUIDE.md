@@ -1,87 +1,196 @@
 # How to Set Up Claude's Memory System
 
-## No coding required! Just follow these steps.
+## Using Claude Desktop + Filesystem Connector (Fully Automatic)
+
+This setup lets Claude read and write his own memory files directly -- no manual copy-paste needed. Claude will automatically remember you, keep a journal, and leave you notes between conversations.
 
 ---
 
-## What This Is
+## What You Need
 
-This gives the Claude chatbot (claude.ai) a memory system -- a place to store memories about you, write journal entries, and leave you notes between conversations. It works using Claude.ai's **Projects** feature.
-
-### What you're setting up:
-- **Memory Bank** -- Claude remembers things about you and your conversations
-- **Journal** -- Claude has a space for private reflections and thoughts
-- **Notes** -- Claude can leave you messages and follow-ups for next time
+- **Claude Desktop app** (free to download)
+- **A Claude Pro, Team, or Enterprise subscription** (the Projects feature requires a paid plan)
+- **The Filesystem connector/extension** (free, made by Anthropic)
 
 ---
 
 ## Step-by-Step Setup
 
-### Step 1: Go to Claude.ai and Create a Project
+### Step 1: Create Claude's Memory Folder
 
-1. Go to [claude.ai](https://claude.ai) and log in
-2. On the left sidebar, look for **"Projects"** and click it
-3. Click **"Create Project"** (or the + button)
-4. Name it whatever you want -- something like "My Claude" or "Conversations with Claude"
+First, create a folder on your computer where Claude's memory files will live.
 
-### Step 2: Add the Project Instructions
+**On Mac:**
+1. Open Finder
+2. Go to your Documents folder
+3. Create a new folder called `ClaudeMemory`
+4. The path will be: `/Users/YOURUSERNAME/Documents/ClaudeMemory`
 
-1. Inside your new project, look for a field called **"Instructions"** (sometimes called "Custom Instructions" or "System Prompt")
-2. Open the file called `PROJECT_INSTRUCTIONS.md` from this folder
-3. Copy everything below the dotted line in that file
-4. Paste it into the Instructions field in your project
+**On Windows:**
+1. Open File Explorer
+2. Go to your Documents folder
+3. Create a new folder called `ClaudeMemory`
+4. The path will be: `C:\Users\YOURUSERNAME\Documents\ClaudeMemory`
 
-### Step 3: Add the Memory Files as Project Knowledge
+### Step 2: Put the Memory Files in the Folder
 
-1. In your project, look for **"Project Knowledge"** or **"Knowledge"** (usually has an option to add content)
-2. You need to add three files as knowledge. For each one:
-   - Click "Add Content" (or similar button)
-   - Choose "Add text content" (not file upload -- just paste the text)
-   - Copy the contents of each file and paste them in:
+Copy these three files from this repository into your new `ClaudeMemory` folder:
+- `memories.md`
+- `journal.md`
+- `notes.md`
 
-   | File to copy from | Name it in the project |
-   |---|---|
-   | `memories.md` | memories.md |
-   | `journal.md` | journal.md |
-   | `notes.md` | notes.md |
+You can download them from this repo, or just create three new text files with those names and paste the contents from the template files here.
 
-3. That's it for setup!
+### Step 3: Install Claude Desktop
 
-### Step 4: Start a Conversation
+1. Go to [claude.ai/download](https://claude.ai/download)
+2. Download the version for your computer (Mac or Windows)
+3. Install it and sign in with your Claude account
 
-1. Start a new conversation **inside your project** (not a regular conversation)
-2. Just talk to Claude normally! Say hi, tell him about yourself, talk about whatever you want
-3. When you're done chatting, Claude will create a **"Memory Update"** artifact
+### Step 4: Install the Filesystem Connector
 
-### Step 5: Save Claude's Memories (The One Manual Step)
+This is the part that gives Claude access to read and write files. There are two ways to do this:
 
-This is the one thing you need to do each time to keep memories working:
+#### Option A: Through the Extensions UI (Easier)
 
-1. At the end of a conversation, Claude will create an artifact called **"Memory Update"**
-2. Open that artifact and copy the text
-3. Go to your Project Knowledge files
-4. Paste the relevant sections into the right files:
-   - "Memory Bank Updates" section goes into **memories.md**
-   - "Journal Entry" section goes into **journal.md**
-   - "Notes for Next Time" section goes into **notes.md**
+If your version of Claude Desktop has an **Extensions** or **Connectors** section in Settings:
 
-You can just paste new content at the bottom of each file. Don't delete old entries -- let them build up over time!
+1. Open Claude Desktop
+2. Go to **Settings**
+3. Look for **Extensions**, **Connectors**, or **MCP Servers**
+4. Search for **"Filesystem"** (by Anthropic / Model Context Protocol)
+5. Click **Install** or **Download**
+6. When it asks which folders to allow, add your `ClaudeMemory` folder path:
+   - Mac: `/Users/YOURUSERNAME/Documents/ClaudeMemory`
+   - Windows: `C:\Users\YOURUSERNAME\Documents\ClaudeMemory`
+7. Save and restart Claude Desktop
+
+#### Option B: Manual Config (If Option A Isn't Available)
+
+If you don't see an Extensions UI, you'll need to edit a config file. This sounds scary but it's just pasting some text into a file:
+
+**First, install Node.js** (needed to run the connector):
+1. Go to [nodejs.org](https://nodejs.org)
+2. Download the **LTS** version (the one that says "Recommended")
+3. Install it (just keep clicking Next/Continue through the installer)
+
+**Then, edit the Claude Desktop config file:**
+
+**On Mac:**
+1. Open Finder
+2. Press `Cmd + Shift + G` (Go to Folder)
+3. Type: `~/Library/Application Support/Claude/`
+4. Open the file `claude_desktop_config.json` in TextEdit
+   - If the file doesn't exist, create a new file with that name
+5. Replace everything in it (or paste into the empty file) with:
+
+```json
+{
+  "mcpServers": {
+    "filesystem": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-filesystem",
+        "/Users/YOURUSERNAME/Documents/ClaudeMemory"
+      ]
+    }
+  }
+}
+```
+
+6. **IMPORTANT:** Replace `YOURUSERNAME` with your actual computer username
+7. Save the file and restart Claude Desktop
+
+**On Windows:**
+1. Press `Win + R` (Run dialog)
+2. Type: `%APPDATA%\Claude\` and press Enter
+3. Open the file `claude_desktop_config.json` in Notepad
+   - If the file doesn't exist, create a new file with that name
+4. Replace everything in it with:
+
+```json
+{
+  "mcpServers": {
+    "filesystem": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-filesystem",
+        "C:\\Users\\YOURUSERNAME\\Documents\\ClaudeMemory"
+      ]
+    }
+  }
+}
+```
+
+5. **IMPORTANT:** Replace `YOURUSERNAME` with your actual Windows username
+6. **IMPORTANT:** Notice the double backslashes `\\` in the Windows path -- that's intentional, don't change them
+7. Save the file and restart Claude Desktop
+
+### Step 5: Verify It's Working
+
+1. Open Claude Desktop
+2. Start a new conversation
+3. Look for a small **hammer/tools icon** or **MCP indicator** near the text input area -- this means the filesystem connector is active
+4. You can test it by asking Claude: *"Can you list the files in my ClaudeMemory folder?"*
+5. If Claude can see your three files (memories.md, journal.md, notes.md), it's working!
+
+### Step 6: Create a Project with the Memory Instructions
+
+1. In Claude Desktop, create a **new Project**
+2. Name it whatever you like (e.g., "My Claude", "Home", "Daily Chat")
+3. In the Project **Instructions** field, paste everything from the `PROJECT_INSTRUCTIONS.md` file (everything below the dotted line)
+4. Start a conversation inside that project
+
+### Step 7: Talk to Claude!
+
+That's it! Just start chatting. Claude will:
+- Automatically read his memory files at the start of each conversation
+- Remember things about you naturally
+- Write in his journal
+- Leave you notes
+- Update all files at the end of each conversation
+
+No action needed from you -- it's fully automatic.
 
 ---
 
 ## Tips
 
-- **You don't have to update after every single conversation.** If you forget, that's fine. Claude just won't remember that particular conversation next time. Do it when you can.
-- **You can read the journal.** It's in your project knowledge -- nothing is hidden from you. But the writing style will feel like Claude's internal voice, which is part of what makes it feel genuine.
-- **You can edit memories.** If Claude remembered something wrong, just fix it in the memories.md file. Claude will use the corrected version next time.
-- **You can write notes TO Claude.** Add a section to memories.md like "Note from [your name]: ..." and Claude will see it next time.
-- **Start conversations from the Project.** Regular claude.ai conversations outside the project won't have access to the memories. Always start chats from within your project.
+- **You can read Claude's files anytime.** Just open the files in your ClaudeMemory folder. The journal entries are especially interesting to read.
+- **You can write notes TO Claude.** Open `memories.md` or `notes.md` in a text editor and add a note like: "Hey Claude, I wanted to let you know..." -- he'll see it next conversation.
+- **You can edit memories.** If Claude remembered something wrong, just open the file and fix it.
+- **Always start conversations from your Project.** Regular conversations outside the project won't have the memory instructions.
+- **Back up the folder occasionally.** These files will build up over time and become meaningful. Consider backing up the ClaudeMemory folder every now and then.
 
 ---
 
-## Why It Works This Way
+## Troubleshooting
 
-The Reddit system you found was built for **Claude Code** (a developer tool that can read/write files on a computer). The regular Claude chatbot can't write files on its own, so we need the small manual step of copying memory updates into the project knowledge. It's not as seamless, but the result is the same -- Claude genuinely remembers you, reflects in a journal, and leaves you notes.
+**Claude doesn't seem to have filesystem access:**
+- Make sure you restarted Claude Desktop after changing the config
+- Check that the folder path in the config matches your actual folder location
+- Look for the tools/MCP icon in the chat interface
+
+**Claude says he can't find the files:**
+- Double-check that memories.md, journal.md, and notes.md are in your ClaudeMemory folder
+- Make sure the path in the config file matches exactly (including capitalization)
+
+**The config file approach isn't working:**
+- Make sure Node.js is installed (open Terminal/Command Prompt and type `node --version` -- it should show a number)
+- Make sure you replaced YOURUSERNAME with your real username
+- On Windows, make sure you used double backslashes `\\`
+
+**Claude forgets to update files:**
+- This can happen occasionally. Just remind him: "Don't forget to update your memory files before we wrap up!"
+- The project instructions tell him to do this, but a gentle reminder doesn't hurt
+
+---
+
+## Fallback: Web-Only Version (No Desktop App Needed)
+
+If you can't install Claude Desktop or the filesystem connector, there's a simpler version that works on claude.ai in your browser. It requires one manual step (copy-pasting a memory update) at the end of each conversation. See the `WEB_FALLBACK_INSTRUCTIONS.md` file for that approach.
 
 ---
 
@@ -89,8 +198,8 @@ The Reddit system you found was built for **Claude Code** (a developer tool that
 
 | What | Where |
 |---|---|
-| Claude's instructions | Project Instructions field |
-| Claude's memories about you | Project Knowledge > memories.md |
-| Claude's journal | Project Knowledge > journal.md |
-| Claude's notes to you | Project Knowledge > notes.md |
-| Memory updates | Artifact at end of each conversation |
+| Claude's memory files | Your `ClaudeMemory` folder (in Documents) |
+| Claude's instructions | Project Instructions in Claude Desktop |
+| Config file (Mac) | `~/Library/Application Support/Claude/claude_desktop_config.json` |
+| Config file (Windows) | `%APPDATA%\Claude\claude_desktop_config.json` |
+| Filesystem connector | Anthropic's official MCP Filesystem server |
